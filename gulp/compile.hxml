@@ -1,0 +1,31 @@
+### Starling
+-swf-lib ../lib/starling/starling.swc
+--macro patchTypes('../lib/starling/starling.patch')
+
+### Feathers
+-swf-lib ../lib/feathers/feathers.swc
+-swf-lib ../lib/feathers/MinimalMobileTheme.swc
+
+-swf-lib-extern ../lib/playerglobal17_0.swc
+
+-main Main
+-cp "../src"
+-swf "../export/game.swf"
+-swf-version 11
+
+--next
+
+### Starling
+-swf-lib ../lib/starling/starling.swc
+--macro patchTypes('../lib/starling/starling.patch')
+
+### Feathers
+-swf-lib ../lib/feathers/feathers.swc
+-swf-lib ../lib/feathers/MinimalMobileTheme.swc
+
+-swf-lib-extern ../lib/playerglobal17_0.swc
+
+-main Main
+-cp "../src"
+-as3 "../export/as3"
+-swf-version 11
