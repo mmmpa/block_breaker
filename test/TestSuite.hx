@@ -1,8 +1,6 @@
-import initializer.Trace;
-import model.BlockGridTest;
 import massive.munit.TestSuite;
 
-import ExampleTest;
+import model.BlockGridTest;
 
 /**
  * Auto generated Test Suite for MassiveUnit.
@@ -14,10 +12,8 @@ class TestSuite extends massive.munit.TestSuite
 
 	public function new()
 	{
-
 		super();
-		Trace.initialize();
 
-		add(BlockGridTest);
+		add(model.BlockGridTest);
 	}
 }

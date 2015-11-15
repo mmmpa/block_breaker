@@ -17,6 +17,8 @@ class Block extends Quad {
     super(width, height, color, false);
     this.life = life;
     this.ball = ball;
+    this.x = x;
+    this.y = y;
     initializeSplash();
   }
 

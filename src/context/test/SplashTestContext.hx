@@ -9,29 +9,13 @@ import starling.events.Touch;
 import starling.events.TouchEvent;
 import model.RouterProp;
 class SplashTestContext extends BaseContext {
-  private var actors:Array<Dynamic> = new Array();
 
   public function new(props:RouterProp, insertProps:Dynamic = null) {
     super(props);
     view.addChild(new Quad(Def.stage.stageWidth, Def.stage.stageHeight, 0xcccccc));
     view.addEventListener(TouchEvent.TOUCH, onTouch);
 
-    view.addEventListener(Event.ENTER_FRAME, animate);
-  }
-
-  private function animate(e:Event) {
-    var nextStore:Array<Dynamic> = new Array();
-
-    for (i in 0...actors.length) {
-      var actor:Dynamic = actors[i];
-      if (actor.act()) {
-        nextStore.push(actor);
-      }else{
-        actor.deactivate();
-      }
-    }
-
-    actors = nextStore;
+    startAnimation();
   }
 
   private function onTouch(e:TouchEvent) {

@@ -5,8 +5,9 @@ plumber = require 'gulp-plumber'
 path = require 'path'
 livereload = require 'gulp-livereload'
 
-srcs = '../src/**/*.hx'
+srcs = path.join(__dirname, '../src/**/*.hx')
 swf = path.join(__dirname, '../export/game.swf')
+tests = path.join(__dirname, './test/**/*.hx')
 
 gulp.task 'default', ->
   livereload.listen()
@@ -19,10 +20,17 @@ gulp.task 'default', ->
         'echo building'
         'haxe "compile.hxml"'
         'echo builded'
-      ], templateData: outpath: (s) ->
-        s.replace /\.c/, '.out'
-      )
+      ], {})
 
   watch(swf).on 'change', (path) ->
     gulp.src swf
       .pipe livereload()
+
+gulp.task 'munit', ->
+  watch(tests).on 'change', (path) ->
+    gulp.src path
+      .pipe plumber()
+      .pipe shell([
+        'cd ../'
+        'haxelib run munit test -as'
+      ], {})
