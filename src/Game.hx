@@ -1,4 +1,5 @@
 package ;
+import addition.Def;
 import starling.events.Event;
 import event.ContextEvent;
 import context.MainContext;
@@ -16,12 +17,13 @@ class Game extends Sprite {
     var theme = new MinimalMobileTheme();
     var router:Router = new Router();
     addChild(router);
-    router.push(MainContext, {route: '/'});
+    router.push(MainContext, {route: '/test/splash'});
   }
 
   public static function start(stage:Stage):Void {
     stage.frameRate = 60;
     var starling:Starling = new Starling(Game, stage);
+    Def.stage = starling.stage;
     starling.viewPort = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
     starling.start();
   }

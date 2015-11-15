@@ -1,4 +1,5 @@
 package context;
+import context.test.SplashTestContext;
 import starling.events.Event;
 import event.ContextEvent;
 import router.Router;
@@ -38,6 +39,12 @@ class MainContext extends BaseContext {
       god.push(GodContext, insertProps);
       menu.push(MenuContext, insertProps);
       body.push(BodyContext, insertProps);
+    });
+
+    routeMap.set('/test/splash', function(insertProps) {
+      god.push(GodContext, insertProps);
+      menu.push(MenuContext, insertProps);
+      body.push(SplashTestContext, insertProps);
     });
   }
 
