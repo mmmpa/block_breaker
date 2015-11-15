@@ -19,8 +19,9 @@ class TestMain
 
 	public function new()
 	{
-		var suites = new Array<Class<massive.munit.TestSuite>>();
 
+		var suites = new Array<Class<massive.munit.TestSuite>>();
+		suites.push(TestSuite);
 
 		#if MCOVER
 			var client = new mcover.coverage.munit.client.MCoverPrintClient();
@@ -30,10 +31,10 @@ class TestMain
 			var httpClient = new HTTPClient(new SummaryReportClient());
 		#end
 
-		var runner:TestRunner = new TestRunner(client); 
+		var runner:TestRunner = new TestRunner(client);
 		runner.addResultClient(httpClient);
 		//runner.addResultClient(new HTTPClient(new JUnitReportClient()));
-		
+
 		runner.completionHandler = completionHandler;
 		runner.run(suites);
 	}

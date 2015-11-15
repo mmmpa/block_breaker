@@ -1,0 +1,20 @@
+## Flash 9+
+-main TestMain
+-lib munit
+-lib hamcrest
+
+### Starling
+-swf-lib ./lib/starling/starling.swc
+--macro patchTypes('./lib/starling/starling.patch')
+
+### Feathers
+-swf-lib ./lib/feathers/feathers.swc
+-swf-lib ./lib/feathers/MinimalMobileTheme.swc
+
+-swf-lib-extern ./lib/playerglobal17_0.swc
+
+-cp src
+
+-cp test
+-swf-version 11
+-swf build/as3_test.swf

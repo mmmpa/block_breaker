@@ -77,6 +77,7 @@ class Splash {
     q.x = x;
     q.y = y;
     q.pivotX = q.pivotY = offset;
+
     return q;
   }
 }
