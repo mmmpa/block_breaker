@@ -1,4 +1,5 @@
 package context;
+import context.test.BlockHitTestContext;
 import context.test.BlockTestContext;
 import context.test.SplashTestContext;
 import starling.events.Event;
@@ -47,6 +48,9 @@ class MainContext extends BaseContext {
     });
     routeMap.set('/test/block', function(insertProps) {
       body.push(BlockTestContext, insertProps);
+    });
+    routeMap.set('/test/block/hit', function(insertProps) {
+      body.push(BlockHitTestContext, insertProps);
     });
   }
 

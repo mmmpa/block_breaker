@@ -18,15 +18,11 @@ class BlockTestContext extends BaseContext {
     startAnimation();
 
     var datas:Array<BlockData> = new Array();
-    for (i in 0...20) {
-      if (i % 3 == 0) {
-        datas.push(null);
-        continue;
-      }
-      datas.push(new BlockData(0xff0000, 1, 1));
+    for (i in 0...36) {
+      datas.push(new BlockData(0xff0000 + i * 10, 1, 1));
     }
 
-    var grid:BlockGrid = new BlockGrid(4, 100, 50, datas);
+    var grid:BlockGrid = new BlockGrid(12, 40, 20, datas);
 
     beOnStage(grid, true);
 
