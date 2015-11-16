@@ -8,10 +8,10 @@ import model.BlockGrid;
 
 class BlockGridTest {
   var grid:BlockGrid;
+  var hitGrid:BlockGrid;
+  var hitData:BlockHitData;
 
-  public function new() {
-
-  }
+  public function new() { }
 
   @BeforeClass
   public function beforeClass():Void {
@@ -25,19 +25,16 @@ class BlockGridTest {
       datas.push(new BlockData(0xff0000, 1, 1));
     }
     grid = new BlockGrid(4, 100, 50, datas);
-  }
 
-  @AfterClass
-  public function afterClass():Void {
-  }
+    var b1 = new BlockData(0xff0000, 1, 1);
+    var b2 = new BlockData(0xff0000, 1, 1);
+    var b3 = new BlockData(0xff0000, 1, 1);
+    var datas:Array<BlockData> = [
+      null, null, null, null,
+      null, null, b1, b2,
+      null, null, null, b3];
 
-  @Before
-  public function setup():Void {
-  }
-
-
-  @After
-  public function tearDown():Void {
+    hitGrid = new BlockGrid(4, 200, 50, datas);
   }
 
   @Test
@@ -85,54 +82,83 @@ class BlockGridTest {
 
   @Test
   public function hitTest():Void {
-    var b1 = new BlockData(0xff0000, 1, 1);
-    var b2 = new BlockData(0xff0000, 1, 1);
-    var b3 = new BlockData(0xff0000, 1, 1);
-    var datas:Array<BlockData> = [
-      null, null, null, null,
-      null, null, b1, b2,
-      null, null, null, b3];
 
-    var hitGrid:BlockGrid = new BlockGrid(4, 200, 50, datas);
-    var hitData:BlockHitData;
+  }
 
-    for(i in 0...1){
-      trace(i);
-    }
-
-    hitData = hit(hitGrid, 0, 0, 0, 0);
+  @Test
+  public function hitTestSameCell():Void {
+    var hitData:BlockHitData = hit(hitGrid, 0, 0, 0, 0);
     Assert.isNull(hitData);
+  }
 
-    trace('///////////////// 1');
-    hitData = hit(hitGrid, 500, 40, 500, 120);
+  @Test
+  public function hitTestDownwardSameX1():Void {
+    var hitData:BlockHitData = hit(hitGrid, 500, 40, 500, 120);
     Assert.isNotNull(hitData);
     Assert.areSame(500, hitData.point.x);
     Assert.areSame(50, hitData.point.y);
+  }
 
-    trace('///////////////// 2');
-    hitData = hit(hitGrid, 490, 40, 510, 60);
+  @Test
+  public function hitTestDownwardSameX2():Void {
+    var hitData:BlockHitData = hit(hitGrid, 490, 40, 510, 60);
     Assert.isNotNull(hitData);
     Assert.areSame(500, hitData.point.x);
     Assert.areSame(50, hitData.point.y);
+  }
 
-    trace('///////////////// 3');
-    hitData = hit(hitGrid, 500, 120, 500, 40);
-    Assert.isNotNull(hitData);
-    Assert.areSame(500, hitData.point.x);
-    Assert.areSame(100, hitData.point.y);
-
-    trace('///////////////// 4');
-    hitData = hit(hitGrid, 490, 110, 510, 90);
+  @Test
+  public function hitTestUpwardSameX1():Void {
+    var hitData:BlockHitData = hit(hitGrid, 500, 120, 500, 40);
     Assert.isNotNull(hitData);
     Assert.areSame(500, hitData.point.x);
     Assert.areSame(100, hitData.point.y);
   }
+
+  @Test
+  public function hitTestUpwardSameX2():Void {
+    var hitData:BlockHitData = hit(hitGrid, 490, 110, 510, 90);
+    Assert.isNotNull(hitData);
+    Assert.areSame(500, hitData.point.x);
+    Assert.areSame(100, hitData.point.y);
+  }
+
+  @Test
+  public function hitTestRightwardSameX1():Void {
+    var hitData:BlockHitData = hit(hitGrid, 390, 70, 410, 70);
+    Assert.isNotNull(hitData);
+    Assert.areSame(400, hitData.point.x);
+    Assert.areSame(70, hitData.point.y);
+  }
   
+  @Test
+  public function hitTestRightwardSameX2():Void {
+    var hitData:BlockHitData = hit(hitGrid, 390, 60, 410, 80);
+    Assert.isNotNull(hitData);
+    Assert.areSame(400, hitData.point.x);
+    Assert.areSame(70, hitData.point.y);
+  }
+
+  @Test
+  public function hitTestLeftwardSameX1():Void {
+    var hitData:BlockHitData = hit(hitGrid, 610, 70, 590, 70);
+    Assert.isNotNull(hitData);
+    Assert.areSame(600, hitData.point.x);
+    Assert.areSame(70, hitData.point.y);
+  }
+
+  @Test
+  public function hitTestLeftwardSameX2():Void {
+    var hitData:BlockHitData = hit(hitGrid, 610, 60, 590, 80);
+    Assert.isNotNull(hitData);
+    Assert.areSame(600, hitData.point.x);
+    Assert.areSame(70, hitData.point.y);
+  }
+
   private function hit(grid:BlockGrid, ax:Float, ay:Float, bx:Float, by:Float):BlockHitData {
     var a:Point = new Point(ax, ay);
     var b:Point = new Point(bx, by);
     return grid.hitTest(a, b);
   }
 }
-
 

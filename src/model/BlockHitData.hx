@@ -9,4 +9,13 @@ class BlockHitData {
     this.block = block;
     this.point = point;
   }
+
+  public function reset() {
+    this.block = null;
+    this.point.setTo(-1, -1);
+  }
+
+  public function hitted():Bool {
+    return block != null;
+  }
 }

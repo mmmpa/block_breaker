@@ -7,19 +7,27 @@ package model;
 import flash.geom.Point;
 import starling.display.DisplayObjectContainer;
 import view.Block;
-import view.Block;
+
+using addition.Cell;
 
 class BlockGrid {
   private var blocks:Array<Block>;
   private var blocksNum:UInt;
   private var col:UInt;
   private var row:UInt;
-  private var hitPoint:Point = new Point();
-  private var hitData:BlockHitData;
   private var cellWidth:Int;
   private var cellHeight:Int;
+
+  // 再利用オブジェクト
+  private var hitPoint:Point = new Point();
+  private var hitPointX:Point = new Point();
+  private var hitPointY:Point = new Point();
+  private var hitData:BlockHitData;
+  private var hitDataX:BlockHitData;
+  private var hitDataY:BlockHitData;
   private var startCell:Point = new Point();
   private var endCell:Point = new Point();
+  private var d:Direction = new Direction();
 
   public function new(col:Int, width:Int, height:Int, datas:Array<BlockData>) {
     this.col = col;
@@ -29,6 +37,8 @@ class BlockGrid {
     this.cellWidth = width;
     this.cellHeight = height;
     this.hitData = new BlockHitData(null, hitPoint);
+    this.hitDataX = new BlockHitData(null, hitPointX);
+    this.hitDataY = new BlockHitData(null, hitPointY);
 
     for (i in 0...datas.length) {
       var data:BlockData = datas[i];
@@ -58,67 +68,90 @@ class BlockGrid {
   }
 
   public function pickBlock(x:UInt, y:UInt):Block {
-    return blocks[index(x, y)];
+    return blocks[toIndex(x, y)];
   }
 
   public function hitTest(start:Point, end:Point):BlockHitData {
-    hitPoint.setTo(-1, -1);
     // どのセルにいるか計算する
     startCell = computeCell(start, startCell);
     endCell = computeCell(end, endCell);
+
     // 同セル内ではヒットは生じない
-    if (isSameCell(startCell, endCell)) {
-      trace('same cell');
+    if (startCell.isSameCell(endCell)) {
       return null;
     }
 
-    // 線の方向を計算する
-    var direction:Direction = detectDirection(start, end);
-    // どのセルにヒットしうるか計算する
+    // 初期化
+    hitData.reset();
+    d.initialize(start, end);
 
-    //同列、同行の場合
-    if (isSameX(startCell, endCell)) {
-      trace('same X');
+    var pow:Float = getPow(start, end);
+    var startIndex = pToIndex(startCell);
+
+    // 実計算
+    if (startCell.isSameX(endCell)) {
       //同列
-      if (isDownWard(direction)) {
-        trace(['downward', startCell, endCell, Std.int(endCell.y - startCell.y)]);
-        // += col
-        var startIndex = indexByPoint(startCell);
+      if (d.isDownward) {
         for (i in 1...(Std.int(endCell.y - startCell.y)) + 1) {
-          var block:Block = blocks[startIndex + col * i];
-          if (block != null) {
-            hitData.block = block;
-            var distance:Float = block.y - start.y;
-            var rate:Float = (end.x - start.x) / (end.y - start.y);
-            trace([rate, distance]);
-            var shiftX:Float = distance * rate;
-            hitPoint.setTo(start.x + shiftX, block.y);
+          var indexNow = startIndex + col * i;
+          hitData.block = blocks[indexNow];
+
+          if (hitData.hitted()) {
+            var hitY:Float = toRow(indexNow) * cellHeight;
+            hitPoint.setTo(start.x + shiftX(start.y, hitY, pow), hitY);
             return hitData;
           }
         }
       } else {
-        trace('upward');
-        // -= col
-        var startIndex = indexByPoint(startCell);
         for (i in 1...(Std.int(startCell.y - endCell.y)) + 1) {
-          var block:Block = blocks[startIndex - col * i];
-          if (block != null) {
-            hitData.block = block;
-            var distance:Float = start.y - (block.y + cellHeight);
-            var rate:Float = (end.x - start.x) / (start.y - end.y);
-            trace(rate);
-            var shiftX:Float = distance * rate;
-            hitPoint.setTo(start.x + shiftX, block.y + cellHeight);
+          var indexNow = startIndex - col * i;
+          hitData.block = blocks[indexNow];
+
+          if (hitData.hitted()) {
+            var hitY:Float = (toRow(indexNow) + 1) * cellHeight;
+            hitPoint.setTo(start.x + shiftX(start.y, hitY, pow), hitY);
             return hitData;
           }
         }
       }
-    } else if (isSameY(startCell, endCell)) {
+    } else if (startCell.isSameY(endCell)) {
       //同行
-      if (isRightWard(direction)) {
-        // ++
+      if (d.isRightward) {
+        for (i in 1...(Std.int(endCell.x - startCell.x)) + 1) {
+          var indexNow = startIndex + i;
+          hitData.block = blocks[indexNow];
+
+          if (hitData.hitted()) {
+            var hitX:Float = toCol(indexNow) * cellWidth;
+            hitPoint.setTo(hitX, start.y + shiftY(start.x, hitX, pow));
+            return hitData;
+          }
+        }
       } else {
-        // --
+        for (i in 1...(Std.int(startCell.x - endCell.x)) + 1) {
+          var indexNow = startIndex - i;
+          hitData.block = blocks[indexNow];
+
+          if (hitData.hitted()) {
+            var hitX:Float = (toCol(indexNow) + 1) * cellWidth;
+            hitPoint.setTo(hitX, start.y + shiftY(start.x, hitX, pow));
+            return hitData;
+          }
+        }
+      }
+    } else {
+      var closestX:BlockHitData = null;
+      var closestY:BlockHitData = null;
+      // 普通のヒット判定
+      // x移動での最短ヒットブロック
+      if (d.isRightward) {
+      } else {
+
+      }
+      // y移動での最短ヒットブロック
+      if (d.isDownward) {
+      } else {
+
       }
     }
     //// ブロックがなければnull
@@ -127,42 +160,19 @@ class BlockGrid {
     return hitData;
   }
 
-  public function detectDirection(start:Point, end:Point):Direction {
-    if (start.x < end.x) {
-      if (start.y < end.y) {
-        return Direction.RIGHT_DOWN;
-      } else {
-        return Direction.RIGHT_UP;
-      }
-    } else {
-      if (start.y < end.y) {
-        return Direction.LEFT_DOWN;
-      } else {
-        return Direction.LEFT_UP;
-      }
-    }
+  public function shiftY(startX:Float, endX:Float, pow:Float) {
+    return (endX - startX) / pow;
   }
 
-  public function isRightWard(direction:Direction):Bool {
-    return direction == Direction.RIGHT_DOWN || direction == Direction.RIGHT_UP;
+  public function shiftX(startY:Float, endY:Float, pow:Float) {
+    return (endY - startY) * pow;
   }
 
-  public function isDownWard(direction:Direction):Bool {
-    return direction == Direction.LEFT_DOWN || direction == Direction.RIGHT_DOWN;
-  }
+  //pow y移動時のx移動距離
 
-  public function isSameCell(start:Point, end:Point):Bool {
-    return start.x == end.x && start.y == end.y;
+  public function getPow(start:Point, end:Point):Float {
+    return (end.x - start.x) / (end.y - start.y);
   }
-
-  public function isSameY(start:Point, end:Point):Bool {
-    return start.y == end.y;
-  }
-
-  public function isSameX(start:Point, end:Point):Bool {
-    return start.x == end.x;
-  }
-
 
   public function computeCell(point:Point, result:Point):Point {
     var x:Int = Std.int(point.x / cellWidth);
@@ -171,19 +181,27 @@ class BlockGrid {
     return result;
   }
 
-  public function index(x:Int, y:Int):UInt {
+  public function toCol(i:Int):Int {
+    return i % col;
+  }
+
+  public function toRow(i:Int):Int {
+    return Std.int(i / col);
+  }
+
+  public function toIndex(x:Int, y:Int):UInt {
     return col * y + x;
   }
 
-  public function indexByPoint(p:Point):UInt {
-    return index(Std.int(p.x), Std.int(p.y));
+  public function pToIndex(p:Point):UInt {
+    return toIndex(Std.int(p.x), Std.int(p.y));
   }
 
   public function removeBlock(x:UInt, y:UInt):Block {
-    var block:Block = blocks[index(x, y)];
+    var block:Block = blocks[toIndex(x, y)];
     if (block != null) {
       blocksNum--;
-      blocks[index(x, y)] = null;
+      blocks[toIndex(x, y)] = null;
     }
 
     return block;
