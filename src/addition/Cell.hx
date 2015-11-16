@@ -13,4 +13,16 @@ class Cell {
   static public function isSameX(start:Point, end:Point):Bool {
     return start.x == end.x;
   }
+
+  static public function movementX(start:Point, end:Point):Int {
+    return Std.int(abs(end.x - start.x));
+  }
+
+  static public function movementY(start:Point, end:Point):Int {
+    return Std.int(abs(end.y - start.y));
+  }
+
+  static public function abs(a:Float):Float {
+    return a < 0 ? a * -1 : a;
+  }
 }

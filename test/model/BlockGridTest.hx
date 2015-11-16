@@ -31,7 +31,7 @@ class BlockGridTest {
     var b3 = new BlockData(0xff0000, 1, 1);
     var datas:Array<BlockData> = [
       null, null, null, null,
-      null, null, b1, b2,
+      null, null, b1, null,
       null, null, null, b3];
 
     hitGrid = new BlockGrid(4, 200, 50, datas);
@@ -108,12 +108,22 @@ class BlockGridTest {
   }
 
   @Test
+  public function hitTestDownwardSameXEdge():Void {
+    var hitData:BlockHitData = hit(hitGrid, 490, 50, 510, 60);
+    Assert.isNotNull(hitData);
+    Assert.areSame(490, hitData.point.x);
+    Assert.areSame(50, hitData.point.y);
+  }
+
+
+  @Test
   public function hitTestUpwardSameX1():Void {
     var hitData:BlockHitData = hit(hitGrid, 500, 120, 500, 40);
     Assert.isNotNull(hitData);
     Assert.areSame(500, hitData.point.x);
     Assert.areSame(100, hitData.point.y);
   }
+
 
   @Test
   public function hitTestUpwardSameX2():Void {
@@ -124,7 +134,15 @@ class BlockGridTest {
   }
 
   @Test
-  public function hitTestRightwardSameX1():Void {
+  public function hitTestUpwardSameXEdge():Void {
+    var hitData:BlockHitData = hit(hitGrid, 490, 100, 510, 90);
+    Assert.isNotNull(hitData);
+    Assert.areSame(490, hitData.point.x);
+    Assert.areSame(100, hitData.point.y);
+  }
+
+  @Test
+  public function hitTestRightwardsameY1():Void {
     var hitData:BlockHitData = hit(hitGrid, 390, 70, 410, 70);
     Assert.isNotNull(hitData);
     Assert.areSame(400, hitData.point.x);
@@ -132,7 +150,7 @@ class BlockGridTest {
   }
   
   @Test
-  public function hitTestRightwardSameX2():Void {
+  public function hitTestRightwardsameY2():Void {
     var hitData:BlockHitData = hit(hitGrid, 390, 60, 410, 80);
     Assert.isNotNull(hitData);
     Assert.areSame(400, hitData.point.x);
@@ -140,7 +158,18 @@ class BlockGridTest {
   }
 
   @Test
-  public function hitTestLeftwardSameX1():Void {
+  public function hitTestRightwardsameYEdge():Void {
+    trace('edge');
+    var hitData:BlockHitData = hit(hitGrid, 400, 60, 410, 80);
+    trace('edge');
+    Assert.isNotNull(hitData);
+    Assert.areSame(400, hitData.point.x);
+    Assert.areSame(60, hitData.point.y);
+  }
+
+
+  @Test
+  public function hitTestLeftwardsameY1():Void {
     var hitData:BlockHitData = hit(hitGrid, 610, 70, 590, 70);
     Assert.isNotNull(hitData);
     Assert.areSame(600, hitData.point.x);
@@ -148,11 +177,51 @@ class BlockGridTest {
   }
 
   @Test
-  public function hitTestLeftwardSameX2():Void {
+  public function hitTestLeftwardsameY2():Void {
     var hitData:BlockHitData = hit(hitGrid, 610, 60, 590, 80);
     Assert.isNotNull(hitData);
     Assert.areSame(600, hitData.point.x);
     Assert.areSame(70, hitData.point.y);
+  }
+
+  @Test
+  public function hitTestLeftwardsameYEdge():Void {
+    var hitData:BlockHitData = hit(hitGrid, 600, 60, 590, 80);
+    Assert.isNotNull(hitData);
+    Assert.areSame(600, hitData.point.x);
+    Assert.areSame(60, hitData.point.y);
+  }
+
+  @Test
+  public function hitTestVertical1():Void {
+    var hitData:BlockHitData = hit(hitGrid, 390, 40, 410, 60);
+    Assert.isNotNull(hitData);
+    Assert.areSame(400, hitData.point.x);
+    Assert.areSame(50, hitData.point.y);
+  }
+
+  @Test
+  public function hitTestVertical1_1():Void {
+    var hitData:BlockHitData = hit(hitGrid, 610, 40, 590, 60);
+    Assert.isNotNull(hitData);
+    Assert.areSame(600, hitData.point.x);
+    Assert.areSame(50, hitData.point.y);
+  }
+
+  @Test
+  public function hitTestVertical2():Void {
+    var hitData:BlockHitData = hit(hitGrid, 390, 110, 410, 90);
+    Assert.isNotNull(hitData);
+    Assert.areSame(400, hitData.point.x);
+    Assert.areSame(100, hitData.point.y);
+  }
+
+  @Test
+  public function hitTestVertical2_1():Void {
+    var hitData:BlockHitData = hit(hitGrid, 610, 110, 590, 90);
+    Assert.isNotNull(hitData);
+    Assert.areSame(600, hitData.point.x);
+    Assert.areSame(100, hitData.point.y);
   }
 
   private function hit(grid:BlockGrid, ax:Float, ay:Float, bx:Float, by:Float):BlockHitData {
@@ -161,4 +230,5 @@ class BlockGridTest {
     return grid.hitTest(a, b);
   }
 }
+
 

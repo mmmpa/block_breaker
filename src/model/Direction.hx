@@ -2,14 +2,30 @@ package model;
 import flash.geom.Point;
 
 class Direction {
-  public var isDownward:Bool;
-  public var isRightward:Bool;
+  private var _isDownward:Bool;
+  private var _isRightward:Bool;
 
   public function new() {
   }
 
   public function initialize(start:Point, end:Point) {
-    this.isRightward = start.x < end.x;
-    this.isDownward = start.y < end.y;
+    this._isRightward = start.x < end.x;
+    this._isDownward = start.y < end.y;
+  }
+
+  public function isDownward():Bool {
+    return _isDownward;
+  }
+
+  public function isUpward():Bool {
+    return !_isDownward;
+  }
+
+  public function isRightward():Bool {
+    return _isRightward;
+  }
+
+  public function isLeftward():Bool {
+    return !_isRightward;
   }
 }
