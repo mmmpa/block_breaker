@@ -24,6 +24,7 @@ class BlockTestContext extends BaseContext {
 
     var grid:BlockGrid = new BlockGrid(12, 40, 20, datas);
 
+    /*
     beOnStage(grid, true);
 
     grid.allBlock().map(function(block:Block) {
@@ -37,5 +38,6 @@ class BlockTestContext extends BaseContext {
         }
       });
     });
+    */
   }
 }

@@ -11,7 +11,7 @@ import view.Block;
 using addition.Cell;
 
 class BlockGrid {
-  private var blocks:Array<Block>;
+  private var blocks:Array<BlockData>;
   private var blocksNum:UInt;
   private var col:Int;
   private var row:Int;
@@ -41,24 +41,25 @@ class BlockGrid {
     this.hitDataY = new BlockHitData(null, hitPointY);
 
     for (i in 0...datas.length) {
-      var data:BlockData = datas[i];
-      if (data == null) {
+      var block:BlockData = datas[i];
+      if (block == null) {
         blocks.push(null);
         continue;
       }
-      var x:Int = width * (i % col);
-      var y:Int = height * Std.int(i / col);
-      var block:Block = new Block(width, height, data.color, data.ball, data.life, x, y);
+
+      var cellCol:Int = i % col;
+      var cellRow:Int = Std.int(i / col);
+      block.realize(cellCol, cellRow, width, height);
       blocks.push(block);
       blocksNum++;
     }
   }
 
-  public function allBlock():Array<Block> {
-    var all:Array<Block> = new Array();
+  public function allBlock():Array<BlockData> {
+    var all:Array<BlockData> = new Array();
 
     for (i in 0...blocks.length) {
-      var block:Block = blocks[i];
+      var block:BlockData = blocks[i];
       if (block != null) {
         all.push(block);
       }
@@ -67,7 +68,7 @@ class BlockGrid {
     return all;
   }
 
-  public function pickBlock(x:UInt, y:UInt):Block {
+  public function pickBlock(x:UInt, y:UInt):BlockData {
     return blocks[toIndex(x, y)];
   }
 
@@ -97,7 +98,7 @@ class BlockGrid {
     var cellXMovement:Int = startCell.movementX(endCell);
     var cellYMovement:Int = startCell.movementY(endCell);
     // 実計算
-/*
+    /*
     // edgeの場合はどちらも起こる
     if (startCell.isSameX(endCell)) {
       //同列
@@ -260,8 +261,8 @@ class BlockGrid {
     return toIndex(Std.int(p.x), Std.int(p.y));
   }
 
-  public function removeBlock(x:UInt, y:UInt):Block {
-    var block:Block = blocks[toIndex(x, y)];
+  public function removeBlock(x:UInt, y:UInt):BlockData {
+    var block:BlockData = blocks[toIndex(x, y)];
     if (block != null) {
       blocksNum--;
       blocks[toIndex(x, y)] = null;
@@ -274,20 +275,7 @@ class BlockGrid {
     return blocksNum != 0;
   }
 
-  public function getFirstHit(start:Point, end:Point):Block {
+  public function getFirstHit(start:Point, end:Point):BlockData {
     return null;
-  }
-
-  public function activate(parent:DisplayObjectContainer) {
-    for (i in 0...blocks.length) {
-      var block:Block = blocks[i];
-      if (block != null) {
-        parent.addChild(block);
-      }
-    }
-  }
-
-  public function deactivate() {
-    this.blocks = null;
   }
 }

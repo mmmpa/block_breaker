@@ -2,11 +2,11 @@ package model;
 import view.Block;
 import flash.geom.Point;
 class BlockHitData {
-  public var block:Block;
+  public var block:BlockData;
   public var point:Point;
   public var edgeHit:Bool;
 
-  public function new(block:Block, point:Point) {
+  public function new(block:BlockData, point:Point) {
     this.block = block;
     this.point = point;
   }

@@ -37,9 +37,10 @@ class BlockGridTest {
     hitGrid = new BlockGrid(4, 200, 50, datas);
   }
 
+  
   @Test
   public function initialize():Void {
-    var block:Block;
+    var block:BlockData;
 
     block = grid.pickBlock(0, 0);
     Assert.isNull(block);
@@ -215,6 +216,7 @@ class BlockGridTest {
     Assert.areSame(400, hitData.point.x);
     Assert.areSame(100, hitData.point.y);
   }
+
 
   @Test
   public function hitTestVertical2_1():Void {
