@@ -1,4 +1,6 @@
 package context.test;
+import model.BlockHitData;
+import view.BlockTable;
 import starling.display.DisplayObject;
 import flash.geom.Point;
 import starling.display.Quad;
@@ -22,6 +24,7 @@ class BlockHitTestContext extends BaseContext {
 
     startAnimation();
     view.addChild(new Quad(Def.stage.stageWidth, Def.stage.stageHeight, 0xffeeff));
+    view.name = 'block hit context';
 
     lineState = 'ready';
 
@@ -31,17 +34,17 @@ class BlockHitTestContext extends BaseContext {
     }
 
     var grid:BlockGrid = new BlockGrid(12, 40, 20, datas);
-    beOnStage(grid, true);
-
+    var table:BlockTable = new BlockTable(grid);
+    beOnStage(table, true);
 
     var drawStore:Array<Dynamic> = new Array();
     var start:Point = null;
     var end:Point = null;
+    var hitData:BlockHitData;
 
     view.addEventListener(TouchEvent.TOUCH, function(e:TouchEvent) {
       var touch:Touch = e.getTouch(Def.stage);
       var position:Point = touch.getLocation(Def.stage);
-
       switch(touch.phase){
         case TouchPhase.BEGAN:
           switch(lineState){
@@ -65,6 +68,18 @@ class BlockHitTestContext extends BaseContext {
               var line = drawLine(start, end);
               view.addChild(line);
               drawStore.push(line);
+              trace(grid.hit(start, end));
+              hitData = grid.hit(start, end);
+              if(hitData != null){
+                var hit:Quad = new Quad(4, 4, 0);
+                hit.x = hitData.point.x - 2;
+                hit.y = hitData.point.y - 2;
+                view.addChild(hit);
+                grid.removeBlock(hitData.block);
+                hitData.block.hit();
+                drawStore.push(hit);
+              }
+
               trace('draw end point and line');
               lineState = 'drawn';
             case 'drawn':

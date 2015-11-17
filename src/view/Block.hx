@@ -4,49 +4,50 @@ package view;
 実際に表示されているブロック。
 
  */
+import context.BaseContext;
+import model.BlockData;
 import addition.Def;
 import starling.display.DisplayObjectContainer;
 import starling.display.Quad;
 
 class Block extends Quad {
-  private var life:Int;
-  private var ball:Int;
   public var splash:Splash;
+  public var data:BlockData;
+  private var context:BaseContext;
 
-  public function new(width:Int, height:Int, color:UInt, life:UInt, ball:UInt, x:Int, y:Int) {
+  public static function create(data:BlockData):Block {
+    var block:Block = new Block(data.width - Def.cellMargin, data.height - Def.cellMargin, data.color, data.x, data.y, data);
+
+    return block;
+  }
+
+  public function new(width:Int, height:Int, color:Int, x:Int, y:Int, ?data:BlockData) {
     super(width, height, color, false);
-    this.life = life;
-    this.ball = ball;
     this.x = x;
     this.y = y;
+    this.data = data;
     initializeSplash();
   }
 
-  private function initializeSplash(){
+  private function initializeSplash() {
     var splashX:Int = Std.int(this.x + (this.width / 2));
     var splashY:Int = Std.int(this.y + (this.height / 2));
-    splash = new Splash(Def.splashFrame, Def.splashSize, this.color, splashX, splashY);
+    this.splash = new Splash(Def.splashFrame, Def.splashSize, this.color, splashX, splashY);
   }
 
-  public function hit():Bool {
-    life--;
-
-    return isAlive();
+  public function act(){
+    return data.isAlive();
   }
 
-  public function activate(parent:DisplayObjectContainer):Block {
+  public function activate(context:BaseContext, parent:DisplayObjectContainer):Block {
+    this.context = context;
     parent.addChild(this);
-
     return this;
   }
 
   public function deactivate():Block {
     removeFromParent();
-
+    context.beOnStage(splash);
     return this;
-  }
-
-  public function isAlive():Bool {
-    return this.life > 0;
   }
 }

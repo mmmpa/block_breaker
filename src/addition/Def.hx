@@ -8,4 +8,6 @@ class Def {
 
   static public var splashSize:Int = 16;
   static public var splashFrame:Int = 10;
+
+  static public var cellMargin:Int = 1;
 }

@@ -30,6 +30,6 @@ class SplashTestContext extends BaseContext {
 
   private function splash(p:Point) {
     var splash:Splash = new Splash(Def.splashFrame, Def.splashSize, 0xff0000, Std.int(p.x), Std.int(p.y));
-    actors.push(splash.activate(view));
+    actors.push(splash.activate(this, view));
   }
 }

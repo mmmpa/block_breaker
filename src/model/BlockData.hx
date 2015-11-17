@@ -1,8 +1,8 @@
 package model;
 class BlockData {
-  public var color:UInt;
-  public var life:UInt;
-  public var ball:UInt;
+  public var color:Int;
+  public var life:Int;
+  public var ball:Int;
 
   public var col:Int;
   public var row:Int;
@@ -17,7 +17,7 @@ class BlockData {
   public var bottom:Float;
   public var left:Float;
 
-  public function new(color:UInt, life:UInt, ball:UInt) {
+  public function new(color:Int, life:Int, ball:Int) {
     this.color = color;
     this.life = life;
     this.ball = ball;
@@ -32,6 +32,14 @@ class BlockData {
     posit();
   }
 
+  public function isAlive():Bool{
+    return life > 0;
+  }
+
+  public function hit(damage:Int = 1){
+    life -= damage;
+  }
+
   private function posit() {
     this.x = width * col;
     this.y = height * row;
@@ -39,5 +47,9 @@ class BlockData {
     this.right = x + width;
     this.bottom = y + height;
     this.left = x;
+  }
+
+  public function toString():String {
+    return [x, y].join(':');
   }
 }

@@ -2,6 +2,7 @@ package view;
 /*
 ブロックが破壊された時のアニメーション
  */
+import context.BaseContext;
 import starling.utils.Color;
 import starling.display.DisplayObjectContainer;
 import starling.display.Quad;
@@ -13,7 +14,7 @@ class Splash {
 
   private var frame:Int;
 
-  public function new(frame:Int, size:UInt, color:UInt, x:Int, y:Int) {
+  public function new(frame:Int, size:Int, color:Int, x:Int, y:Int) {
     this.frame = frame;
     s1 = create(size, color, x, y);
     s2 = create(size, color, x, y);
@@ -43,11 +44,11 @@ class Splash {
     s3.width = s3.height =
     s4.width = s4.height *= 0.8;
 
-    var r:UInt = s1.color >> 16 & 0xff;
-    var g:UInt = s1.color >> 8 & 0xff;
-    var b:UInt = s1.color & 0xff;
+    var r:Int = s1.color >> 16 & 0xff;
+    var g:Int = s1.color >> 8 & 0xff;
+    var b:Int = s1.color & 0xff;
 
-    var nextColot:UInt = Color.rgb(Std.int(r * 0.9), Std.int(g * 0.9), Std.int(b * 0.9));
+    var nextColot:Int = Color.rgb(Std.int(r * 0.9), Std.int(g * 0.9), Std.int(b * 0.9));
 
     s1.color = nextColot;
     s2.color = nextColot;
@@ -65,7 +66,7 @@ class Splash {
     }
   }
 
-  public function activate(parent:DisplayObjectContainer):Splash {
+  public function activate(context:BaseContext, parent:DisplayObjectContainer):Splash {
     parent.addChild(s1);
     parent.addChild(s2);
     parent.addChild(s3);
@@ -83,7 +84,7 @@ class Splash {
     return this;
   }
 
-  private function create(size:UInt, color:UInt, x:Int, y:Int):Quad {
+  private function create(size:Int, color:Int, x:Int, y:Int):Quad {
     var q:Quad = new Quad(size, size, color);
     var offset:Int = size >> 1;
     q.x = x;

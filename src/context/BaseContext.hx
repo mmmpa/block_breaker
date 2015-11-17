@@ -21,7 +21,7 @@ class BaseContext extends EventDispatcher {
     this.props = props;
     this.router = props.router;
     view = new Sprite();
-
+    view.name = 'context stage';
     view.addEventListener(Event.ADDED_TO_STAGE, _onCreate);
   }
 
@@ -34,7 +34,7 @@ class BaseContext extends EventDispatcher {
   }
 
   public function beOnStage(actor:Dynamic, calm:Bool = false) {
-    actor.activate(view);
+    actor.activate(this, view);
 
     if (!calm) {
       actors.push(actor);
@@ -43,8 +43,8 @@ class BaseContext extends EventDispatcher {
 
   private function _animate(e:Event) {
     var acted:Array<Dynamic> = new Array();
-    for (i in 0...actors.length) {
-      var actor:Dynamic = actors[i];
+    var actor:Dynamic;
+    while(actor = actors.pop()){
       if (actor.act()) {
         acted.push(actor);
       } else {

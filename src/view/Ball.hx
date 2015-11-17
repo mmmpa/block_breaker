@@ -10,7 +10,7 @@ class Ball extends Quad {
   private var speed:Float;
   private var angle:Float;
 
-  public function new(width:Int, height:Int, color:UInt) {
+  public function new(width:Int, height:Int, color:Int) {
     super(width, height, color, false);
   }
 

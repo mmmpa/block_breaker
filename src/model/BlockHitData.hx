@@ -1,10 +1,11 @@
 package model;
-import view.Block;
 import flash.geom.Point;
+
 class BlockHitData {
   public var block:BlockData;
   public var point:Point;
   public var edgeHit:Bool;
+  public var hitSide:BlockHitSide;
 
   public function new(block:BlockData, point:Point) {
     this.block = block;
@@ -15,6 +16,7 @@ class BlockHitData {
     this.block = null;
     this.point.setTo(-1, -1);
     this.edgeHit = false;
+    this.hitSide = null;
   }
 
   public function hitted():Bool {
@@ -23,5 +25,9 @@ class BlockHitData {
 
   public function isEdgeHit():Bool {
     return edgeHit;
+  }
+
+  public function toString():String {
+    return [point.toString(), block.toString()].join(':');
   }
 }

@@ -5,16 +5,14 @@ package model;
 
  */
 import flash.geom.Point;
-import starling.display.DisplayObjectContainer;
-import view.Block;
 
 using addition.Cell;
 
 class BlockGrid {
-  private var blocks:Array<BlockData>;
-  private var blocksNum:UInt;
-  private var col:Int;
-  private var row:Int;
+  private var blocks:Array<Array<BlockData>>;
+  private var blocksNum:Int;
+  public var col:Int;
+  public var row:Int;
   private var cellWidth:Int;
   private var cellHeight:Int;
 
@@ -40,39 +38,42 @@ class BlockGrid {
     this.hitDataX = new BlockHitData(null, hitPointX);
     this.hitDataY = new BlockHitData(null, hitPointY);
 
-    for (i in 0...datas.length) {
-      var block:BlockData = datas[i];
-      if (block == null) {
-        blocks.push(null);
-        continue;
-      }
+    for (ii in 0...row) {
+      blocks[ii] = new Array();
+      for (i in 0...col) {
+        var block:BlockData = datas[col * ii + i];
+        if (block == null) {
+          blocks[ii][i] = null;
+          continue;
+        }
 
-      var cellCol:Int = i % col;
-      var cellRow:Int = Std.int(i / col);
-      block.realize(cellCol, cellRow, width, height);
-      blocks.push(block);
-      blocksNum++;
+        block.realize(i, ii, width, height);
+        blocks[ii][i] = block;
+        blocksNum++;
+      }
     }
   }
 
   public function allBlock():Array<BlockData> {
     var all:Array<BlockData> = new Array();
 
-    for (i in 0...blocks.length) {
-      var block:BlockData = blocks[i];
-      if (block != null) {
-        all.push(block);
+    for (ii in 0...row) {
+      for (i in 0...col) {
+        var block:BlockData = blocks[ii][i];
+        if (block != null) {
+          all.push(block);
+        }
       }
     }
 
     return all;
   }
 
-  public function pickBlock(x:UInt, y:UInt):BlockData {
-    return blocks[toIndex(x, y)];
+  public function pickBlock(x:Int, y:Int):BlockData {
+    return blocks[y][x];
   }
 
-  public function hitTest(start:Point, end:Point):BlockHitData {
+  public function hit(start:Point, end:Point):BlockHitData {
     // どのセルにいるか計算する
     startCell = computeCell(start, startCell);
     endCell = computeCell(end, endCell);
@@ -80,26 +81,106 @@ class BlockGrid {
     var edgeX:Bool = (start.x % cellWidth) == 0;
     var edgeY:Bool = (start.y % cellHeight) == 0;
 
-    trace([edgeX, edgeY]);
     // 同セル内ではヒットは生じない
     if (!edgeX && !edgeY && startCell.isSameCell(endCell)) {
-      trace('same');
       return null;
     }
 
     // 初期化
-    hitData.reset();
-    hitDataX.reset();
-    hitDataY.reset();
     d.initialize(start, end);
 
     var pow:Float = getPow(start, end);
     var startIndex = pToIndex(startCell);
     var cellXMovement:Int = startCell.movementX(endCell);
     var cellYMovement:Int = startCell.movementY(endCell);
-    // 実計算
+    var closestX:BlockHitData = null;
+    var closestY:BlockHitData = null;
+    hitDataX.reset();
+    hitDataY.reset();
+
+    // 同じ行もしくは同じ列で移動したときの計算
+    // 計算量が少し小さいはずだが、計算が分散するのでよくないかもしれない。
+    // 必要なさそうならコメントアウトする。
     /*
-    // edgeの場合はどちらも起こる
+    hitData.reset();
+    getFirstHitSameLine(start, end, pow, startIndex, edgeX, edgeY, cellXMovement, cellYMovement);
+    if (hitData.hitted()) {
+      return hitData;
+    }
+    */
+    // ここまで
+
+    // x移動での最短ヒットブロック
+    // hitDataXを再利用
+    trace('x');
+    for (i in (edgeX ? 0 : 1)...cellXMovement + 1) {
+      var colNow:Int = Std.int(startCell.x) + (d.isRightward() ? i : -i);
+      var hitX:Float = (colNow + (d.isRightward() ? 0 : 1)) * cellWidth;
+      var hitY:Float = start.y + shiftY(start.x, hitX, pow);
+      var rowNow:Int = yToRow(hitY);
+
+      if (!inGrid(colNow, rowNow)) { continue; }
+
+      hitDataX.block = blocks[rowNow][colNow];
+      // 右角ヒット対策
+      if (!hitDataX.hitted() && (end.x % cellWidth) == 0 && colNow != 0) {
+        hitDataX.block = blocks[rowNow][colNow - 1];
+      }
+
+      if (hitDataX.hitted()) {
+        hitDataY.hitSide = d.isRightward() ? BlockHitSide.Left : BlockHitSide.Right;
+        hitDataX.point.setTo(hitX, hitY);
+        closestX = hitDataX;
+        break;
+      }
+    }
+
+    // y移動での最短ヒットブロック
+    // hitDataYを再利用
+    trace('y');
+    for (i in (edgeY ? 0 : 1)...cellYMovement + 1) {
+      var rowNow:Int = Std.int(startCell.y) + (d.isDownward() ? i : -i);
+      var hitY:Float = (rowNow + (d.isDownward() ? 0 : 1)) * cellHeight;
+      var hitX:Float = start.x + shiftX(start.y, hitY, pow);
+      var colNow:Int = xToCol(hitX);
+
+      if (!inGrid(colNow, rowNow)) { continue; }
+
+      hitDataY.block = blocks[rowNow][colNow];
+      // 右角ヒット対策
+      if (!hitDataY.hitted() && (hitX % cellWidth) == 0 && colNow != 0) {
+        hitDataY.block = blocks[rowNow][colNow - 1];
+      }
+
+      if (hitDataY.hitted()) {
+        hitDataY.hitSide = d.isDownward() ? BlockHitSide.Top : BlockHitSide.Bottom;
+        hitDataY.point.setTo(hitX, hitY);
+        closestY = hitDataY;
+        break;
+      }
+    }
+    trace([closestX, closestY]);
+
+
+    return closest(start, closestX, closestY);
+  }
+
+  public function removeBlock(target:BlockData):BlockData {
+    var block:BlockData = blocks[target.row][target.col];
+
+    if (block != null) {
+      blocksNum--;
+      blocks[target.row][target.col] = null;
+    }
+
+    return block;
+  }
+
+  public function hasBlock():Bool {
+    return blocksNum != 0;
+  }
+
+  @:extern inline function getFirstHitSameLine(start:Point, end:Point, pow:Float, startIndex:Int, edgeX:Bool, edgeY:Bool, cellXMovement:Int, cellYMovement:Int):BlockHitData {
     if (startCell.isSameX(endCell)) {
       //同列
       for (i in (edgeY ? 0 : 1)...cellYMovement + 1) {
@@ -110,12 +191,12 @@ class BlockGrid {
           continue;
         }
 
-        hitData.block = blocks[indexNow];
+        hitData.block = blocks[rowNow][Std.int(startCell.x)];
 
         if (hitData.hitted()) {
           var hitY:Float = (rowNow + (d.isDownward() ? 0 : 1)) * cellHeight;
           hitPoint.setTo(start.x + shiftX(start.y, hitY, pow), hitY);
-          return hitData;
+          break;
         }
       }
     }
@@ -131,92 +212,37 @@ class BlockGrid {
           continue;
         }
 
-        hitData.block = blocks[indexNow];
+        hitData.block = blocks[Std.int(startCell.y)][colNow];
 
         if (hitData.hitted()) {
           var hitX:Float = (colNow + (d.isRightward() ? 0 : 1)) * cellWidth;
           hitPoint.setTo(hitX, start.y + shiftY(start.x, hitX, pow));
-          return hitData;
+          break;
         }
       }
     }
-    */
 
-    var closestX:BlockHitData = null;
-    var closestY:BlockHitData = null;
-    // x移動での最短ヒットブロック
-    for (i in (edgeX ? 0 : 1)...cellXMovement + 1) {
-      var indexNow = startIndex + (d.isRightward() ? i : -i);
-      var colNow:Int = toCol(indexNow);
-
-      if (!inCol(colNow)) {
-        continue;
-      }
-
-      var hitX:Float = (colNow + (d.isRightward() ? 0 : 1)) * cellWidth;
-      var hitY:Float = start.y + shiftY(start.x, hitX, pow);
-
-      hitDataX.point.setTo(hitX, hitY);
-      var targetIndex:Int = indexFromPoint(hitDataX.point) + (d.isRightward() ? 0 : -1);
-      hitDataX.block = blocks[targetIndex];
-      // 右角ヒット対策
-      if (!hitDataX.hitted() && (hitX % cellWidth) == 0 && toCol(targetIndex) != 0) {
-        hitDataX.block = blocks[targetIndex - 1];
-      }
-
-      if (hitDataX.hitted()) {
-        hitDataX.point.setTo(hitX, hitY);
-        closestX = hitDataX;
-        break;
-      }
-    }
-    // y移動での最短ヒットブロック
-    for (i in (edgeY ? 0 : 1)...cellYMovement + 1) {
-      var indexNow = startIndex + (d.isDownward() ? col * i : -(col * i));
-      var rowNow:Int = toRow(indexNow);
-
-      if (!inRow(rowNow)) {
-        continue;
-      }
-
-      var hitY:Float = (rowNow + (d.isDownward() ? 0 : 1)) * cellHeight;
-      var hitX:Float = start.x + shiftX(start.y, hitY, pow);
-
-      hitDataY.point.setTo(hitX, hitY);
-      var targetIndex:Int = indexFromPoint(hitDataY.point) + (d.isDownward() ? 0 : -col);
-      hitDataY.block = blocks[targetIndex];
-      // 右角ヒット対策
-      if (!hitDataY.hitted() && (hitX % cellWidth) == 0 && toCol(targetIndex) != 0) {
-        hitDataY.block = blocks[targetIndex - 1];
-      }
-
-      if (hitDataY.hitted()) {
-        hitDataY.point.setTo(hitX, hitY);
-        closestY = hitDataY;
-        break;
-      }
-    }
-
-    // 距離比較
-    if (closestX != null && closestY != null) {
-      return closestX;
-    } else if (closestX != null) {
-      return closestX;
-    } else if (closestY != null) {
-      return closestY;
-    }
-    //// ブロックがなければnull
-    // ヒット位置を計算する
-
-    return null;
+    return hitData;
   }
 
-  @:extern inline function inRow(r:Int):Bool {
-    return 0 <= r && r <= row;
+  @:extern inline function inGrid(col:Int, row:Int):Bool {
+    return inCol(col) && inRow(row);
   }
 
-  @:extern inline function inCol(c:Int):Bool {
-    return 0 <= c && c <= col;
+  @:extern inline function inX(n:Float):Bool {
+    return 0 <= n && n <= col * cellWidth;
+  }
+
+  @:extern inline function inY(n:Float):Bool {
+    return 0 <= n && n <= row * cellHeight;
+  }
+
+  @:extern inline function inRow(n:Int):Bool {
+    return 0 <= n && n < row;
+  }
+
+  @:extern inline function inCol(n:Int):Bool {
+    return 0 <= n && n < col;
   }
 
   @:extern inline function shiftY(startX:Float, endX:Float, pow:Float) {
@@ -231,18 +257,40 @@ class BlockGrid {
     return (end.x - start.x) / (end.y - start.y);
   }
 
-  public function computeCell(point:Point, result:Point):Point {
-    var x:Int = Std.int(point.x / cellWidth);
-    var y:Int = Std.int(point.y / cellHeight);
-    result.setTo(x, y);
+  private function closest(base:Point, a:BlockHitData, b:BlockHitData):BlockHitData {
+    if (a == null) {
+      return b;
+    } else if (b == null) {
+      return a;
+    }
+
+    var toA:Float = distance(base, a.point);
+    var toB:Float = distance(base, b.point);
+
+    return toA < toB ? a : b;
+  }
+
+  @:extern inline function distance(start:Point, end:Point):Float {
+    var x:Float = end.x - start.x;
+    var y:Float = end.y - start.y;
+    return Math.sqrt(x * x + y * y);
+  }
+
+  @:extern inline function computeCell(point:Point, result:Point):Point {
+    result.setTo(xToCol(point.x), yToRow(point.y));
     return result;
   }
 
-  public function indexFromPoint(point:Point):Int {
-    var x:Int = Std.int(point.x / cellWidth);
-    var y:Int = Std.int(point.y / cellHeight);
+  @:extern inline function indexFromPoint(point:Point):Int {
+    return toIndex(xToCol(point.x), yToRow(point.y));
+  }
 
-    return toIndex(x, y);
+  @:extern inline function xToCol(n:Float):Int {
+    return Std.int(n / cellWidth);
+  }
+
+  @:extern inline function yToRow(n:Float):Int {
+    return Std.int(n / cellHeight);
   }
 
   @:extern inline function toCol(i:Int):Int {
@@ -253,29 +301,12 @@ class BlockGrid {
     return Std.int(i / col);
   }
 
-  @:extern inline function toIndex(x:Int, y:Int):UInt {
+  @:extern inline function toIndex(x:Int, y:Int):Int {
     return col * y + x;
   }
 
-  @:extern inline function pToIndex(p:Point):UInt {
+  @:extern inline function pToIndex(p:Point):Int {
     return toIndex(Std.int(p.x), Std.int(p.y));
   }
 
-  public function removeBlock(x:UInt, y:UInt):BlockData {
-    var block:BlockData = blocks[toIndex(x, y)];
-    if (block != null) {
-      blocksNum--;
-      blocks[toIndex(x, y)] = null;
-    }
-
-    return block;
-  }
-
-  public function hasBlock():Bool {
-    return blocksNum != 0;
-  }
-
-  public function getFirstHit(start:Point, end:Point):BlockData {
-    return null;
-  }
 }
