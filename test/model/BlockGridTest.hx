@@ -226,7 +226,7 @@ class BlockGridTest {
     Assert.areSame(50, hitData.point.y);
   }
 
-  
+
   @Test
   public function hitTestVertical2():Void {
     var hitData:BlockHitData = hit(hitGrid, 390, 110, 410, 90);

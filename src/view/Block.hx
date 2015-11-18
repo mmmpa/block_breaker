@@ -35,7 +35,7 @@ class Block extends Quad {
     this.splash = new Splash(Def.splashFrame, Def.splashSize, this.color, splashX, splashY);
   }
 
-  public function act(){
+  public function act() {
     return data.isAlive();
   }
 

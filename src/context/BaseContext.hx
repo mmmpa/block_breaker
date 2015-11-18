@@ -7,11 +7,14 @@ import starling.events.EventDispatcher;
 import router.Router;
 import model.RouterProp;
 
+using Lambda;
+
 class BaseContext extends EventDispatcher {
   public var view:Sprite;
   public var props:RouterProp;
   public var router:Router;
   public var routeMap:Map<String, Dynamic> = new Map();
+  public var books:Array<Dynamic> = new Array();
   public var actors:Array<Dynamic> = new Array();
 
 
@@ -33,6 +36,16 @@ class BaseContext extends EventDispatcher {
     view.removeEventListener(Event.ENTER_FRAME, _animate);
   }
 
+  public function write(book:Dynamic) {
+    books.push(book);
+  }
+
+  public function erase(target:Dynamic){
+    books.filter(function(book:Dynamic):Bool{
+      return book != target;
+    });
+  }
+
   public function beOnStage(actor:Dynamic, calm:Bool = false) {
     actor.activate(this, view);
 
@@ -42,9 +55,15 @@ class BaseContext extends EventDispatcher {
   }
 
   private function _animate(e:Event) {
+    for (i in 0...books.length) {
+      try {
+        books[i](this);
+      } catch (e:Dynamic) {}
+    }
+
     var acted:Array<Dynamic> = new Array();
     var actor:Dynamic;
-    while(actor = actors.pop()){
+    while (actor = actors.pop()) {
       if (actor.act()) {
         acted.push(actor);
       } else {

@@ -128,7 +128,7 @@ class BlockGrid {
       }
 
       if (hitDataX.hitted()) {
-        hitDataY.hitSide = d.isRightward() ? BlockHitSide.Left : BlockHitSide.Right;
+        hitDataX.hitSide = d.isRightward() ? BlockHitSide.Left : BlockHitSide.Right;
         hitDataX.point.setTo(hitX, hitY);
         closestX = hitDataX;
         break;

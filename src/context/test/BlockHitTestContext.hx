@@ -1,4 +1,8 @@
 package context.test;
+import model.BlockHitSide;
+import model.FieldOutSide;
+import model.BallData;
+import model.BallData;
 import model.BlockHitData;
 import view.BlockTable;
 import starling.display.DisplayObject;
@@ -64,13 +68,13 @@ class BlockHitTestContext extends BaseContext {
               drawStore.push(p);
               p.x = position.x - 2;
               p.y = position.y - 2;
-//
+              //
               var line = drawLine(start, end);
               view.addChild(line);
               drawStore.push(line);
               trace(grid.hit(start, end));
               hitData = grid.hit(start, end);
-              if(hitData != null){
+              if (hitData != null) {
                 var hit:Quad = new Quad(4, 4, 0);
                 hit.x = hitData.point.x - 2;
                 hit.y = hitData.point.y - 2;
@@ -78,6 +82,32 @@ class BlockHitTestContext extends BaseContext {
                 grid.removeBlock(hitData.block);
                 hitData.block.hit();
                 drawStore.push(hit);
+
+                var data:BallData = new BallData(0, 0, 0, 0, 0);
+                data.shift(start.x, start.y, end.x, end.y);
+                trace(hitData.hitSide);
+
+                switch(hitData.hitSide){
+                  case BlockHitSide.Top:
+                    data.refrectY(hitData.block.top);
+                  case BlockHitSide.Right:
+                    data.refrectX(hitData.block.right);
+                  case BlockHitSide.Left:
+                    data.refrectX(hitData.block.left);
+                  case BlockHitSide.Bottom:
+                    data.refrectY(hitData.block.bottom);
+                  default:
+                }
+                var refrect:Quad = new Quad(4, 4, 0);
+                refrect.x = data.next.x - 2;
+                refrect.y = data.next.y - 2;
+                view.addChild(refrect);
+                drawStore.push(refrect);
+                trace('ref p');
+
+                var refline = drawLine(hitData.point, data.next);
+                view.addChild(refline);
+                drawStore.push(refline);
               }
 
               trace('draw end point and line');
