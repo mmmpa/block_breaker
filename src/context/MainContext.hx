@@ -1,4 +1,5 @@
 package context;
+import context.test.ShockTestContext;
 import context.test.ShockHitTestContext;
 import context.test.BallTestContext;
 import context.test.BlockHitTestContext;
@@ -57,6 +58,10 @@ class MainContext extends BaseContext {
 
     routeMap.set('/test/ball', function(insertProps) {
       body.push(BallTestContext, insertProps);
+    });
+
+    routeMap.set('/test/shock', function(insertProps) {
+      body.push(ShockTestContext, insertProps);
     });
 
     routeMap.set('/test/shock/hit', function(insertProps) {

@@ -1,6 +1,8 @@
 package model;
 import flash.geom.Point;
 class BallData {
+  public var hittedId:Int = 0;
+
   public var x:Int;
   public var y:Int;
   public var color:Int;
@@ -18,13 +20,13 @@ class BallData {
 
   public var alive:Bool = true;
 
-  public function new(x:Float, y:Float, color:Int, speed:Int, radian:Int) {
+  public function new(x:Float, y:Float, color:Int, speed:Int, radian:Float) {
     this.x = Std.int(x);
     this.y = Std.int(y);
     this.realX = x;
     this.realY = y;
     this.speed = speed;
-    this.radian = radian - 90;
+    this.radian = radian;
     resetMovement();
   }
 
@@ -42,7 +44,8 @@ class BallData {
 
   public function shift(prevX:Float, prevY:Float, nextX:Float, nextY:Float) {
     prev.setTo(prevX, prevY);
-    next.setTo(nextX + moveX, nextY + moveY);
+    next.setTo(nextX, nextY);
+    move();
   }
 
   public function move() {
@@ -52,21 +55,25 @@ class BallData {
     this.y = Std.int(realY);
   }
 
+  public function resetRadian(radian:Float) {
+    this.radian = radian;
+    resetMovement();
+  }
+
   public function refrectX(base:Float) {
     moveX *= -1;
-    next.x = base - (next.x  - base);
+    next.x = base - (next.x - base);
     prev.x = base;
   }
 
   public function refrectY(base:Float) {
     moveY *= -1;
-    next.y = base - (next.y  - base);
+    next.y = base - (next.y - base);
     prev.y = base;
   }
 
   public function resetMovement() {
-    var base = radian * Math.PI / 180;
-    this.moveX = Math.cos(base) * this.speed;
-    this.moveY = Math.sin(base) * this.speed;
+    this.moveX = Math.cos(radian) * this.speed;
+    this.moveY = Math.sin(radian) * this.speed;
   }
 }

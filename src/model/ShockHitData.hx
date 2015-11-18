@@ -1,13 +1,13 @@
 package model;
 import flash.geom.Point;
 class ShockHitData {
-  public var hit:Point;
+  public var id:Int;
   public var next:Point;
   public var point:Point;
+  public var radian:Float;
 
-  public function new(hit:Point, next:Point) {
-    this.hit = hit;
+  public function new(point:Point, next:Point) {
     this.next = next;
-    this.point = hit;
+    this.point = point;
   }
 }

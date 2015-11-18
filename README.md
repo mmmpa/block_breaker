@@ -7,13 +7,13 @@
 1. <s>プレイフィールドの壁からの反射（およびミス）計算</s>
 1. <s>ブロックからの弾の反射計算</s>
 1. <s>弾の移動処理</s>
-1. ショックウェーブによる弾の反射計算
+1. <s>ショックウェーブによる弾の反射計算</s>
 1. ブロックの破壊処理
 1. ゲーム開始処理
 
 とりあえず今週中目標。
 
-## Context
+# Context
 
 複数のContextが存在し、RootContextが一つだけ存在する。
 
@@ -27,7 +27,20 @@ BaseContextを継承したContextはDisplayObject格納用に`view`を持つの�
 
 Context#emitにより上部routerにイベントを伝播させることができる。
 
-### EnterFrame処理
+## EnterFrame処理
+
+1. 計算処理
+2. アニメーション処理
+
+の順で行う。
+
+## EnterFrame計算処理
+
+Context#write(fn:Context -> Void)により処理を登録する。
+
+Context#erase(fn:Context -> Void)で処理を除去できる。
+
+## EnterFrameアニメーション処理
 
 `act`メソッドを実装したクラスのインスタンスを配列に登録し、先頭から`act`を呼ぶ。
 

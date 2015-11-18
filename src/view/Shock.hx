@@ -1,4 +1,7 @@
 package view;
+import addition.Def;
+import starling.display.DisplayObjectContainer;
+import context.BaseContext;
 import starling.display.Image;
 import starling.textures.Texture;
 import model.ShockData;
@@ -15,10 +18,12 @@ class Shock extends Image {
     }
     var sp:flash.display.Sprite = new flash.display.Sprite();
     var g:flash.display.Graphics = sp.graphics;
-    g.beginFill(0xFF0000);
-    g.drawCircle(50, 50, 50);
-    g.endFill();
-    var bd:BitmapData = new BitmapData(100, 100, true, 0);
+    var lineHalf:Int = Def.shockThickness >> 1;
+    var sizeHalf:Int = Def.shockSize >> 1;
+    var drawSize:Int = sizeHalf - lineHalf;
+    g.lineStyle(Def.shockThickness, Def.shockColor);
+    g.drawCircle(sizeHalf, sizeHalf, drawSize);
+    var bd:BitmapData = new BitmapData(Def.shockSize , Def.shockSize, true, 0);
     bd.draw(sp);
 
     return _tex = Texture.fromBitmapData(bd);
@@ -35,5 +40,24 @@ class Shock extends Image {
     this.y = data.y - data.size;
     this.width = data.size * 2;
     this.height = data.size * 2;
+  }
+
+  public function act(){
+    reposit();
+    return isAlive();
+  }
+
+  public function isAlive():Bool {
+    return !data.isCompleted();
+  }
+
+  public function activate(context:BaseContext, parent:DisplayObjectContainer):Shock {
+    parent.addChild(this);
+    return this;
+  }
+
+  public function deactivate():Shock {
+    this.removeFromParent();
+    return this;
   }
 }

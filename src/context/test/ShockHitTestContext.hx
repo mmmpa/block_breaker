@@ -74,14 +74,19 @@ class ShockHitTestContext extends BaseContext {
 
               hitData = shock.hit(start, end);
               if (hitData != null) {
+                var data:BallData = new BallData(0, 0, 0, 10, 0);
+                data.resetRadian(hitData.radian);
+                data.shift(hitData.point.x, hitData.point.y, hitData.next.x, hitData.next.y);
+
+                trace([ShockData.hitData.point, ShockData.hitData.next]);
+
                 var hit:Quad = new Quad(4, 4, 0);
-                hit.x = hitData.point.x - 2;
-                hit.y = hitData.point.y - 2;
+                hit.x = data.prev.x - 2;
+                hit.y = data.prev.y - 2;
                 view.addChild(hit);
                 drawStore.push(hit);
 
-                var data:BallData = new BallData(0, 0, 0, 0, 0);
-                data.shift(start.x, start.y, end.x, end.y);
+                //data.ready();
 
                 var refrect:Quad = new Quad(4, 4, 0);
                 refrect.x = data.next.x - 2;
@@ -90,9 +95,16 @@ class ShockHitTestContext extends BaseContext {
                 drawStore.push(refrect);
                 trace('ref p');
 
-                var refline = drawLine(hitData.point, data.next);
+                var refline = drawLine(data.prev, data.next);
                 view.addChild(refline);
                 drawStore.push(refline);
+
+                data.ready();
+                var nextM:Quad = new Quad(4, 4, 0);
+                nextM.x = data.next.x - 2;
+                nextM.y = data.next.y - 2;
+                view.addChild(nextM);
+                drawStore.push(nextM);
               }
 
               trace('draw end point and line');
@@ -112,6 +124,10 @@ class ShockHitTestContext extends BaseContext {
     var x:Float = end.x - start.x;
     var y:Float = end.y - start.y;
     var distance:Float = Math.sqrt(x * x + y * y);
+
+    if(distance == 0){
+      return new Quad(1, 1, 0);
+    }
 
     var radian:Float = Math.atan2(y, x);
 

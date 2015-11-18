@@ -17,7 +17,7 @@ class Game extends Sprite {
     var theme = new MinimalMobileTheme();
     var router:Router = new Router();
     addChild(router);
-    router.push(MainContext, {route: '/test/shock/hit'});
+    router.push(MainContext, {route: '/test/shock'});
   }
 
   public static function start(stage:Stage):Void {
