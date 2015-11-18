@@ -12,4 +12,6 @@ class Def {
   static public var cellMargin:Int = 1;
 
   static public var ballSize:Int = 4;
+  static public var shockSize:Int = 100;
+  static public var shockPower:Int = 10;
 }
