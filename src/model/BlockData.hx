@@ -1,4 +1,5 @@
 package model;
+import flash.geom.Point;
 class BlockData {
   public var color:Int;
   public var life:Int;
@@ -17,6 +18,8 @@ class BlockData {
   public var bottom:Float;
   public var left:Float;
 
+  public var ballP:Point;
+
   public function new(color:Int, life:Int, ball:Int) {
     this.color = color;
     this.life = life;
@@ -32,11 +35,15 @@ class BlockData {
     posit();
   }
 
-  public function isAlive():Bool{
+  public function isAlive():Bool {
     return life > 0;
   }
 
-  public function hit(damage:Int = 1){
+  public function hasBall():Bool {
+    return ball > 0;
+  }
+
+  public function hit(damage:Int = 1) {
     life -= damage;
   }
 
@@ -47,6 +54,8 @@ class BlockData {
     this.right = x + width;
     this.bottom = y + height;
     this.left = x;
+
+    this.ballP = new Point(x + (width >> 1), y + (height >> 1));
   }
 
   public function toString():String {

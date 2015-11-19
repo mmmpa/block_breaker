@@ -17,29 +17,28 @@ import model.RouterProp;
 using Lambda;
 
 class BallTestContext extends BaseContext {
-
   private var balls:Array<BallData> = new Array();
   private var field:PlayFieldData;
 
   public function new(props:RouterProp, insertProps:Dynamic = null) {
     super(props);
     field = new PlayFieldData(0, 0, Def.stage.stageWidth, Def.stage.stageHeight);
-    view.addChild(new Quad(Def.stage.stageWidth, Def.stage.stageHeight, 0xcccccc));
-    view.addEventListener(TouchEvent.TOUCH, onTouch);
+    ground.addChild(new Quad(Def.stage.stageWidth, Def.stage.stageHeight, 0xcccccc));
+    ground.addEventListener(TouchEvent.TOUCH, onTouch);
 
     write(book);
     startAnimation();
 
     var i:Int = 0;
     var fn:Dynamic = null;
-    view.addEventListener(Event.ENTER_FRAME, fn = function(e:Event){
+    ground.addEventListener(Event.ENTER_FRAME, fn = function(e:Event){
       i++;
-      var data:BallData = new BallData(100, 100, 0xff0000, 1, i);
+      var data:BallData = new BallData(100, 100, 0xff0000, 5, i);
       var ball:Ball = Ball.create(data);
       balls.push(data);
       beOnStage(ball);
       if(i % 360 == 0){
-        view.removeEventListener(Event.ENTER_FRAME, fn);
+        ground.removeEventListener(Event.ENTER_FRAME, fn);
       }
     });
   }

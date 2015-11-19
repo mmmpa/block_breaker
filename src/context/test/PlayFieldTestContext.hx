@@ -12,8 +12,8 @@ class PlayFieldTestContext extends BaseContext {
 
   public function new(props:RouterProp, insertProps:Dynamic = null) {
     super(props);
-    view.addChild(new Quad(Def.stage.stageWidth, Def.stage.stageHeight, 0xcccccc));
-    view.addEventListener(TouchEvent.TOUCH, onTouch);
+    ground.addChild(new Quad(Def.stage.stageWidth, Def.stage.stageHeight, 0xcccccc));
+    ground.addEventListener(TouchEvent.TOUCH, onTouch);
 
     startAnimation();
   }

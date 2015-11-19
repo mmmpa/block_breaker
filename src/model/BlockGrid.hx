@@ -112,7 +112,6 @@ class BlockGrid {
 
     // x移動での最短ヒットブロック
     // hitDataXを再利用
-    trace('x');
     for (i in (edgeX ? 0 : 1)...cellXMovement + 1) {
       var colNow:Int = Std.int(startCell.x) + (d.isRightward() ? i : -i);
       var hitX:Float = (colNow + (d.isRightward() ? 0 : 1)) * cellWidth;
@@ -137,7 +136,6 @@ class BlockGrid {
 
     // y移動での最短ヒットブロック
     // hitDataYを再利用
-    trace('y');
     for (i in (edgeY ? 0 : 1)...cellYMovement + 1) {
       var rowNow:Int = Std.int(startCell.y) + (d.isDownward() ? i : -i);
       var hitY:Float = (rowNow + (d.isDownward() ? 0 : 1)) * cellHeight;
@@ -159,8 +157,6 @@ class BlockGrid {
         break;
       }
     }
-    trace([closestX, closestY]);
-
 
     return closest(start, closestX, closestY);
   }

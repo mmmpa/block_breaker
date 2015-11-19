@@ -10,7 +10,7 @@ import model.RouterProp;
 using Lambda;
 
 class BaseContext extends EventDispatcher {
-  public var view:Sprite;
+  public var ground:Sprite;
   public var props:RouterProp;
   public var router:Router;
   public var routeMap:Map<String, Dynamic> = new Map();
@@ -23,17 +23,16 @@ class BaseContext extends EventDispatcher {
 
     this.props = props;
     this.router = props.router;
-    view = new Sprite();
-    view.name = 'context stage';
-    view.addEventListener(Event.ADDED_TO_STAGE, _onCreate);
+    ground = new Sprite();
+    ground.addEventListener(Event.ADDED_TO_STAGE, _onCreate);
   }
 
   public function startAnimation() {
-    view.addEventListener(Event.ENTER_FRAME, _animate);
+    ground.addEventListener(Event.ENTER_FRAME, _animate);
   }
 
   public function stopAnimation() {
-    view.removeEventListener(Event.ENTER_FRAME, _animate);
+    ground.removeEventListener(Event.ENTER_FRAME, _animate);
   }
 
   public function write(book:Dynamic) {
@@ -47,10 +46,11 @@ class BaseContext extends EventDispatcher {
   }
 
   public function beOnStage(actor:Dynamic, calm:Bool = false) {
-    actor.activate(this, view);
+    actor.activate(this, ground);
 
     if (!calm) {
       actors.push(actor);
+      actor.act();
     }
   }
 
@@ -83,7 +83,7 @@ class BaseContext extends EventDispatcher {
   }
 
   private function _onCreate(e:Event) {
-    this.view.removeEventListener(Event.ADDED_TO_STAGE, _onCreate);
+    this.ground.removeEventListener(Event.ADDED_TO_STAGE, _onCreate);
     this.emit(new Event(ContextEvent.CREATED));
   }
 }

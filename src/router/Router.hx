@@ -26,7 +26,7 @@ class Router extends Sprite {
     sweepChildren();
     replaceActiveContext(context);
     history.push(context);
-    addChild(context.view);
+    addChild(context.ground);
   }
 
   public function emit(e:Event) {

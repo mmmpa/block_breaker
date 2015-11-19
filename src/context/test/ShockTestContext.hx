@@ -26,8 +26,8 @@ class ShockTestContext extends BaseContext {
   public function new(props:RouterProp, insertProps:Dynamic = null) {
     super(props);
     field = new PlayFieldData(0, 0, Def.stage.stageWidth, Def.stage.stageHeight);
-    view.addChild(new Quad(Def.stage.stageWidth, Def.stage.stageHeight, 0xcccccc));
-    view.addEventListener(TouchEvent.TOUCH, onTouch);
+    ground.addChild(new Quad(Def.stage.stageWidth, Def.stage.stageHeight, 0xcccccc));
+    ground.addEventListener(TouchEvent.TOUCH, onTouch);
 
     var data:BallData = new BallData(100, 100, 0xff0000, 10, Math.floor(Math.random() * 360));
     var ball:Ball = Ball.create(data);

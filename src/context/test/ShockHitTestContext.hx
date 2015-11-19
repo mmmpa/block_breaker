@@ -30,14 +30,14 @@ class ShockHitTestContext extends BaseContext {
     super(props);
 
     startAnimation();
-    view.addChild(new Quad(Def.stage.stageWidth, Def.stage.stageHeight, 0xffeeff));
+    ground.addChild(new Quad(Def.stage.stageWidth, Def.stage.stageHeight, 0xffeeff));
 
     lineState = 'ready';
 
     var shock:ShockData = new ShockData(Def.stage.stageWidth >> 1, Def.stage.stageHeight >> 1, 50);
     var shockView:Shock = new Shock(shock);
 
-    view.addChild(shockView);
+    ground.addChild(shockView);
 
     var drawStore:Array<Dynamic> = new Array();
     var start:Point = null;
@@ -45,7 +45,7 @@ class ShockHitTestContext extends BaseContext {
     var hitData:ShockHitData;
 
 
-    view.addEventListener(TouchEvent.TOUCH, function(e:TouchEvent) {
+    ground.addEventListener(TouchEvent.TOUCH, function(e:TouchEvent) {
       var touch:Touch = e.getTouch(Def.stage);
       var position:Point = touch.getLocation(Def.stage);
       switch(touch.phase){
@@ -54,7 +54,7 @@ class ShockHitTestContext extends BaseContext {
             case 'ready':
               start = position;
               var p:Quad = new Quad(4, 4, 0x00ff00);
-              view.addChild(p);
+              ground.addChild(p);
               drawStore.push(p);
               p.x = position.x - 2;
               p.y = position.y - 2;
@@ -63,13 +63,13 @@ class ShockHitTestContext extends BaseContext {
             case 'started':
               end = position;
               var p:Quad = new Quad(4, 4, 0x0000ff);
-              view.addChild(p);
+              ground.addChild(p);
               drawStore.push(p);
               p.x = position.x - 2;
               p.y = position.y - 2;
               //
               var line = drawLine(start, end);
-              view.addChild(line);
+              ground.addChild(line);
               drawStore.push(line);
 
               hitData = shock.hit(start, end);
@@ -83,7 +83,7 @@ class ShockHitTestContext extends BaseContext {
                 var hit:Quad = new Quad(4, 4, 0);
                 hit.x = data.prev.x - 2;
                 hit.y = data.prev.y - 2;
-                view.addChild(hit);
+                ground.addChild(hit);
                 drawStore.push(hit);
 
                 //data.ready();
@@ -91,19 +91,19 @@ class ShockHitTestContext extends BaseContext {
                 var refrect:Quad = new Quad(4, 4, 0);
                 refrect.x = data.next.x - 2;
                 refrect.y = data.next.y - 2;
-                view.addChild(refrect);
+                ground.addChild(refrect);
                 drawStore.push(refrect);
                 trace('ref p');
 
                 var refline = drawLine(data.prev, data.next);
-                view.addChild(refline);
+                ground.addChild(refline);
                 drawStore.push(refline);
 
                 data.ready();
                 var nextM:Quad = new Quad(4, 4, 0);
                 nextM.x = data.next.x - 2;
                 nextM.y = data.next.y - 2;
-                view.addChild(nextM);
+                ground.addChild(nextM);
                 drawStore.push(nextM);
               }
 

@@ -13,7 +13,7 @@ class BallData {
   public var moveY:Float;
 
   private var speed:Float;
-  private var radian:Float;
+  public var radian:Float;
 
   public var prev:Point = new Point();
   public var next:Point = new Point();
@@ -25,6 +25,7 @@ class BallData {
     this.y = Std.int(y);
     this.realX = x;
     this.realY = y;
+    this.color = color;
     this.speed = speed;
     this.radian = radian;
     resetMovement();
@@ -63,13 +64,13 @@ class BallData {
   public function refrectX(base:Float) {
     moveX *= -1;
     next.x = base - (next.x - base);
-    prev.x = base;
+    prev.x = base + (moveX < 0 ? -1 : 1);
   }
 
   public function refrectY(base:Float) {
     moveY *= -1;
     next.y = base - (next.y - base);
-    prev.y = base;
+    prev.y = base + (moveY < 0 ? -1 : 1);
   }
 
   public function resetMovement() {

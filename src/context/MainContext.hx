@@ -1,4 +1,5 @@
 package context;
+import context.test.SampleGameContext;
 import context.test.ShockTestContext;
 import context.test.ShockHitTestContext;
 import context.test.BallTestContext;
@@ -26,9 +27,9 @@ class MainContext extends BaseContext {
     menu = new Router(this.router);
     body = new Router(this.router);
 
-    this.view.addChild(god);
-    this.view.addChild(menu);
-    this.view.addChild(body);
+    this.ground.addChild(god);
+    this.ground.addChild(menu);
+    this.ground.addChild(body);
 
     if (insertProps != null) {
       go(insertProps.route, insertProps);
@@ -66,6 +67,10 @@ class MainContext extends BaseContext {
 
     routeMap.set('/test/shock/hit', function(insertProps) {
       body.push(ShockHitTestContext, insertProps);
+    });
+
+    routeMap.set('/test/game', function(insertProps) {
+      body.push(SampleGameContext, insertProps);
     });
   }
 

@@ -12,8 +12,8 @@ class SplashTestContext extends BaseContext {
 
   public function new(props:RouterProp, insertProps:Dynamic = null) {
     super(props);
-    view.addChild(new Quad(Def.stage.stageWidth, Def.stage.stageHeight, 0xcccccc));
-    view.addEventListener(TouchEvent.TOUCH, onTouch);
+    ground.addChild(new Quad(Def.stage.stageWidth, Def.stage.stageHeight, 0xcccccc));
+    ground.addEventListener(TouchEvent.TOUCH, onTouch);
 
     startAnimation();
   }
@@ -30,6 +30,6 @@ class SplashTestContext extends BaseContext {
 
   private function splash(p:Point) {
     var splash:Splash = new Splash(Def.splashFrame, Def.splashSize, 0xff0000, Std.int(p.x), Std.int(p.y));
-    actors.push(splash.activate(this, view));
+    actors.push(splash.activate(this, ground));
   }
 }

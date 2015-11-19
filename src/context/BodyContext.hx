@@ -12,7 +12,7 @@ class BodyContext extends BaseContext {
 
     var tf:TextField = new TextField(100, 50, 'body context2');
     tf.x = 100;
-    this.view.addChild(tf);
+    this.ground.addChild(tf);
 
     this.addEventListener(ContextEvent.CREATED, function(e:Event){
       trace('body', e.target);
