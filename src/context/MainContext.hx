@@ -23,9 +23,9 @@ class MainContext extends BaseContext {
 
     initialize();
 
-    god = new Router(this.router);
-    menu = new Router(this.router);
-    body = new Router(this.router);
+    god = new Router(this.router, this);
+    menu = new Router(this.router, this);
+    body = new Router(this.router, this);
 
     this.ground.addChild(god);
     this.ground.addChild(menu);
@@ -34,6 +34,8 @@ class MainContext extends BaseContext {
     if (insertProps != null) {
       go(insertProps.route, insertProps);
     }
+
+    this.startAnimation();
   }
 
   private function initialize() {
