@@ -1,4 +1,5 @@
 package db;
+import db.Palette;
 import model.BlockData;
 import addition.Def;
 import model.BlockGrid;
@@ -6,29 +7,9 @@ import model.BlockGrid;
 using Lambda;
 
 class PlainGame {
-  static public var darkBlue:Int = 0x34495e;
-  static public var darkBlueD:Int = 0x2c3e50;
-  static public var purple:Int = 0x9b59b6;
-  static public var purpleD:Int = 0x8e44ad;
-  static public var blue:Int = 0x3498db;
-  static public var blueD:Int = 0x2980b9;
-  static public var green:Int = 0x40d47e;
-  static public var greenD:Int = 0x27ae60;
-  static public var blueGreen:Int = 0x1abc9c;
-  static public var blueGreenD:Int = 0x16a085;
-  static public var yellow:Int = 0xf1c40f;
-  static public var yellowD:Int = 0xf39c12;
-  static public var orange:Int = 0xe67e22;
-  static public var orangeD:Int = 0xd35400;
-  static public var red:Int = 0xe74c3c;
-  static public var redD:Int = 0xc0392b;
-  static public var whiteGray:Int = 0xecf0f1;
-  static public var whiteGrayD:Int = 0xbdc3c7;
-  static public var gray:Int = 0x95a5a6;
-  static public var grayD:Int = 0x7f8c8d;
 
   public static function plain1():BlockGrid {
-    var colors:Array<Int> = [-1, -1, grayD, grayD, redD, red, orangeD, orange, yellowD, yellow, greenD, green, blueD, blue, purpleD, purple];
+    var colors:Array<Int> = [-1, -1, Palette.grayD, Palette.grayD, Palette.redD, Palette.red, Palette.orangeD, Palette.orange, Palette.yellowD, Palette.yellow, Palette.greenD, Palette.green, Palette.blueD, Palette.blue, Palette.purpleD, Palette.purple];
 
     var col:Int = 20;
     var width:Int = Std.int(Def.stage.stageWidth / col);
@@ -39,9 +20,9 @@ class PlainGame {
         if (color == -1) {
           datas.push(null);
         } else {
-          if(color == yellow || color == red || color == purple || color == redD || color == orangeD || color == orange || color == yellowD || color == redD  ){
+          if(color == Palette.yellow || color == Palette.red || color == Palette.purple || color == Palette.redD || color == Palette.orangeD || color == Palette.orange || color == Palette.yellowD || color == Palette.redD  ){
             datas.push(new BlockData(color, 1, 1));
-          }else if(color == blue){
+          }else if(color == Palette.blue){
             datas.push(new BlockData(color, 2, 1));
           }else{
             datas.push(new BlockData(color, 1, 0));

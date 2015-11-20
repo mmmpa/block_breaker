@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "change-case": "^2.3.0",
     "coffee-script": "^1.10.0",
     "gulp": "^3.9.0",
     "gulp-livereload": "^3.8.1",

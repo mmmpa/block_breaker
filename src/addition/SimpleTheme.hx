@@ -8,6 +8,7 @@ import feathers.skins.StyleNameFunctionStyleProvider;
 class SimpleTheme {
   static public function button(size:Int = 14, mode:String = 'primary'):StyleNameFunctionStyleProvider {
     var colors:Array<Int> = getColorSet(mode);
+
     return new StyleNameFunctionStyleProvider(function(button:Button):Void {
       button.defaultSkin = new Quad( 1, 1, colors[0] );
       button.downSkin = new Quad( 1, 1, colors[1] );

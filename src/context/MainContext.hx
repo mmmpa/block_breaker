@@ -1,4 +1,5 @@
 package context;
+import context.test.PartsTestContext;
 import context.test.SampleGameContext;
 import context.test.ShockTestContext;
 import context.test.ShockHitTestContext;
@@ -47,6 +48,11 @@ class MainContext extends BaseContext {
       god.push(GodContext, insertProps);
       menu.push(MenuContext, insertProps);
       body.push(BodyContext, insertProps);
+    });
+
+    routeMap.set('/test/parts', function(insertProps) {
+      menu.push(MenuContext, insertProps);
+      body.push(PartsTestContext, insertProps);
     });
 
     routeMap.set('/test/splash', function(insertProps) {
