@@ -21,8 +21,7 @@ class Button extends PartsActor {
   private var listener:ButtonListener;
   private var bg:Quad;
   private var effect:Quad;
-  private var tf:TextField;
-  private var icon:FaIcon;
+  private var label:Label;
   private var prop:ButtonProp;
 
   private var callback:Dynamic;
@@ -37,45 +36,42 @@ class Button extends PartsActor {
     return new Button(
     callback,
     prop,
-    text.or('Button')
+    text.or('Button'),
+    faChar.or('')
     );
   }
 
-  public function new(callback:Dynamic, prop:ButtonProp, text:String) {
+  public function new(callback:Dynamic, prop:ButtonProp, text:String, ?faChar:String) {
     super();
     this.prop = prop;
 
-    this.tf = new TextField(1, 1, text);
+    this.label = new Label(text, 20, faChar);
     this.bg = new Quad(1, 1, prop.color);
     this.effect = new Quad(1, 1, prop.effect);
     this.listener = new ButtonListener(1, 1);
 
     listener.click = callback;
-    listener.out = function(){
-      trace('out');
-    };
     addChild(bg);
-    addChild(tf);
+    addChild(label);
     addChild(listener);
 
     initialize();
   }
 
   public function initialize() {
-    tf.autoSize = TextFieldAutoSize.BOTH_DIRECTIONS;
-    tf.x = prop.paddingSide;
-    tf.y = prop.paddingTop;
+    label.x = prop.paddingSide;
+    label.y = prop.paddingTop;
 
     if (prop.width != 0) {
       bg.width = prop.width;
     } else {
-      bg.width = Std.int(tf.width) + (prop.paddingSide << 1);
+      bg.width = Std.int(label.width) + (prop.paddingSide << 1);
     }
 
     if (prop.height != 0) {
       bg.height = prop.height;
     } else {
-      bg.height = Std.int(tf.height) + (prop.paddingTop << 1);
+      bg.height = Std.int(label.height) + (prop.paddingTop << 1);
     }
 
     listener.width = bg.width;

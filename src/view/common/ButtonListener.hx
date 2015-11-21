@@ -9,6 +9,12 @@ import starling.display.Quad;
 using addition.NullOr;
 
 class ButtonListener extends Quad {
+  // for state
+  private var prev:Point;
+  private var movement:Float;
+  private var state:ButtonListenerState = ButtonListenerState.Ready;
+
+  // calllback
   public var down:Dynamic;
   public var click:Dynamic;
   public var drag:Dynamic;
@@ -16,13 +22,7 @@ class ButtonListener extends Quad {
   public var hover:Dynamic;
   public var out:Dynamic;
 
-  public var rollOutListener:Dynamic;
-
-  public var prev:Point;
-  public var movement:Float;
-  public var state:ButtonListenerState = ButtonListenerState.Ready;
-
-  // state
+  // state getter
   public var ready(get, never):Bool;
   public var moved(get, never):Bool;
   public var hovered(get, never):Bool;
@@ -33,8 +33,21 @@ class ButtonListener extends Quad {
     this.addEventListener(TouchEvent.TOUCH, onTouch);
   }
 
+  public function deactivate() {
+    down = click = drag = release = null;
+    removeEventListeners();
+    dispose();
+  }
+
   private function onTouch(e:TouchEvent) {
     var touch:Touch = e.getTouch(parent);
+
+    if (!touch.be()) {
+      if (hovered) { out.be() && out(); }
+      state = ButtonListenerState.Ready;
+      return;
+    }
+
     var position:Point = touch.getLocation(parent);
     var nowHovered:Bool = hovered;
 
@@ -47,16 +60,6 @@ class ButtonListener extends Quad {
         if (ready) {
           hover.be() && hover();
           state = ButtonListenerState.Hovered;
-          var listener:ButtonListener = this;
-          stage.addEventListener(TouchEvent.TOUCH, rollOutListener = function(e:TouchEvent) {
-            if (e.target != listener) {
-              stage.removeEventListener(TouchEvent.TOUCH, rollOutListener);
-              if (hovered) {
-                state = ButtonListenerState.Ready;
-                out.be() && out();
-              }
-            };
-          });
         }
       case TouchPhase.MOVED:
         if (!moved) {
@@ -73,10 +76,9 @@ class ButtonListener extends Quad {
         release.be() && release();
         state = ButtonListenerState.Ready;
     }
-    if (nowHovered && !hovered) {
-      rollOutListener.be() ? stage.removeEventListener(TouchEvent.TOUCH, rollOutListener) : null;
-      out.be() && out();
-    }
+
+    if (nowHovered && !hovered) { out.be() && out(); }
+
     prev = position;
   }
 
@@ -98,12 +100,6 @@ class ButtonListener extends Quad {
 
   private function get_ready():Bool {
     return state == ButtonListenerState.Ready;
-  }
-
-  public function deactivate() {
-    down = click = drag = release = null;
-    removeEventListeners();
-    dispose();
   }
 
   @:extern inline function distance(a:Point, b:Point):Float {

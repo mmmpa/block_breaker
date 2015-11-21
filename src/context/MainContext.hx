@@ -1,4 +1,6 @@
 package context;
+import context.menu.TestMenuContext;
+import router.RouteData;
 import context.test.FeatherTestContext;
 import context.test.PartsTestContext;
 import context.test.SampleGameContext;
@@ -20,7 +22,7 @@ class MainContext extends BaseContext {
   private var menu:Router;
   private var body:Router;
 
-  public function new(props:RouterProp, insertProps:Dynamic = null) {
+  public function new(props:RouterProp, route:RouteData = null) {
     super(props);
 
     initialize();
@@ -29,15 +31,20 @@ class MainContext extends BaseContext {
     menu = new Router(this.router, this);
     body = new Router(this.router, this);
 
-    this.ground.addChild(god);
-    this.ground.addChild(menu);
     this.ground.addChild(body);
+    this.ground.addChild(menu);
+    this.ground.addChild(god);
 
-    if (insertProps != null) {
-      go(insertProps.route, insertProps);
+    if (route != null) {
+      trace(route);
+      go(route.route, route.prop);
     }
 
     this.startAnimation();
+    this.addEventListener(ContextEvent.SCENE_CHANGE, function(e:Event){
+      var route:RouteData = e.data;
+      go(route.route, route.prop);
+    });
   }
 
   private function initialize() {
@@ -52,12 +59,11 @@ class MainContext extends BaseContext {
     });
 
     routeMap.set('/test/parts', function(insertProps) {
-      menu.push(MenuContext, insertProps);
+      menu.push(TestMenuContext, insertProps);
       body.push(PartsTestContext, insertProps);
     });
 
     routeMap.set('/test/feather', function(insertProps) {
-      menu.push(MenuContext, insertProps);
       body.push(FeatherTestContext, insertProps);
     });
 

@@ -6,6 +6,7 @@ import context.BaseContext;
 import starling.display.Sprite;
 
 using addition.Creator;
+using addition.NullOr;
 
 class Router extends Sprite {
   private var history:Array<BaseContext>;
@@ -39,6 +40,7 @@ class Router extends Sprite {
 
   public function emit(e:Event) {
     this.dispatchEvent(e);
+    active.be() ? active.dispatchEvent(e) : null;
     if (this.rooter != null) {
       this.rooter.emit(e);
     }

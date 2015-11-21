@@ -1,4 +1,5 @@
 package ;
+import router.RouteData;
 import addition.Def;
 import starling.events.Event;
 import event.ContextEvent;
@@ -15,9 +16,10 @@ class Game extends Sprite {
     super();
 
     var theme = new MinimalMobileTheme();
-    var router:Router = new Router();
-    addChild(router);
-    router.pushRoot(MainContext, {route: '/test/parts'});
+    var mainRouter:Router = new Router();
+    addChild(mainRouter);
+    var route:RouteData = new RouteData('/test/parts');
+    mainRouter.pushRoot(MainContext, route);
   }
 
   public static function start(stage:Stage):Void {
