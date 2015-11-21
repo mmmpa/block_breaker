@@ -25,4 +25,6 @@ class Def {
   static public var shockSize:Int = 100;
   static public var shockThickness:Int = 2;
   static public var shockPower:Float = 0.3;
+
+  static public var dragDistance:Float = 5;
 }
