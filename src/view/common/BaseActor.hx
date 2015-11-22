@@ -1,24 +1,30 @@
 package view.common;
+import starling.events.Event;
 import starling.display.DisplayObjectContainer;
 import context.BaseContext;
 import starling.display.Sprite;
 
 class BaseActor extends Sprite{
+  public var context:BaseContext;
+
   public function new() {
     super();
   }
 
   public function activate(context:BaseContext, parent:DisplayObjectContainer) {
+    this.context = context;
     parent.addChild(this);
   }
 
-  public function deactivateToo() {
+  public function emit(e:Event){
+    context.emit(e);
   }
 
   public function deactivate() {
-    deactivateToo();
-    this.removeEventListeners();
+    this.context = null;
     removeFromParent();
+    removeChildren();
+    removeEventListeners();
   }
 
   public function act():Bool {

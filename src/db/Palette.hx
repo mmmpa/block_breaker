@@ -20,4 +20,7 @@ class Palette {
   static public var whiteGrayD:Int = 0xbdc3c7;
   static public var gray:Int = 0x95a5a6;
   static public var grayD:Int = 0x7f8c8d;
+  static public var white:Int = 0xffffff;
+  static public var black:Int = 0;
+  static public var fontBlack:Int = 0x333333;
 }

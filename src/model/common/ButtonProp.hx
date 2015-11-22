@@ -10,6 +10,7 @@ class ButtonProp {
   public var align:ButtonAlign;
   public var faChar:String;
   public var color:Int;
+  public var bg:Int;
   public var effect:Int;
 
   public function new(?width:Int, ?height:Int, ?paddingTop:Int, ?paddingSide:Int, ?align:ButtonAlign, ?faChar:String) {

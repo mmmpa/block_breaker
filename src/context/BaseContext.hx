@@ -18,7 +18,6 @@ class BaseContext extends EventDispatcher {
   public var books:Array<Dynamic> = new Array();
   public var actors:Array<Dynamic> = new Array();
 
-
   public function new(props:RouterProp, insertProps:Dynamic = null) {
     super();
 

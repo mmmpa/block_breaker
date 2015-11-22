@@ -1,50 +1,34 @@
 package context.menu;
-import event.ContextEvent;
-import starling.events.Event;
-import feathers.controls.LayoutGroup;
-import feathers.layout.VerticalLayout;
+import view.common.Button;
+import view.common.SideMenu;
 import asset.Fa;
 import router.RouteData;
 import model.RouterProp;
-import view.common.Button;
 
 using Lambda;
 
-typedef TestMenuRecipe = {icon:String, text:String, route:RouteData}
-
 class TestMenuContext extends BaseContext {
   private var routes:Array<RouteData>;
-  private var routesSrc(get, never):Array<TestMenuRecipe>;
+  private var routesSrc(get, never):Array<MenuRecipe>;
+  private var menu:SideMenu;
 
   public function new(props:RouterProp, insertProps:Dynamic = null) {
     super(props);
     startAnimation();
-
-    var layout:VerticalLayout = new VerticalLayout();
-
-    var container:LayoutGroup = new LayoutGroup();
-    container.layout = layout;
-    ground.addChild(container);
-
-    var that = this;
-    makeButtons().iter(function(button:Button){
-      button.activate(that, container);
-    });
+    menu = new SideMenu(routesSrc);
+    var faButton:Button = Button.normal(function(){
+      trace('push');
+      menu.open();
+    }, null, '', Fa.char.apple);
+    beOnStage(menu);
+    beOnStage(faButton);
   }
 
-  private function makeButtons():Array<Button>{
-    return routesSrc.map(function(recipe:TestMenuRecipe):Button{
-      return Button.normal(function(){
-        emit(new Event(ContextEvent.SCENE_CHANGE, false, recipe.route));
-      }, null, recipe.text, recipe.icon);
-    });
-  }
-
-  private function get_routesSrc():Array<TestMenuRecipe> {
+  private function get_routesSrc():Array<MenuRecipe> {
     return [
       {
         icon: Fa.char.cogs,
-        text: 'パーツテスト',
+        text: 'parts test',
         route: new RouteData('/test/parts')
       },
       {
@@ -54,37 +38,112 @@ class TestMenuContext extends BaseContext {
       },
       {
         icon: Fa.char.spinner,
-        text: 'ブロック破壊エフェクトテスト',
+        text: 'splash test',
         route: new RouteData('/test/splash')
       },
       {
         icon: Fa.char.square,
-        text: 'ブロックテスト',
+        text: 'block test',
         route: new RouteData('/test/block')
       },
       {
         icon: Fa.char.lineChart,
-        text: 'ブロック衝突テスト',
+        text: 'block refrection test',
         route: new RouteData('/test/block/hit')
       },
       {
         icon: Fa.char.tint,
-        text: 'ボールテスト',
+        text: 'ball test',
         route: new RouteData('/test/ball')
       },
       {
         icon: Fa.char.circleONotch,
-        text: '衝撃波テスト',
+        text: 'shock wave test',
         route: new RouteData('/test/shock')
       },
       {
         icon: Fa.char.lineChart,
-        text: '衝撃波衝突テスト',
+        text: 'shock wave refrection test',
         route: new RouteData('/test/shock/hit')
       },
       {
         icon: Fa.char.th,
-        text: 'サンプルゲーム',
+        text: 'sample game',
+        route: new RouteData('/test/game')
+      },
+      {
+        icon: Fa.char.th,
+        text: 'sample game',
+        route: new RouteData('/test/game')
+      },
+      {
+        icon: Fa.char.th,
+        text: 'sample game',
+        route: new RouteData('/test/game')
+      },
+      {
+        icon: Fa.char.th,
+        text: 'sample game',
+        route: new RouteData('/test/game')
+      },
+      {
+        icon: Fa.char.th,
+        text: 'sample game',
+        route: new RouteData('/test/game')
+      },
+      {
+        icon: Fa.char.th,
+        text: 'sample game',
+        route: new RouteData('/test/game')
+      },
+      {
+        icon: Fa.char.th,
+        text: 'sample game',
+        route: new RouteData('/test/game')
+      },
+      {
+        icon: Fa.char.th,
+        text: 'sample game',
+        route: new RouteData('/test/game')
+      },
+      {
+        icon: Fa.char.th,
+        text: 'sample game',
+        route: new RouteData('/test/game')
+      },
+      {
+        icon: Fa.char.th,
+        text: 'sample game',
+        route: new RouteData('/test/game')
+      },
+      {
+        icon: Fa.char.th,
+        text: 'sample game',
+        route: new RouteData('/test/game')
+      },
+      {
+        icon: Fa.char.th,
+        text: 'sample game',
+        route: new RouteData('/test/game')
+      },
+      {
+        icon: Fa.char.th,
+        text: 'sample game',
+        route: new RouteData('/test/game')
+      },
+      {
+        icon: Fa.char.th,
+        text: 'sample game',
+        route: new RouteData('/test/game')
+      },
+      {
+        icon: Fa.char.th,
+        text: 'sample game',
+        route: new RouteData('/test/game')
+      },
+      {
+        icon: Fa.char.th,
+        text: 'sample game',
         route: new RouteData('/test/game')
       }
     ];

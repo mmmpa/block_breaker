@@ -7,7 +7,7 @@ class PartsActor extends BaseActor {
   public function new() {
     super();
     this.area = new Quad(1, 1, 0, false);
-    area.alpha = 0.1;
+    area.alpha = 0;
     this.addChild(area);
   }
 

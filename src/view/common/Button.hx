@@ -30,7 +30,8 @@ class Button extends PartsActor {
   public static function normal(callback:Dynamic, ?prop:ButtonProp, ?text:String, ?faChar:String):Button {
     var prop:ButtonProp = prop.or(new ButtonProp());
     prop.faChar = faChar.or('');
-    prop.color = Palette.gray;
+    prop.color = Palette.white;
+    prop.bg = Palette.gray;
     prop.effect = Palette.grayD;
 
     return new Button(
@@ -58,6 +59,20 @@ class Button extends PartsActor {
     initialize();
   }
 
+  public function resize(w:Float, h:Float):Button {
+    if (w != 0) {
+      prop.width = Std.int(w);
+    }
+
+    if (h != 0) {
+      prop.height = Std.int(h);
+    }
+
+    initialize();
+
+    return this;
+  }
+
   public function initialize() {
     label.x = prop.paddingSide;
     label.y = prop.paddingTop;
@@ -78,8 +93,9 @@ class Button extends PartsActor {
     listener.height = bg.height;
   }
 
-  override public function deactivateToo() {
+  override public function deactivate() {
     listener.deactivate();
+    super.deactivate();
   }
 
   override public function activate(context:BaseContext, parent:DisplayObjectContainer) {

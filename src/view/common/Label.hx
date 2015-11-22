@@ -1,4 +1,6 @@
 package view.common;
+import addition.Def;
+import asset.BlockFont;
 import starling.text.TextFieldAutoSize;
 import starling.text.TextField;
 
@@ -10,6 +12,8 @@ class Label extends PartsActor {
     super();
 
     this.tf = new TextField(1, 1, text);
+    tf.fontSize = size == 0 ? Def.fontSizeNormal : size;
+    tf.fontName = BlockFont.name;
     tf.autoSize = TextFieldAutoSize.BOTH_DIRECTIONS;
     this.addChild(tf);
 
@@ -24,11 +28,12 @@ class Label extends PartsActor {
 
   public function posit() {
     if(icon != null){
-      tf.x = icon.width;
+      tf.x = Std.int(tf.height);
+
       if(tf.height > icon.height){
-        icon.y = (tf.height - icon.height) / 2;
+        icon.y = Std.int((tf.height - icon.height) / 2);
       }else{
-        tf.y = (icon.height - tf.height) / 2;
+        tf.y = Std.int((icon.height - tf.height) / 2);
       }
     }
   }

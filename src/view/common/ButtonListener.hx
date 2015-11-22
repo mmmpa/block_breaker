@@ -27,9 +27,9 @@ class ButtonListener extends Quad {
   public var moved(get, never):Bool;
   public var hovered(get, never):Bool;
 
-  public function new(w:Int, h:Int) {
+  public function new(w:Int, h:Int, alpha:Float = 0) {
     super(w, h, 0, false);
-    this.alpha = 0;
+    this.alpha = alpha;
     this.addEventListener(TouchEvent.TOUCH, onTouch);
   }
 

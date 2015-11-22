@@ -1,4 +1,6 @@
 package ;
+import starling.utils.VAlign;
+import starling.utils.HAlign;
 import router.RouteData;
 import addition.Def;
 import starling.events.Event;
@@ -27,6 +29,8 @@ class Game extends Sprite {
     var starling:Starling = new Starling(Game, stage);
     Def.stage = starling.stage;
     starling.viewPort = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
+    starling.showStats = true;
+    Starling.current.showStatsAt(HAlign.RIGHT, VAlign.BOTTOM);
     starling.start();
   }
 }
