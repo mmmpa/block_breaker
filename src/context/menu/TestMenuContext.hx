@@ -32,11 +32,6 @@ class TestMenuContext extends BaseContext {
         route: new RouteData('/test/parts')
       },
       {
-        icon: Fa.char.fire,
-        text: 'test: feathers',
-        route: new RouteData('/test/feather')
-      },
-      {
         icon: Fa.char.spinner,
         text: 'test: splash animation',
         route: new RouteData('/test/splash')

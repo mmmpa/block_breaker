@@ -12,6 +12,8 @@ class BallData {
   public var moveX:Float;
   public var moveY:Float;
 
+  public var pow:Float;
+
   private var speed:Float;
   public var radian:Float;
 
@@ -61,14 +63,29 @@ class BallData {
     resetMovement();
   }
 
-  public function refrectX(base:Float) {
+  public function refrectX(base:Float, ?y:Float) {
     moveX *= -1;
+
+    if (y == null) {
+      pow = getPow(prev, next);
+      prev.y = prev.y + (base - prev.x) / pow;
+    } else {
+      prev.y = y;
+    }
     next.x = base - (next.x - base);
     prev.x = base + (moveX < 0 ? -1 : 1);
+
   }
 
-  public function refrectY(base:Float) {
+  public function refrectY(base:Float, ?x:Float) {
     moveY *= -1;
+
+    if (x == null) {
+      pow = getPow(prev, next);
+      prev.x = prev.x + (base - prev.y) * pow;
+    } else {
+      prev.x = x;
+    }
     next.y = base - (next.y - base);
     prev.y = base + (moveY < 0 ? -1 : 1);
   }
@@ -76,5 +93,10 @@ class BallData {
   public function resetMovement() {
     this.moveX = Math.cos(radian) * this.speed;
     this.moveY = Math.sin(radian) * this.speed;
+  }
+
+  @:extern inline function getPow(start:Point, end:Point):Float {
+    var result:Float = (end.x - start.x) / (end.y - start.y);
+    return Math.isNaN(result) ? end.x - start.x : result;
   }
 }

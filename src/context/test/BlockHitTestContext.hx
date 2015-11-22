@@ -1,4 +1,5 @@
 package context.test;
+import db.Palette;
 import model.BlockHitSide;
 import model.FieldOutSide;
 import model.BallData;
@@ -21,6 +22,8 @@ import context.BaseContext;
 
 class BlockHitTestContext extends BaseContext {
   private var lineState:String;
+  private var grid:BlockGrid;
+  private var table:BlockTable;
 
 
   public function new(props:RouterProp, insertProps:Dynamic = null) {
@@ -32,13 +35,24 @@ class BlockHitTestContext extends BaseContext {
 
     lineState = 'ready';
 
+    var col:Int = 20;
+    var width:Int = Std.int(Def.stage.stageWidth / col);
+    var height:Int = width >> 1;
+
     var datas:Array<BlockData> = new Array();
-    for (i in 0...36) {
-      datas.push(new BlockData(0xff0000 + i * 10, 1, 1));
+
+    for (ii in 0...50) {
+      for (i in 0...col) {
+        if (ii > 4 && (ii * 20 + i) % 3 == 0 && i != 0 && i % 4 != 0 && i != 19) {
+          datas.push(new BlockData(Palette.random(), 10000, 1));
+        } else {
+          datas.push(null);
+        }
+      }
     }
 
-    var grid:BlockGrid = new BlockGrid(12, 40, 20, datas);
-    var table:BlockTable = new BlockTable(grid);
+    grid = new BlockGrid(col, width, height, datas);
+    table = new BlockTable(grid);
     beOnStage(table, true);
 
     var drawStore:Array<Dynamic> = new Array();
@@ -74,41 +88,40 @@ class BlockHitTestContext extends BaseContext {
               drawStore.push(line);
               trace(grid.hit(start, end));
               hitData = grid.hit(start, end);
-              if (hitData != null) {
+
+              var data:BallData = new BallData(0, 0, 0, 0, 0);
+              data.shift(start.x, start.y, end.x, end.y);
+
+              while(hitData != null) {
+                var refline = drawLine(start, hitData.point);
+                ground.addChild(refline);
+                drawStore.push(refline);
                 var hit:Quad = new Quad(4, 4, 0);
                 hit.x = hitData.point.x - 2;
                 hit.y = hitData.point.y - 2;
                 ground.addChild(hit);
-                grid.removeBlock(hitData.block);
-                hitData.block.hit();
                 drawStore.push(hit);
-
-                var data:BallData = new BallData(0, 0, 0, 0, 0);
-                data.shift(start.x, start.y, end.x, end.y);
-                trace(hitData.hitSide);
 
                 switch(hitData.hitSide){
                   case BlockHitSide.Top:
-                    data.refrectY(hitData.block.top);
+                    data.refrectY(hitData.block.top, hitData.point.x);
                   case BlockHitSide.Right:
-                    data.refrectX(hitData.block.right);
+                    data.refrectX(hitData.block.right, hitData.point.y);
                   case BlockHitSide.Left:
-                    data.refrectX(hitData.block.left);
+                    data.refrectX(hitData.block.left, hitData.point.y);
                   case BlockHitSide.Bottom:
-                    data.refrectY(hitData.block.bottom);
+                    data.refrectY(hitData.block.bottom, hitData.point.x);
                   default:
                 }
-                var refrect:Quad = new Quad(4, 4, 0);
-                refrect.x = data.next.x - 2;
-                refrect.y = data.next.y - 2;
-                ground.addChild(refrect);
-                drawStore.push(refrect);
-                trace('ref p');
-
-                var refline = drawLine(hitData.point, data.next);
-                ground.addChild(refline);
-                drawStore.push(refline);
+                hitData = grid.hit(data.prev, data.next);
+                start = data.prev;
+                end = data.next;
               }
+              var refrect:Quad = new Quad(4, 4, 0);
+              refrect.x = data.next.x - 2;
+              refrect.y = data.next.y - 2;
+              ground.addChild(refrect);
+              drawStore.push(refrect);
 
               trace('draw end point and line');
               lineState = 'drawn';

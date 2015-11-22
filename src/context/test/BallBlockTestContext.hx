@@ -147,13 +147,13 @@ public function new(props:RouterProp, insertProps:BallTestProp = null) {
           //block.hit();
           switch(blockHit.hitSide){
             case BlockHitSide.Top:
-              data.refrectY(blockHit.block.top);
+              data.refrectY(blockHit.block.top, blockHit.point.x);
             case BlockHitSide.Right:
-              data.refrectX(blockHit.block.right);
+              data.refrectX(blockHit.block.right, blockHit.point.y);
             case BlockHitSide.Left:
-              data.refrectX(blockHit.block.left);
+              data.refrectX(blockHit.block.left, blockHit.point.y);
             case BlockHitSide.Bottom:
-              data.refrectY(blockHit.block.bottom);
+              data.refrectY(blockHit.block.bottom, blockHit.point.x);
             default:
           }
           continue;
