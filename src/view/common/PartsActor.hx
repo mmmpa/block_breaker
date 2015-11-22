@@ -11,6 +11,11 @@ class PartsActor extends BaseActor {
     this.addChild(area);
   }
 
+  override public function deactivate(){
+    area.dispose();
+    super.deactivate();
+  }
+
   public function initializeArea(?w:Float, ?h:Float) {
     area.width = w == null ? bounds.width : w;
     area.height = h == null ? bounds.height : h;

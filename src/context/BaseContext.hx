@@ -38,6 +38,7 @@ class BaseContext extends EventDispatcher {
       ground.addEventListener(Event.ENTER_FRAME, _animate);
     } else {
       rooter.addActors(this);
+      rooter.addBooks(this);
     }
   }
 
@@ -46,25 +47,18 @@ class BaseContext extends EventDispatcher {
       ground.removeEventListener(Event.ENTER_FRAME, _animate);
     } else {
       rooter.removeActors(this);
+      rooter.removeBooks(this);
     }
   }
 
   public function write(book:Dynamic) {
     books.push(book);
-
-    if (!isRoot()) {
-      rooter.addBooks(this);
-    }
   }
 
   public function erase(target:Dynamic) {
     books.filter(function(book:Dynamic):Bool {
       return book != target;
     });
-
-    if (!isRoot()) {
-      rooter.removeBooks(this);
-    }
   }
 
   public function addActors(subActors:BaseContext) {
@@ -79,6 +73,15 @@ class BaseContext extends EventDispatcher {
 
   public function addBooks(subBooks:BaseContext) {
     books.push(subBooks);
+  }
+
+  public function deactivate() {
+    stopAnimation();
+    actors.iter(function(actor:Dynamic) {
+      actor.deactivate();
+    });
+    ground.removeChildren();
+    ground.removeEventListeners();
   }
 
   public function removeBooks(subBooks:BaseContext) {

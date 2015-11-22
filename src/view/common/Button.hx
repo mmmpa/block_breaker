@@ -95,6 +95,7 @@ class Button extends PartsActor {
 
   override public function deactivate() {
     listener.deactivate();
+    label.deactivate();
     super.deactivate();
   }
 

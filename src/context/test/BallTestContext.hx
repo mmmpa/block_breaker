@@ -1,4 +1,9 @@
 package context.test;
+import asset.BlockFont;
+import db.Palette;
+import model.test.BallTestProp;
+import starling.text.TextField;
+import starling.text.TextFieldAutoSize;
 import model.FieldOutSide;
 import model.PlayFieldData;
 import model.BallData;
@@ -15,12 +20,14 @@ import starling.events.TouchEvent;
 import model.RouterProp;
 
 using Lambda;
+using addition.NullOr;
 
 class BallTestContext extends BaseContext {
   private var balls:Array<BallData> = new Array();
   private var field:PlayFieldData;
 
-  public function new(props:RouterProp, insertProps:Dynamic = null) {
+  public function new(props:RouterProp, insertProps:BallTestProp = null) {
+    trace(insertProps);
     super(props);
     field = new PlayFieldData(0, 0, Def.stage.stageWidth, Def.stage.stageHeight);
     ground.addChild(new Quad(Def.stage.stageWidth, Def.stage.stageHeight, 0xcccccc));
@@ -29,18 +36,35 @@ class BallTestContext extends BaseContext {
     write(book);
     startAnimation();
 
+    var w:Int = Def.stage.stageWidth;
+    var h:Int = Def.stage.stageHeight;
+
+    trace(insertProps);
+    var limitation:Int = insertProps.be() ? insertProps.limitation : 10;
     var i:Int = 0;
     var fn:Dynamic = null;
-    ground.addEventListener(Event.ENTER_FRAME, fn = function(e:Event){
-      i++;
-      var data:BallData = new BallData(100, 100, 0xff0000, 5, i);
-      var ball:Ball = Ball.create(data);
-      balls.push(data);
-      beOnStage(ball);
-      if(i % 360 == 0){
+    var tf:TextField = new TextField(w, 50, '');
+    tf.y = (h + 50) >> 1;
+    tf.fontName = BlockFont.name;
+    tf.fontSize = 40;
+    ground.addChild(tf);
+    ground.addEventListener(Event.ENTER_FRAME, fn = function(e:Event) {
+      for (ii in 0...10) {
+        i++;
+        var data:BallData = new BallData(random(w), random(h), Palette.random(), 5, i);
+        var ball:Ball = Ball.create(data);
+        balls.push(data);
+        beOnStage(ball);
+      }
+      tf.text = Std.string(i);
+      if (i >= limitation) {
         ground.removeEventListener(Event.ENTER_FRAME, fn);
       }
     });
+  }
+
+  private function random(n:Float):Float {
+    return Std.int(Math.floor(Math.random() * n));
   }
 
   private function onTouch(e:TouchEvent) {
@@ -54,11 +78,11 @@ class BallTestContext extends BaseContext {
   }
 
   private function book(context:BaseContext) {
-    balls = balls.filter(function(data:BallData):Bool{
+    balls = balls.filter(function(data:BallData):Bool {
       data.ready();
 
       var out:FieldOutSide = field.isOutOfBound(data.next);
-      while(out != FieldOutSide.InField){
+      while (out != FieldOutSide.InField) {
         switch(out){
           case FieldOutSide.Top:
             data.refrectY(field.top);

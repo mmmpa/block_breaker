@@ -32,6 +32,11 @@ class FaIcon extends PartsActor {
     return this;
   }
 
+  override public function deactivate(){
+    icon.dispose();
+    super.deactivate();
+  }
+
   public function scale(n:Int):FaIcon {
     this.scaleSize = n;
     draw();

@@ -1,4 +1,5 @@
 package context;
+import context.test.BallBlockTestContext;
 import context.menu.TestMenuContext;
 import router.RouteData;
 import context.test.FeatherTestContext;
@@ -41,7 +42,7 @@ class MainContext extends BaseContext {
     }
 
     this.startAnimation();
-    this.addEventListener(ContextEvent.SCENE_CHANGE, function(e:Event){
+    this.addEventListener(ContextEvent.SCENE_CHANGE, function(e:Event) {
       var route:RouteData = e.data;
       go(route.route, route.prop);
     });
@@ -55,42 +56,48 @@ class MainContext extends BaseContext {
     routeMap.set('/', function(insertProps) {
       god.push(GodContext, insertProps);
       menu.push(MenuContext, insertProps);
-      body.push(BodyContext, insertProps);
+      body.replace(BodyContext, insertProps);
     });
 
     routeMap.set('/test/parts', function(insertProps) {
       menu.push(TestMenuContext, insertProps);
-      body.push(PartsTestContext, insertProps);
+      body.replace(PartsTestContext, insertProps);
     });
 
     routeMap.set('/test/feather', function(insertProps) {
-      body.push(FeatherTestContext, insertProps);
+      body.replace(FeatherTestContext, insertProps);
     });
 
     routeMap.set('/test/splash', function(insertProps) {
-      body.push(SplashTestContext, insertProps);
+      body.replace(SplashTestContext, insertProps);
     });
+
     routeMap.set('/test/block', function(insertProps) {
-      body.push(BlockTestContext, insertProps);
+      body.replace(BlockTestContext, insertProps);
     });
+
     routeMap.set('/test/block/hit', function(insertProps) {
-      body.push(BlockHitTestContext, insertProps);
+      body.replace(BlockHitTestContext, insertProps);
     });
 
     routeMap.set('/test/ball', function(insertProps) {
-      body.push(BallTestContext, insertProps);
+      body.replace(BallTestContext, insertProps);
+    });
+
+    routeMap.set('/test/ball/block', function(insertProps) {
+      body.replace(BallBlockTestContext, insertProps);
     });
 
     routeMap.set('/test/shock', function(insertProps) {
-      body.push(ShockTestContext, insertProps);
+      body.replace(ShockTestContext, insertProps);
     });
 
     routeMap.set('/test/shock/hit', function(insertProps) {
-      body.push(ShockHitTestContext, insertProps);
+      body.replace(ShockHitTestContext, insertProps);
     });
 
     routeMap.set('/test/game', function(insertProps) {
-      body.push(SampleGameContext, insertProps);
+      body.replace(SampleGameContext, insertProps);
     });
   }
 

@@ -26,6 +26,14 @@ class Label extends PartsActor {
     initializeArea();
   }
 
+  override public function deactivate(){
+    if(icon != null){
+      icon.deactivate();
+    }
+    tf.dispose();
+    super.deactivate();
+  }
+
   public function posit() {
     if(icon != null){
       tf.x = Std.int(tf.height);

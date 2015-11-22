@@ -23,4 +23,33 @@ class Palette {
   static public var white:Int = 0xffffff;
   static public var black:Int = 0;
   static public var fontBlack:Int = 0x333333;
+  static public var all:Array<Int> = [
+    darkBlue,
+    darkBlueD,
+    purple,
+    purpleD,
+    blue,
+    blueD,
+    green,
+    greenD,
+    blueGreen,
+    blueGreenD,
+    yellow,
+    yellowD,
+    orange,
+    orangeD,
+    red,
+    redD,
+    whiteGray,
+    whiteGrayD,
+    gray,
+    grayD,
+    white,
+    black,
+    fontBlack
+  ];
+
+  static public function random() {
+    return all[Std.int(Math.floor(Math.random() * all.length))];
+  }
 }

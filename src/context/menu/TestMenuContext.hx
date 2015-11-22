@@ -1,4 +1,5 @@
 package context.menu;
+import model.test.BallTestProp;
 import view.common.Button;
 import view.common.SideMenu;
 import asset.Fa;
@@ -17,7 +18,6 @@ class TestMenuContext extends BaseContext {
     startAnimation();
     menu = new SideMenu(routesSrc);
     var faButton:Button = Button.normal(function(){
-      trace('push');
       menu.open();
     }, null, '', Fa.char.apple);
     beOnStage(menu);
@@ -28,33 +28,23 @@ class TestMenuContext extends BaseContext {
     return [
       {
         icon: Fa.char.cogs,
-        text: 'parts test',
+        text: 'test: parts',
         route: new RouteData('/test/parts')
       },
       {
         icon: Fa.char.fire,
-        text: 'feathers動作テスト',
+        text: 'test: feathers',
         route: new RouteData('/test/feather')
       },
       {
         icon: Fa.char.spinner,
-        text: 'splash test',
+        text: 'test: splash animation',
         route: new RouteData('/test/splash')
       },
       {
-        icon: Fa.char.square,
-        text: 'block test',
-        route: new RouteData('/test/block')
-      },
-      {
         icon: Fa.char.lineChart,
-        text: 'block refrection test',
+        text: 'test: block refrection',
         route: new RouteData('/test/block/hit')
-      },
-      {
-        icon: Fa.char.tint,
-        text: 'ball test',
-        route: new RouteData('/test/ball')
       },
       {
         icon: Fa.char.circleONotch,
@@ -67,79 +57,34 @@ class TestMenuContext extends BaseContext {
         route: new RouteData('/test/shock/hit')
       },
       {
-        icon: Fa.char.th,
-        text: 'sample game',
-        route: new RouteData('/test/game')
+        icon: Fa.char.tint,
+        text: 'test: ball only 1000',
+        route: new RouteData('/test/ball', new BallTestProp(1000))
       },
       {
-        icon: Fa.char.th,
-        text: 'sample game',
-        route: new RouteData('/test/game')
+        icon: Fa.char.tint,
+        text: 'test: ball only 2500',
+        route: new RouteData('/test/ball', new BallTestProp(2500))
       },
       {
-        icon: Fa.char.th,
-        text: 'sample game',
-        route: new RouteData('/test/game')
+        icon: Fa.char.tint,
+        text: 'test: ball only 5000',
+        route: new RouteData('/test/ball', new BallTestProp(5000))
       },
       {
-        icon: Fa.char.th,
-        text: 'sample game',
-        route: new RouteData('/test/game')
+        icon: Fa.char.square,
+        text: 'test: block ball 1000',
+        route: new RouteData('/test/ball/block', new BallTestProp(1000))
       },
       {
-        icon: Fa.char.th,
-        text: 'sample game',
-        route: new RouteData('/test/game')
+        icon: Fa.char.square,
+        text: 'test: block ball 1500',
+        route: new RouteData('/test/ball/block', new BallTestProp(1500))
       },
       {
-        icon: Fa.char.th,
-        text: 'sample game',
-        route: new RouteData('/test/game')
-      },
-      {
-        icon: Fa.char.th,
-        text: 'sample game',
-        route: new RouteData('/test/game')
-      },
-      {
-        icon: Fa.char.th,
-        text: 'sample game',
-        route: new RouteData('/test/game')
-      },
-      {
-        icon: Fa.char.th,
-        text: 'sample game',
-        route: new RouteData('/test/game')
-      },
-      {
-        icon: Fa.char.th,
-        text: 'sample game',
-        route: new RouteData('/test/game')
-      },
-      {
-        icon: Fa.char.th,
-        text: 'sample game',
-        route: new RouteData('/test/game')
-      },
-      {
-        icon: Fa.char.th,
-        text: 'sample game',
-        route: new RouteData('/test/game')
-      },
-      {
-        icon: Fa.char.th,
-        text: 'sample game',
-        route: new RouteData('/test/game')
-      },
-      {
-        icon: Fa.char.th,
-        text: 'sample game',
-        route: new RouteData('/test/game')
-      },
-      {
-        icon: Fa.char.th,
-        text: 'sample game',
-        route: new RouteData('/test/game')
+        icon: Fa.char.square,
+        text: 'test: block ball 2000',
+        route: new RouteData('/test/ball/block', new BallTestProp(2000))
       },
       {
         icon: Fa.char.th,

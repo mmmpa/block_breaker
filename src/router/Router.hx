@@ -32,6 +32,32 @@ class Router extends Sprite {
     return context;
   }
 
+  public function replace(Context:Class<BaseContext>, insertProps:Dynamic = null):BaseContext {
+    var context:BaseContext = Context.create([props, insertProps]);
+
+    sweepChildren();
+    deactivateActiveContext();
+    activateContext(context);
+    return context;
+  }
+
+  private function deactivateActiveContext() {
+    if(active == null){
+      return;
+    }
+    removeEvent(active);
+    active.deactivate();
+
+    this.active = null;
+  }
+
+  public function activateContext(context:BaseContext){
+    this.active = context;
+    addEvent(context);
+    addChild(context.ground);
+  }
+
+
   public function pushRoot(Context:Class<BaseContext>, insertProps:Dynamic = null):BaseContext {
     props.contextRoot = push(Context, insertProps);
 

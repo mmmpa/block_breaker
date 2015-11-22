@@ -118,6 +118,7 @@ class SideMenu extends BaseActor {
     buttons.iter(function(button:Button) {
       button.deactivate();
     });
+    buttons = [];
     super.deactivate();
   }
 
