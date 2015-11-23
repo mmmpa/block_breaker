@@ -8,6 +8,6 @@ class RouteData {
 
   public function new(route:String, prop:Dynamic = null) {
     this.route = route;
-    this.prop = prop.or({});
+    this.prop = prop;
   }
 }

@@ -17,8 +17,8 @@ import view.Splash;
 import starling.events.Event;
 import starling.events.TouchPhase;
 import starling.display.Quad;
-import addition.Def;
-import flash.geom.Point;
+import config.Def;
+ import flash.geom.Point;
 import starling.events.Touch;
 import starling.events.TouchEvent;
 import model.RouterProp;
@@ -36,11 +36,12 @@ class SampleGameContext extends BaseContext {
 
   public function new(props:RouterProp, insertProps:Dynamic = null) {
     super(props);
-    listener = new Quad(Def.stage.stageWidth, Def.stage.stageHeight, 0xcccccc);
+    ground.y = Def.area.y;
+    listener = new Quad(Def.area.w, Def.area.h, 0xcccccc);
     ground.addChild(listener);
     ground.addEventListener(TouchEvent.TOUCH, onTouch);
 
-    field = new PlayFieldData(0, 0, Def.stage.stageWidth, Def.stage.stageHeight);
+    field = new PlayFieldData(0, 0, Def.area.w, Def.area.h);
     grid = PlainGame.plain1();
     var table:BlockTable = new BlockTable(grid);
     beOnStage(table, true);
@@ -51,8 +52,8 @@ class SampleGameContext extends BaseContext {
 
 
   private function onTouch(e:TouchEvent) {
-    var touch:Touch = e.getTouch(Def.stage);
-    var position:Point = touch.getLocation(Def.stage);
+    var touch:Touch = e.getTouch(ground);
+    var position:Point = touch.getLocation(ground);
 
     switch(touch.phase){
       case TouchPhase.BEGAN:

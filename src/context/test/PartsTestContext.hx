@@ -1,5 +1,6 @@
 package context.test;
-import feathers.controls.LayoutGroup;
+import config.Def;
+ import feathers.controls.LayoutGroup;
 import feathers.layout.VerticalLayout;
 import view.common.Label;
 import asset.Fa;
@@ -13,6 +14,7 @@ class PartsTestContext extends BaseContext {
 
   public function new(props:RouterProp, insertProps:Dynamic = null) {
     super(props);
+    ground.y = Def.area.y;
     startAnimation();
 
     var layout:VerticalLayout = new VerticalLayout();

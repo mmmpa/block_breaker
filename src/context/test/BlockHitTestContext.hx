@@ -1,4 +1,5 @@
 package context.test;
+import model.PlayFieldData;
 import db.Palette;
 import model.BlockHitSide;
 import model.FieldOutSide;
@@ -10,8 +11,8 @@ import starling.display.DisplayObject;
 import flash.geom.Point;
 import starling.display.Quad;
 import starling.events.TouchPhase;
-import addition.Def;
-import starling.events.TouchEvent;
+import config.Def;
+ import starling.events.TouchEvent;
 import starling.events.Touch;
 import starling.events.Event;
 import view.Block;
@@ -21,6 +22,7 @@ import model.RouterProp;
 import context.BaseContext;
 
 class BlockHitTestContext extends BaseContext {
+  private var field:PlayFieldData;
   private var lineState:String;
   private var grid:BlockGrid;
   private var table:BlockTable;
@@ -28,15 +30,16 @@ class BlockHitTestContext extends BaseContext {
 
   public function new(props:RouterProp, insertProps:Dynamic = null) {
     super(props);
-
+    ground.y = Def.area.y;
+    field = new PlayFieldData(0, 0, Def.area.w, Def.area.h);
     startAnimation();
-    ground.addChild(new Quad(Def.stage.stageWidth, Def.stage.stageHeight, 0xffeeff));
+    ground.addChild(new Quad(Def.area.w, Def.area.h, Def.testBg));
     ground.name = 'block hit context';
 
     lineState = 'ready';
 
     var col:Int = 20;
-    var width:Int = Std.int(Def.stage.stageWidth / col);
+    var width:Int = Std.int(Def.area.w / col);
     var height:Int = width >> 1;
 
     var datas:Array<BlockData> = new Array();
@@ -61,8 +64,8 @@ class BlockHitTestContext extends BaseContext {
     var hitData:BlockHitData;
 
     ground.addEventListener(TouchEvent.TOUCH, function(e:TouchEvent) {
-      var touch:Touch = e.getTouch(Def.stage);
-      var position:Point = touch.getLocation(Def.stage);
+      var touch:Touch = e.getTouch(ground);
+      var position:Point = touch.getLocation(ground);
       switch(touch.phase){
         case TouchPhase.BEGAN:
           switch(lineState){

@@ -1,12 +1,13 @@
 package;
-import initializer.Scale;
+import config.Def;
+ import initializer.Scale;
 import initializer.Trace;
-import addition.Sizing;
+import config.Sizing;
 import haxe.Json;
 import flash.Lib;
 import flash.display.Sprite;
 
-using addition.Sizing;
+using config.Sizing;
 @:meta(SWF(width = '400', height = '800', backgroundColor = '#ffffff', frameRate = '60'))
 
 class Main extends Sprite {

@@ -93,6 +93,10 @@ class BallData {
   public function resetMovement() {
     this.moveX = Math.cos(radian) * this.speed;
     this.moveY = Math.sin(radian) * this.speed;
+    if(Math.isNaN(moveX) || Math.isNaN(moveY)){
+      this.moveX = 0;
+      this.moveY = 1;
+    }
   }
 
   @:extern inline function getPow(start:Point, end:Point):Float {

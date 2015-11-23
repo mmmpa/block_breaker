@@ -1,7 +1,7 @@
 package context.test;
 import starling.display.DisplayObjectContainer;
-import addition.Def;
-import feathers.layout.VerticalLayout;
+import config.Def;
+ import feathers.layout.VerticalLayout;
 import feathers.layout.HorizontalLayout;
 import feathers.controls.ScrollContainer;
 import view.common.Label;
@@ -18,11 +18,12 @@ class FeatherTestContext extends BaseContext {
 
   public function new(props:RouterProp, insertProps:Dynamic = null) {
     super(props);
+    ground.y = Def.area.y;
     startAnimation();
 
     var container:ScrollContainer = new ScrollContainer();
-    container.width = Def.stage.stageWidth;
-    container.height = Def.stage.stageHeight;
+    container.width = Def.area.w;
+    container.height = Def.area.h;
     var layout:VerticalLayout = new VerticalLayout();
     layout.gap = 20;
     layout.padding = 0;

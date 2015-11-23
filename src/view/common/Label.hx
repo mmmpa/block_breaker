@@ -1,6 +1,6 @@
 package view.common;
-import addition.Def;
-import asset.BlockFont;
+import config.Def;
+ import asset.BlockFont;
 import starling.text.TextFieldAutoSize;
 import starling.text.TextField;
 

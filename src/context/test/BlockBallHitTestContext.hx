@@ -8,8 +8,8 @@ import view.Splash;
 import starling.events.Event;
 import starling.events.TouchPhase;
 import starling.display.Quad;
-import addition.Def;
-import flash.geom.Point;
+import config.Def;
+ import flash.geom.Point;
 import starling.events.Touch;
 import starling.events.TouchEvent;
 import model.RouterProp;
@@ -23,8 +23,9 @@ class BlockBallHitTestContext extends BaseContext {
 
   public function new(props:RouterProp, insertProps:Dynamic = null) {
     super(props);
-    field = new PlayFieldData(0, 0, Def.stage.stageWidth, Def.stage.stageHeight);
-    ground.addChild(new Quad(Def.stage.stageWidth, Def.stage.stageHeight, 0xcccccc));
+    ground.y = Def.area.y;
+    field = new PlayFieldData(0, 0, Def.area.w, Def.area.h);
+    ground.addChild(new Quad(Def.area.w, Def.area.h, Def.testBg));
     ground.addEventListener(TouchEvent.TOUCH, onTouch);
 
     write(book);

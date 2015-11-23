@@ -13,7 +13,7 @@ import view.Splash;
 import starling.events.Event;
 import starling.events.TouchPhase;
 import starling.display.Quad;
-import addition.Def;
+import config.Def;
 import flash.geom.Point;
 import starling.events.Touch;
 import starling.events.TouchEvent;
@@ -27,17 +27,18 @@ class BallTestContext extends BaseContext {
   private var field:PlayFieldData;
 
   public function new(props:RouterProp, insertProps:BallTestProp = null) {
-    trace(insertProps);
     super(props);
-    field = new PlayFieldData(0, 0, Def.stage.stageWidth, Def.stage.stageHeight);
-    ground.addChild(new Quad(Def.stage.stageWidth, Def.stage.stageHeight, 0xcccccc));
+    ground.y = Def.area.y;
+
+    field = new PlayFieldData(0, 0, Def.area.w, Def.area.h);
+    ground.addChild(new Quad(Def.area.w, Def.fullArea.h, Def.testBg));
     ground.addEventListener(TouchEvent.TOUCH, onTouch);
 
     write(book);
     startAnimation();
 
-    var w:Int = Def.stage.stageWidth;
-    var h:Int = Def.stage.stageHeight;
+    var w:Int = Def.area.w;
+    var h:Int = Def.area.h;
 
     trace(insertProps);
     var limitation:Int = insertProps.be() ? insertProps.limitation : 10;
@@ -49,7 +50,7 @@ class BallTestContext extends BaseContext {
     tf.fontSize = 40;
     ground.addChild(tf);
     ground.addEventListener(Event.ENTER_FRAME, fn = function(e:Event) {
-      for (ii in 0...10) {
+      for (ii in 0...100) {
         i++;
         var data:BallData = new BallData(random(w), random(h), Palette.random(), 5, i);
         var ball:Ball = Ball.create(data);
@@ -68,8 +69,8 @@ class BallTestContext extends BaseContext {
   }
 
   private function onTouch(e:TouchEvent) {
-    var touch:Touch = e.getTouch(Def.stage);
-    var position:Point = touch.getLocation(Def.stage);
+    var touch:Touch = e.getTouch(ground);
+    var position:Point = touch.getLocation(ground);
 
     switch(touch.phase){
       case TouchPhase.BEGAN:

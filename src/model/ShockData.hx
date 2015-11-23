@@ -1,7 +1,7 @@
 package model;
 import flash.geom.Point;
-import addition.Def;
-class ShockData {
+import config.Def;
+ class ShockData {
   public static var nextId = 0;
 
   public var id:Int;

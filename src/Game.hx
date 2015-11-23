@@ -2,8 +2,8 @@ package ;
 import starling.utils.VAlign;
 import starling.utils.HAlign;
 import router.RouteData;
-import addition.Def;
-import starling.events.Event;
+import config.Def;
+ import starling.events.Event;
 import event.ContextEvent;
 import context.MainContext;
 import router.Router;
@@ -20,7 +20,7 @@ class Game extends Sprite {
     var theme = new MinimalMobileTheme();
     var mainRouter:Router = new Router();
     addChild(mainRouter);
-    var route:RouteData = new RouteData('/test/parts');
+    var route:RouteData = new RouteData('/configuration');
     mainRouter.pushRoot(MainContext, route);
   }
 
@@ -28,9 +28,9 @@ class Game extends Sprite {
     stage.frameRate = 60;
     var starling:Starling = new Starling(Game, stage);
     Def.stage = starling.stage;
+    Def.starling = starling;
+
     starling.viewPort = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
-    starling.showStats = true;
-    Starling.current.showStatsAt(HAlign.RIGHT, VAlign.BOTTOM);
     starling.start();
   }
 }

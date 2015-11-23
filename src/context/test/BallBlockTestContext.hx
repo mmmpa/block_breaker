@@ -22,8 +22,8 @@ import view.Splash;
 import starling.events.Event;
 import starling.events.TouchPhase;
 import starling.display.Quad;
-import addition.Def;
-import flash.geom.Point;
+import config.Def;
+ import flash.geom.Point;
 import starling.events.Touch;
 import starling.events.TouchEvent;
 import model.RouterProp;
@@ -39,16 +39,16 @@ class BallBlockTestContext extends BaseContext {
   private var listener:Quad;
   private var table:BlockTable;
 
-public function new(props:RouterProp, insertProps:BallTestProp = null) {
+  public function new(props:RouterProp, insertProps:BallTestProp = null) {
     super(props);
-    field = new PlayFieldData(0, 0, Def.stage.stageWidth, Def.stage.stageHeight);
-    listener = new Quad(Def.stage.stageWidth, Def.stage.stageHeight, 0xcccccc);
-    ground.addChild(new Quad(Def.stage.stageWidth, Def.stage.stageHeight, 0xcccccc));
+    ground.y = Def.area.y;
+    field = new PlayFieldData(0, 0, Def.area.w, Def.area.h);
+    listener = new Quad(Def.area.w, Def.area.h, 0xcccccc);
+    ground.addChild(new Quad(Def.area.w, Def.area.h, Def.testBg));
     ground.addEventListener(TouchEvent.TOUCH, onTouch);
 
-
     var col:Int = 20;
-    var width:Int = Std.int(Def.stage.stageWidth / col);
+    var width:Int = Std.int(Def.area.w / col);
     var height:Int = width >> 1;
 
     var datas:Array<BlockData> = new Array();
@@ -70,8 +70,8 @@ public function new(props:RouterProp, insertProps:BallTestProp = null) {
     write(play);
     startAnimation();
 
-    var w:Int = Def.stage.stageWidth;
-    var h:Int = Def.stage.stageHeight;
+    var w:Int = Def.area.w;
+    var h:Int = Def.area.h;
 
     trace(insertProps);
     var limitation:Int = insertProps.be() ? insertProps.limitation : 10;
@@ -97,7 +97,7 @@ public function new(props:RouterProp, insertProps:BallTestProp = null) {
     });
   }
 
-  override function deactivate(){
+  override function deactivate() {
     table.deactivate();
     super.deactivate();
   }
@@ -107,8 +107,8 @@ public function new(props:RouterProp, insertProps:BallTestProp = null) {
   }
 
   private function onTouch(e:TouchEvent) {
-    var touch:Touch = e.getTouch(Def.stage);
-    var position:Point = touch.getLocation(Def.stage);
+    var touch:Touch = e.getTouch(ground);
+    var position:Point = touch.getLocation(ground);
 
     switch(touch.phase){
       case TouchPhase.BEGAN:

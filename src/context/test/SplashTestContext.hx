@@ -3,8 +3,8 @@ import view.Splash;
 import starling.events.Event;
 import starling.events.TouchPhase;
 import starling.display.Quad;
-import addition.Def;
-import flash.geom.Point;
+import config.Def;
+ import flash.geom.Point;
 import starling.events.Touch;
 import starling.events.TouchEvent;
 import model.RouterProp;
@@ -12,15 +12,16 @@ class SplashTestContext extends BaseContext {
 
   public function new(props:RouterProp, insertProps:Dynamic = null) {
     super(props);
-    ground.addChild(new Quad(Def.stage.stageWidth, Def.stage.stageHeight, 0xcccccc));
+    ground.y = Def.area.y;
+    ground.addChild(new Quad(Def.area.w, Def.area.h, Def.testBg));
     ground.addEventListener(TouchEvent.TOUCH, onTouch);
 
     startAnimation();
   }
 
   private function onTouch(e:TouchEvent) {
-    var touch:Touch = e.getTouch(Def.stage);
-    var position:Point = touch.getLocation(Def.stage);
+    var touch:Touch = e.getTouch(ground);
+    var position:Point = touch.getLocation(ground);
 
     switch(touch.phase){
       case TouchPhase.BEGAN:

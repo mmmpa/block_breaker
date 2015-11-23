@@ -1,6 +1,6 @@
 package view;
-import addition.Def;
-import starling.display.DisplayObjectContainer;
+import config.Def;
+ import starling.display.DisplayObjectContainer;
 import context.BaseContext;
 import starling.display.Image;
 import starling.textures.Texture;

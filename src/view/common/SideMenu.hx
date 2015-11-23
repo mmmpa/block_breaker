@@ -5,8 +5,8 @@ import starling.filters.BlurFilter;
 import db.Palette;
 import starling.display.Quad;
 import feathers.layout.VerticalLayout;
-import addition.Def;
-import feathers.controls.ScrollContainer;
+import config.Def;
+ import feathers.controls.ScrollContainer;
 import starling.display.DisplayObjectContainer;
 import context.BaseContext;
 import event.ContextEvent;
@@ -46,9 +46,6 @@ class SideMenu extends BaseActor {
     this.menuRecipes = menuRecipes;
 
     var container:ScrollContainer = new ScrollContainer();
-    container.width = Def.stage.stageWidth;
-    container.height = Def.stage.stageHeight;
-
     var layout:VerticalLayout = new VerticalLayout();
     container.layout = layout;
 
@@ -57,14 +54,14 @@ class SideMenu extends BaseActor {
       container.addChild(new Quad(button.width, 1, Palette.whiteGrayD));
     });
 
-    var bg:Quad = new Quad(maxWidth, Def.stage.stageHeight, Palette.whiteGrayD);
-    var ds:BlurFilter = BlurFilter.createDropShadow(2, Math.PI / 6, Palette.black, 0.3);
+    var bg:Quad = new Quad(maxWidth, Def.fullArea.h, Palette.whiteGrayD);
+    var ds:BlurFilter = BlurFilter.createDropShadow(2, Math.PI / 6, Def.uiShadow, 0.3);
 
     bg.filter = ds;
     container.width = maxWidth;
-    container.height = Def.stage.stageHeight;
+    container.height = Def.fullArea.h;
 
-    sield = new ButtonListener(Def.stage.stageWidth, Def.stage.stageHeight, 0.5);
+    sield = new ButtonListener(Def.fullArea.w, Def.fullArea.h, 0.5);
     sield.down = function() {
       close();
     }

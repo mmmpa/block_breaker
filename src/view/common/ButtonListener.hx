@@ -1,6 +1,6 @@
 package view.common;
-import addition.Def;
-import starling.events.TouchEvent;
+import config.Def;
+ import starling.events.TouchEvent;
 import flash.geom.Point;
 import starling.events.Touch;
 import starling.events.TouchPhase;

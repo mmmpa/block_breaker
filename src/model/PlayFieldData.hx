@@ -14,10 +14,10 @@ class PlayFieldData {
   public function new(x:Int, y:Int, width:Int, height:Int) {
     this.x = x;
     this.y = y;
-    this.top = y;
-    this.right = x + width;
-    this.bottom = y + height;
-    this.left = x;
+    this.top = Std.int(y);
+    this.right = Std.int(x + width);
+    this.bottom = Std.int(y + height);
+    this.left = Std.int(x);
   }
 
   public function isOutOfBound(p:Point):FieldOutSide {

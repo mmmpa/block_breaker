@@ -1,5 +1,6 @@
 package context;
-import starling.events.Event;
+import config.Def;
+ import starling.events.Event;
 import event.ContextEvent;
 import haxe.macro.Context;
 import starling.display.Sprite;
@@ -77,11 +78,21 @@ class BaseContext extends EventDispatcher {
 
   public function deactivate() {
     stopAnimation();
-    actors.iter(function(actor:Dynamic) {
-      actor.deactivate();
-    });
-    ground.removeChildren();
     ground.removeEventListeners();
+
+    // フリーズ対策で徐々に解放を行う
+    var fn:Dynamic = null;
+    Def.stage.addEventListener(Event.ENTER_FRAME, fn = function(e:Event) {
+      for (i in 0...Def.deactiveLimit) {
+        if (actors.length == 0) {
+          Def.stage.removeEventListeners();
+          ground.removeChildren();
+          break;
+        }
+        var actor:Dynamic = actors.pop();
+        actor.deactivate();
+      }
+    });
   }
 
   public function removeBooks(subBooks:BaseContext) {

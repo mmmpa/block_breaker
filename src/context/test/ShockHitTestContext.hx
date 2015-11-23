@@ -12,8 +12,8 @@ import starling.display.DisplayObject;
 import flash.geom.Point;
 import starling.display.Quad;
 import starling.events.TouchPhase;
-import addition.Def;
-import starling.events.TouchEvent;
+import config.Def;
+ import starling.events.TouchEvent;
 import starling.events.Touch;
 import starling.events.Event;
 import view.Block;
@@ -28,13 +28,14 @@ class ShockHitTestContext extends BaseContext {
 
   public function new(props:RouterProp, insertProps:Dynamic = null) {
     super(props);
+    ground.y = Def.area.y;
 
     startAnimation();
-    ground.addChild(new Quad(Def.stage.stageWidth, Def.stage.stageHeight, 0xffeeff));
+    ground.addChild(new Quad(Def.area.w, Def.area.h, Def.testBg));
 
     lineState = 'ready';
 
-    var shock:ShockData = new ShockData(Def.stage.stageWidth >> 1, Def.stage.stageHeight >> 1, 50);
+    var shock:ShockData = new ShockData(Def.area.w >> 1, Def.area.h >> 1, 50);
     var shockView:Shock = new Shock(shock);
 
     ground.addChild(shockView);
@@ -46,8 +47,8 @@ class ShockHitTestContext extends BaseContext {
 
 
     ground.addEventListener(TouchEvent.TOUCH, function(e:TouchEvent) {
-      var touch:Touch = e.getTouch(Def.stage);
-      var position:Point = touch.getLocation(Def.stage);
+      var touch:Touch = e.getTouch(ground);
+      var position:Point = touch.getLocation(ground);
       switch(touch.phase){
         case TouchPhase.BEGAN:
           switch(lineState){

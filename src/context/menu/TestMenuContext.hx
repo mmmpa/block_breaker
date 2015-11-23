@@ -1,5 +1,8 @@
 package context.menu;
-import model.test.BallTestProp;
+import model.common.ButtonProp;
+import view.common.TopBar;
+import config.Def;
+ import model.test.BallTestProp;
 import view.common.Button;
 import view.common.SideMenu;
 import asset.Fa;
@@ -12,20 +15,30 @@ class TestMenuContext extends BaseContext {
   private var routes:Array<RouteData>;
   private var routesSrc(get, never):Array<MenuRecipe>;
   private var menu:SideMenu;
+  private var bar:TopBar;
 
   public function new(props:RouterProp, insertProps:Dynamic = null) {
     super(props);
     startAnimation();
+
+    bar = new TopBar();
     menu = new SideMenu(routesSrc);
     var faButton:Button = Button.normal(function(){
       menu.open();
-    }, null, '', Fa.char.apple);
+    }, new ButtonProp(Def.topBarHeight, Def.topBarHeight, 0, 0, ButtonAlign.Center), '', Fa.char.bars);
+
+    beOnStage(bar);
     beOnStage(menu);
     beOnStage(faButton);
   }
 
   private function get_routesSrc():Array<MenuRecipe> {
     return [
+      {
+        icon: Fa.char.cog,
+        text: 'configration',
+        route: new RouteData('/configuration')
+      },
       {
         icon: Fa.char.cogs,
         text: 'test: parts',

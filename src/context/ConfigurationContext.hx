@@ -1,19 +1,26 @@
 package context;
+import config.Configuration;
+import view.common.Button;
+import config.Def;
+ import model.ConfigurationProp;
 import starling.events.Event;
 import starling.text.TextField;
 import model.RouterProp;
 import event.ContextEvent;
 
 class ConfigurationContext extends BaseContext {
-  public function new(props:RouterProp) {
+  public function new(props:RouterProp, insertProps:ConfigurationProp = null) {
     super(props);
+    ground.y = Def.area.y;
 
-    var tf:TextField = new TextField(100, 50, 'body context2');
-    tf.x = 100;
-    this.ground.addChild(tf);
+    startAnimation();
 
-    this.addEventListener(ContextEvent.CREATED, function(e:Event){
-      trace('inner', e.target);
+    var button:Button = Button.normal(function(){
+      trace(!Configuration.statusEnabled);
+      Configuration.statusEnabled = !Configuration.statusEnabled;
+      Configuration.save();
     });
+
+    beOnStage(button);
   }
 }

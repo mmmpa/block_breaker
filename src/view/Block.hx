@@ -6,8 +6,8 @@ package view;
  */
 import context.BaseContext;
 import model.BlockData;
-import addition.Def;
-import starling.display.DisplayObjectContainer;
+import config.Def;
+ import starling.display.DisplayObjectContainer;
 import starling.display.Quad;
 
 class Block extends Quad {

@@ -8,8 +8,8 @@ import starling.events.TouchEvent;
 import starling.events.Touch;
 import flash.geom.Point;
 import starling.events.TouchPhase;
-import addition.Def;
-import starling.display.DisplayObjectContainer;
+import config.Def;
+ import starling.display.DisplayObjectContainer;
 import starling.text.TextField;
 import flash.geom.Rectangle;
 import starling.display.Quad;
@@ -74,9 +74,6 @@ class Button extends PartsActor {
   }
 
   public function initialize() {
-    label.x = prop.paddingSide;
-    label.y = prop.paddingTop;
-
     if (prop.width != 0) {
       bg.width = prop.width;
     } else {
@@ -88,6 +85,17 @@ class Button extends PartsActor {
     } else {
       bg.height = Std.int(label.height) + (prop.paddingTop << 1);
     }
+
+    switch(prop.align){
+      case ButtonAlign.Left:
+        label.x = prop.paddingSide;
+        label.y = prop.paddingTop;
+      case ButtonAlign.Right:
+      case ButtonAlign.Center:
+        label.x = Std.int(bg.width - label.width) >> 1;
+        label.y = Std.int(bg.height - label.height) >> 1;
+    }
+
 
     listener.width = bg.width;
     listener.height = bg.height;

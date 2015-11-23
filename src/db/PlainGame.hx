@@ -1,8 +1,9 @@
 package db;
+import model.PlayFieldData;
 import db.Palette;
 import model.BlockData;
-import addition.Def;
-import model.BlockGrid;
+import config.Def;
+ import model.BlockGrid;
 
 using Lambda;
 
@@ -12,7 +13,7 @@ class PlainGame {
     var colors:Array<Int> = [-1, -1, Palette.grayD, Palette.grayD, Palette.redD, Palette.red, Palette.orangeD, Palette.orange, Palette.yellowD, Palette.yellow, Palette.greenD, Palette.green, Palette.blueD, Palette.blue, Palette.purpleD, Palette.purple];
 
     var col:Int = 20;
-    var width:Int = Std.int(Def.stage.stageWidth / col);
+    var width:Int = Std.int(Def.area.w / col);
     var height:Int = width >> 1;
     var datas:Array<BlockData> = new Array();
     colors.iter(function(color) {
