@@ -28,16 +28,16 @@ class Splash {
     var range:Int = Std.int(frame / 2);
 
     s1.x -= range;
-    s1.y -= range;
+    s1.y -= range - 2;
 
     s2.x += range;
-    s2.y -= range;
+    s2.y -= range - 2;
 
     s3.x -= range;
-    s3.y += range;
+    s3.y += range + 2;
 
     s4.x += range;
-    s4.y += range;
+    s4.y += range + 2;
 
     s1.width = s1.height =
     s2.width = s2.height =
@@ -80,6 +80,10 @@ class Splash {
     s2.removeFromParent();
     s3.removeFromParent();
     s4.removeFromParent();
+    s1.dispose();
+    s2.dispose();
+    s3.dispose();
+    s4.dispose();
 
     return this;
   }

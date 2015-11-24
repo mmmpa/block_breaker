@@ -12,4 +12,3 @@ class CheckboxProp extends ActorProp {
     this.position = position;
   }
 }
-

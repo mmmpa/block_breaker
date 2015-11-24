@@ -1,3 +1,7 @@
+-resource ../lib/sound/hit.mp3@hit
+-resource ../lib/sound/hard.mp3@hard
+-resource ../lib/sound/break.mp3@break
+
 ### Starling
 -swf-lib ../lib/starling/starling.swc
 --macro patchTypes('../lib/starling/starling.patch')
@@ -12,20 +16,25 @@
 -cp "../src"
 -swf "../export/builded.swf"
 -swf-version 11
+-swf-header 480:800:60:ffffff
 
-#--next
+--next
+
+-resource ../lib/sound/hit.mp3@hit
+-resource ../lib/sound/hard.mp3@hard
+-resource ../lib/sound/break.mp3@break
 
 ### Starling
-#-swf-lib ../lib/starling/starling.swc
-#--macro patchTypes('../lib/starling/starling.patch')
+-swf-lib ../lib/starling/starling.swc
+--macro patchTypes('../lib/starling/starling.patch')
 
 ### Feathers
-#-swf-lib ../lib/feathers/feathers.swc
-#-swf-lib ../lib/feathers/MinimalMobileTheme.swc
+-swf-lib ../lib/feathers/feathers.swc
+-swf-lib ../lib/feathers/MinimalMobileTheme.swc
 
-#-swf-lib-extern ../lib/playerglobal17_0.swc
+-swf-lib-extern ../lib/playerglobal17_0.swc
 
-#-main Main
-#-cp "../src"
-#-as3 "../export/as3"
-#-swf-version 11
+-main Main
+-cp "../src"
+-as3 "../export/as3"
+-swf-version 11

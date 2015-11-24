@@ -1,4 +1,6 @@
 package view.common;
+import config.Configuration;
+import asset.Se;
 import asset.Fa;
 import db.Palette;
 import model.common.ActorProp.ActorHorizontal;
@@ -43,6 +45,7 @@ class Checkbox extends PartsActor {
     this.checked = !checked;
     draw();
     callback(this);
+    if (Configuration.soundEnabled) {Se.broken.play(); }
   }
 
   public function draw() {

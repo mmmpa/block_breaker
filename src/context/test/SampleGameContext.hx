@@ -1,4 +1,8 @@
 package context.test;
+import model.ShockData;
+import model.BallData;
+import config.Configuration;
+import asset.Se;
 import db.PlainGame;
 import model.ShockHitData;
 import view.Shock;
@@ -18,7 +22,7 @@ import starling.events.Event;
 import starling.events.TouchPhase;
 import starling.display.Quad;
 import config.Def;
- import flash.geom.Point;
+import flash.geom.Point;
 import starling.events.Touch;
 import starling.events.TouchEvent;
 import model.RouterProp;
@@ -53,22 +57,27 @@ class SampleGameContext extends BaseContext {
 
   private function onTouch(e:TouchEvent) {
     var touch:Touch = e.getTouch(ground);
-    var position:Point = touch.getLocation(ground);
 
     switch(touch.phase){
       case TouchPhase.BEGAN:
+        var p:Point = touch.getLocation(ground);
         if (balls.length == 0) {
-          addBall(position, 270);
+          var ballPoint:Point = new Point(p.x, p.y < Def.ballStartTop ? Def.ballStartTop : p.y);
+          var ball:BallData = addBall(ballPoint, 270);
+          var shock:ShockData = shock(p);
+          ball.hittedId = shock.id;
+        }else{
+          shock(p);
         }
-        shock(position);
     }
   }
 
-  private function shock(p:Point) {
+  private function shock(p:Point):ShockData {
     var data:ShockData = new ShockData(Std.int(p.x), Std.int(p.y), 2);
     var shock:Shock = new Shock(data);
     shocks.push(data);
     beOnStage(shock);
+    return data;
   }
 
   private function play(context:BaseContext) {
@@ -77,6 +86,12 @@ class SampleGameContext extends BaseContext {
       data.spread();
       return !data.isCompleted();
     });
+
+    //サウンド再生は一度のみ
+    //最後に一度だけ再生
+    var playBroken:Bool = false;
+    var playHit:Bool = false;
+    var playHard:Bool = false;
 
     // 各ボールの衝突処理
     var data:BallData;
@@ -95,9 +110,12 @@ class SampleGameContext extends BaseContext {
           block.hit();
           if (!block.isAlive()) {
             grid.removeBlock(block);
+            playBroken = true;
             if (block.hasBall()) {
               addBall(block.ballP, 70 + Math.floor(Math.random() * 40), block.color);
             }
+          }else{
+            playHard = true;
           }
           switch(blockHit.hitSide){
             case BlockHitSide.Top:
@@ -155,13 +173,20 @@ class SampleGameContext extends BaseContext {
       };
     }
 
+    if (Configuration.soundEnabled) {
+      if (playBroken) {Se.broken.play();}
+      if (playHit) {Se.hit.play();}
+      if (playHard) {Se.hard.play();}
+    }
+
     balls = nextBalls;
   }
 
-  private function addBall(p:Point, degree:Int, color:Int = 0) {
+  private function addBall(p:Point, degree:Int, color:Int = 0):BallData {
     var data:BallData = new BallData(p.x, p.y, color, 8, degree * Math.PI / 180);
     var ball:Ball = Ball.create(data);
     balls.push(data);
     beOnStage(ball);
+    return data;
   }
 }

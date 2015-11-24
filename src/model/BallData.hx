@@ -101,6 +101,6 @@ class BallData {
 
   @:extern inline function getPow(start:Point, end:Point):Float {
     var result:Float = (end.x - start.x) / (end.y - start.y);
-    return Math.isNaN(result) ? end.x - start.x : result;
+    return Math.isNaN(result) ? (end.x - start.x) != 0 ? end.x - start.x : 1 : result;
   }
 }

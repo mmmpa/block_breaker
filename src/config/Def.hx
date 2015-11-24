@@ -44,6 +44,7 @@ class Def {
 
   static public var area:StrictArea;
   static public var fullArea:StrictArea;
+  static public var ballStartTop:Float;
 
   // 一度にdeactiveするactorの数
   // 画面のフリーズ対策
@@ -56,6 +57,7 @@ class Def {
     fontSizeNormal = Sizing.mm(8);
     area = new StrictArea(0, topBarHeight, sw(), sh() - topBarHeight);
     fullArea = new StrictArea(0, 0, sw(), sh());
+    ballStartTop = area.h - 100;
   }
 
   static public function sh():Int {

@@ -1,4 +1,6 @@
 package view.common;
+import config.Configuration;
+import asset.Se;
 import model.common.ActorProp.ActorHorizontal;
 import asset.Fa;
 import model.common.ButtonProp;
@@ -45,7 +47,10 @@ class Button extends PartsActor {
     this.effect = new Quad(1, 1, prop.effect);
     this.listener = new ButtonListener(1, 1);
 
-    listener.click = callback;
+    listener.click = function() {
+      callback();
+      if (Configuration.soundEnabled) {Se.broken.play(); }
+    }
     addChild(bg);
     addChild(label);
     addChild(listener);
@@ -92,6 +97,7 @@ class Button extends PartsActor {
 
     listener.width = bg.width;
     listener.height = bg.height;
+    flatten();
   }
 
   override public function deactivate() {

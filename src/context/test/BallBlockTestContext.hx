@@ -6,24 +6,20 @@ import model.BlockData;
 import model.BlockHitData;
 import model.ShockData;
 import view.BlockTable;
-import db.PlainGame;
 import model.BlockGrid;
 import asset.BlockFont;
 import db.Palette;
 import model.test.BallTestProp;
 import starling.text.TextField;
-import starling.text.TextFieldAutoSize;
 import model.FieldOutSide;
 import model.PlayFieldData;
 import model.BallData;
 import view.Ball;
-import model.BallData;
-import view.Splash;
 import starling.events.Event;
 import starling.events.TouchPhase;
 import starling.display.Quad;
 import config.Def;
- import flash.geom.Point;
+import flash.geom.Point;
 import starling.events.Touch;
 import starling.events.TouchEvent;
 import model.RouterProp;
@@ -84,7 +80,7 @@ class BallBlockTestContext extends BaseContext {
     tf.fontSize = 40;
     ground.addChild(tf);
     ground.addEventListener(Event.ENTER_FRAME, fn = function(e:Event) {
-      for (ii in 0...10) {
+      for (ii in 0...100) {
         i++;
         var data:BallData = new BallData(random(w), random(h), Palette.random(), Std.int(random(5) + 5), i);
         var ball:Ball = Ball.create(data);
@@ -99,6 +95,8 @@ class BallBlockTestContext extends BaseContext {
   }
 
   override function deactivate() {
+    balls = null;
+    shocks = null;
     table.deactivate();
     super.deactivate();
   }

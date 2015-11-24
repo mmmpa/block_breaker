@@ -51,4 +51,18 @@ class Block extends Quad {
     context.beOnStage(splash);
     return this;
   }
+
+  public function deactivateCalm():Block {
+    trace('deactivate');
+    removeFromParent();
+    dispose();
+    splash.deactivate();
+
+    context = null;
+    data = null;
+    splash = null;
+
+    return this;
+  }
+
 }

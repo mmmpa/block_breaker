@@ -32,6 +32,7 @@ class PartsTestContext extends BaseContext {
       trace('push');
     });
 
+
     var fab:ButtonProp = new ButtonProp();
     fab.faChar = Fa.char.paw;
     var faButton:Button = Button.normal('button with icon', fab, function(){

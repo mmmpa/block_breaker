@@ -34,7 +34,6 @@ class TestMenuContext extends BaseContext {
   }
 
   override public function deactivate(){
-    trace('menu deactivate');
     super.deactivate();
   }
 
@@ -72,17 +71,17 @@ class TestMenuContext extends BaseContext {
       },
       {
         icon: Fa.char.tint,
-        text: 'test: ball only 1000',
+        text: 'test: only ball 1000',
         route: new RouteData('/test/ball', new BallTestProp(1000))
       },
       {
         icon: Fa.char.tint,
-        text: 'test: ball only 2500',
+        text: 'test: only ball 2500',
         route: new RouteData('/test/ball', new BallTestProp(2500))
       },
       {
         icon: Fa.char.tint,
-        text: 'test: ball only 5000',
+        text: 'test: only ball 5000',
         route: new RouteData('/test/ball', new BallTestProp(5000))
       },
       {

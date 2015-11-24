@@ -50,6 +50,11 @@ class BaseContext extends EventDispatcher {
       rooter.removeActors(this);
       rooter.removeBooks(this);
     }
+    trace([isRoot(), rooter]);
+  }
+
+  public function toString():String{
+    return ['actors', Std.string(actors.length), 'books', Std.string(books.length)].join(' ');
   }
 
   public function write(book:Dynamic) {
@@ -80,19 +85,19 @@ class BaseContext extends EventDispatcher {
     stopAnimation();
     ground.removeEventListeners();
 
-    // フリーズ対策で徐々に解放を行う
-    var fn:Dynamic = null;
-    Def.stage.addEventListener(Event.ENTER_FRAME, fn = function(e:Event) {
-      for (i in 0...Def.deactiveLimit) {
-        if (actors.length == 0) {
-          Def.stage.removeEventListeners();
-          ground.removeChildren();
-          break;
-        }
-        var actor:Dynamic = actors.pop();
-        actor.deactivate();
+    Def.stage.addEventListener(Event.ENTER_FRAME, deactivateSlowly);
+  }
+
+  private function deactivateSlowly(e:Event){
+    for (i in 0...Def.deactiveLimit) {
+      if (actors.length == 0) {
+        Def.stage.removeEventListener(Event.ENTER_FRAME, deactivateSlowly);
+        ground.removeChildren();
+        break;
       }
-    });
+      var actor:Dynamic = actors.pop();
+      actor.deactivate();
+    }
   }
 
   public function removeBooks(subBooks:BaseContext) {

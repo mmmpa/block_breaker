@@ -26,7 +26,7 @@ class BlockTable {
   }
 
   private function add(block:Block) {
-    //blocks.push(block);
+    blocks.push(block);
   }
 
   public function act() {
@@ -36,5 +36,7 @@ class BlockTable {
     blocks.iter(function(block:Block) {
       block.deactivate();
     });
+    blocks = null;
+    grid = null;
   }
 }

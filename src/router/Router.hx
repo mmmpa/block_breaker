@@ -13,6 +13,8 @@ class Router extends Sprite {
   private var active:BaseContext;
   private var rooter:Router;
   private var props:RouterProp;
+  private var activeClass:Class<BaseContext>;
+  private var activeProp:Dynamic;
 
   public function new(?rooter:Router, ?contextRoot:BaseContext) {
     super();
@@ -33,16 +35,19 @@ class Router extends Sprite {
   }
 
   public function replace(Context:Class<BaseContext>, insertProps:Dynamic = null):BaseContext {
+    if (Context == activeClass && insertProps == activeProp) {
+      return active;
+    }
     var context:BaseContext = Context.create([props, insertProps]);
 
     sweepChildren();
     deactivateActiveContext();
-    activateContext(context);
+    activateContext(Context, context, insertProps);
     return context;
   }
 
   private function deactivateActiveContext() {
-    if(active == null){
+    if (active == null) {
       return;
     }
     removeEvent(active);
@@ -51,8 +56,10 @@ class Router extends Sprite {
     this.active = null;
   }
 
-  public function activateContext(context:BaseContext){
+  public function activateContext(Context:Class<BaseContext>, context:BaseContext, insertProps:Dynamic = null) {
     this.active = context;
+    this.activeClass = Context;
+    this.activeProp = insertProps;
     addEvent(context);
     addChild(context.ground);
   }
