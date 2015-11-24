@@ -17,7 +17,7 @@ class Label extends PartsActor {
     tf.autoSize = TextFieldAutoSize.BOTH_DIRECTIONS;
     this.addChild(tf);
 
-    if (iconChar != null || iconChar != '') {
+    if (iconChar != null && iconChar.length != 0) {
       this.icon = new FaIcon(iconChar, Std.int(size * 0.7));
       this.addChild(icon);
     }

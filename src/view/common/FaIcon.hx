@@ -11,11 +11,12 @@ class FaIcon extends PartsActor {
   private var scaleSize:Int = 1;
   private var icon:TextField;
 
-  public function new(char:String, size:Int) {
+  public function new(char:String, size:Int, ?color:Int) {
     super();
     this.icon = new TextField(1, 1, char);
     this.baseSize = size;
     icon.fontName = Fa.name;
+    icon.color = color;
     this.addChild(icon);
     draw();
   }

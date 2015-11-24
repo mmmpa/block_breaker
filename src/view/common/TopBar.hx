@@ -15,10 +15,10 @@ class TopBar extends PartsActor {
   public function new() {
     super();
 
-    trace('top bar');
     bg = new Quad(Def.area.w, Def.topBarHeight, Def.uiBg);
     bar = new Quad(Def.area.w, 1, Def.uiShadowBar);
     bar.y = Def.topBarHeight;
+    touchable = false;
 
     // ゲームにおいてfpsが明確に落ちる。
     //var ds:BlurFilter = BlurFilter.createDropShadow(2, Math.PI / 6, Def.uiShadow, 0.3);
@@ -28,5 +28,6 @@ class TopBar extends PartsActor {
     addChild(bg);
     addChild(bar);
     addChild(container);
+    flatten();
   }
 }

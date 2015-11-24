@@ -26,6 +26,7 @@ class Block extends Quad {
     this.x = x;
     this.y = y;
     this.data = data;
+    touchable = false;
     initializeSplash();
   }
 

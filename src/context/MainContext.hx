@@ -64,59 +64,59 @@ class MainContext extends BaseContext {
   private function initializeRouteMap() {
     routeMap.set('/', function(insertProps) {
       god.push(GodContext, insertProps);
-      menu.push(MenuContext, insertProps);
+      menu.replace(MenuContext, insertProps);
       body.replace(BodyContext, insertProps);
     });
 
     routeMap.set('/configuration', function(insertProps) {
-      menu.push(TestMenuContext, insertProps);
+      menu.replace(TestMenuContext, insertProps);
 
       var configuration:ConfigurationProp = new ConfigurationProp();
       body.replace(ConfigurationContext, insertProps);
     });
 
     routeMap.set('/test/parts', function(insertProps) {
-      menu.push(TestMenuContext, insertProps);
+      menu.replace(TestMenuContext, insertProps);
       body.replace(PartsTestContext, insertProps);
     });
 
     routeMap.set('/test/feather', function(insertProps) {
-      menu.push(TestMenuContext, insertProps);
+      menu.replace(TestMenuContext, insertProps);
       body.replace(FeatherTestContext, insertProps);
     });
 
     routeMap.set('/test/splash', function(insertProps) {
-      menu.push(TestMenuContext, insertProps);
+      menu.replace(TestMenuContext, insertProps);
       body.replace(SplashTestContext, insertProps);
     });
 
     routeMap.set('/test/block/hit', function(insertProps) {
-      menu.push(TestMenuContext, insertProps);
+      menu.replace(TestMenuContext, insertProps);
       body.replace(BlockHitTestContext, insertProps);
     });
 
     routeMap.set('/test/ball', function(insertProps) {
-      menu.push(TestMenuContext, insertProps);
+      menu.replace(TestMenuContext, insertProps);
       body.replace(BallTestContext, insertProps);
     });
 
     routeMap.set('/test/ball/block', function(insertProps) {
-      menu.push(TestMenuContext, insertProps);
+      menu.replace(TestMenuContext, insertProps);
       body.replace(BallBlockTestContext, insertProps);
     });
 
     routeMap.set('/test/shock', function(insertProps) {
-      menu.push(TestMenuContext, insertProps);
+      menu.replace(TestMenuContext, insertProps);
       body.replace(ShockTestContext, insertProps);
     });
 
     routeMap.set('/test/shock/hit', function(insertProps) {
-      menu.push(TestMenuContext, insertProps);
+      menu.replace(TestMenuContext, insertProps);
       body.replace(ShockHitTestContext, insertProps);
     });
 
     routeMap.set('/test/game', function(insertProps) {
-      menu.push(TestMenuContext, insertProps);
+      menu.replace(TestMenuContext, insertProps);
       body.replace(SampleGameContext, insertProps);
     });
   }

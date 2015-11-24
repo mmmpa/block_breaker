@@ -1,14 +1,13 @@
 package view.common;
 
-import starling.display.Sprite;
+import model.common.ButtonProp;
 import starling.filters.BlurFilter;
 import db.Palette;
 import starling.display.Quad;
 import feathers.layout.VerticalLayout;
 import config.Def;
- import feathers.controls.ScrollContainer;
+import feathers.controls.ScrollContainer;
 import starling.display.DisplayObjectContainer;
-import context.BaseContext;
 import event.ContextEvent;
 import starling.events.Event;
 import router.RouteData;
@@ -121,10 +120,12 @@ class SideMenu extends BaseActor {
 
   private function makeButtons():Array<Button> {
     return menuRecipes.map(function(recipe:MenuRecipe):Button {
-      var button:Button = Button.normal(function() {
+      var buttonProp:ButtonProp = new ButtonProp();
+      buttonProp.faChar = recipe.icon;
+      var button:Button = Button.normal(recipe.text, buttonProp, function() {
         close();
         emit(new Event(ContextEvent.SCENE_CHANGE, false, recipe.route));
-      }, null, recipe.text, recipe.icon);
+      });
 
       maxWidth = button.width > maxWidth ? button.width : maxWidth;
       buttons.push(button);

@@ -70,10 +70,10 @@ class BallTestContext extends BaseContext {
 
   private function onTouch(e:TouchEvent) {
     var touch:Touch = e.getTouch(ground);
-    var position:Point = touch.getLocation(ground);
 
     switch(touch.phase){
       case TouchPhase.BEGAN:
+        var position:Point = touch.getLocation(ground);
         addBall(position);
     }
   }

@@ -4,6 +4,7 @@ package view;
 実際に表示されているボール。
 
  */
+import starling.display.QuadBatch;
 import context.BaseContext;
 import starling.display.DisplayObjectContainer;
 import config.Def;
@@ -25,6 +26,7 @@ class Ball extends Quad {
 
   public static function createChild(size:Int, offset:Int, data:BallData):Quad {
     var child:Quad = new Quad(size, size, data.color, false);
+    child.touchable = false;
     child.pivotX = child.pivotY = offset;
     return child;
   }
@@ -32,6 +34,7 @@ class Ball extends Quad {
   public function new(size:Int, color:Int, ?data:BallData) {
     super(size, size, color, false);
     pivotX = pivotY = Def.ballOffset;
+    touchable = false;
 
     child1 = Ball.createChild(Def.ballSize1, Def.ballOffset1, data);
     child2 = Ball.createChild(Def.ballSize2, Def.ballOffset2, data);
@@ -44,6 +47,13 @@ class Ball extends Quad {
     parent.addChild(child1);
     parent.addChild(child2);
     parent.addChild(child3);
+  }
+
+  public function intoBatch(batch:QuadBatch) {
+    batch.addQuad(this);
+    batch.addQuad(child1);
+    batch.addQuad(child2);
+    batch.addQuad(child3);
   }
 
   public function deactivate() {

@@ -1,4 +1,5 @@
 package;
+import initializer.FlashState;
 import config.Def;
  import initializer.Scale;
 import initializer.Trace;
@@ -18,6 +19,7 @@ class Main extends Sprite {
 
   static public function initialize():Void {
     Trace.initialize();
+    FlashState.initialize();
     Scale.initialize();
   }
 }

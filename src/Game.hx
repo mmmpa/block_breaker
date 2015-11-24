@@ -1,4 +1,5 @@
 package ;
+import model.test.BallTestProp;
 import starling.utils.VAlign;
 import starling.utils.HAlign;
 import router.RouteData;
@@ -20,6 +21,8 @@ class Game extends Sprite {
     var theme = new MinimalMobileTheme();
     var mainRouter:Router = new Router();
     addChild(mainRouter);
+    //var route:RouteData = new RouteData('/test/ball', new BallTestProp(3000));
+    //var route:RouteData = new RouteData('/test/parts');
     var route:RouteData = new RouteData('/configuration');
     mainRouter.pushRoot(MainContext, route);
   }
@@ -29,7 +32,7 @@ class Game extends Sprite {
     var starling:Starling = new Starling(Game, stage);
     Def.stage = starling.stage;
     Def.starling = starling;
-
+    starling.enableErrorChecking = false;
     starling.viewPort = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
     starling.start();
   }

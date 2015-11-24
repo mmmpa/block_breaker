@@ -47,6 +47,7 @@ class BallBlockTestContext extends BaseContext {
     ground.addChild(new Quad(Def.area.w, Def.area.h, Def.testBg));
     ground.addEventListener(TouchEvent.TOUCH, onTouch);
 
+    ground.touchable = false;
     var col:Int = 20;
     var width:Int = Std.int(Def.area.w / col);
     var height:Int = width >> 1;
@@ -108,10 +109,10 @@ class BallBlockTestContext extends BaseContext {
 
   private function onTouch(e:TouchEvent) {
     var touch:Touch = e.getTouch(ground);
-    var position:Point = touch.getLocation(ground);
 
     switch(touch.phase){
       case TouchPhase.BEGAN:
+        var position:Point = touch.getLocation(ground);
         shock(position);
     }
   }

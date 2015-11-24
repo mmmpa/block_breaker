@@ -1,4 +1,5 @@
 package context.menu;
+import model.common.ActorProp;
 import model.common.ButtonProp;
 import view.common.TopBar;
 import config.Def;
@@ -23,13 +24,18 @@ class TestMenuContext extends BaseContext {
 
     bar = new TopBar();
     menu = new SideMenu(routesSrc);
-    var faButton:Button = Button.normal(function(){
+    var faButton:Button = Button.normal('', new ButtonProp(Def.topBarHeight, Def.topBarHeight, 0, 0, ActorHorizontal.Center, Fa.char.bars), function(){
       menu.open();
-    }, new ButtonProp(Def.topBarHeight, Def.topBarHeight, 0, 0, ButtonAlign.Center), '', Fa.char.bars);
+    });
 
     beOnStage(bar);
     beOnStage(menu);
     beOnStage(faButton);
+  }
+
+  override public function deactivate(){
+    trace('menu deactivate');
+    super.deactivate();
   }
 
   private function get_routesSrc():Array<MenuRecipe> {

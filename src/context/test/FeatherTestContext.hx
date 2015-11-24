@@ -30,32 +30,12 @@ class FeatherTestContext extends BaseContext {
     container.layout = layout;
     ground.addChild(container);
 
-
-    var button:Button = Button.normal(function() {
-      trace('push');
-    });
-
-    var faButton:Button = Button.normal(function() {
-      trace('push');
-    }, null, null, Fa.char.apple);
-
-    var fa:FaIcon = new FaIcon(Fa.char.apple, 56).scale(2).rotate(0);
-    var label:Label = new Label('ラベル', 20, Fa.char.apple);
-
-    button.activate(this, container);
-    container.addChild(fa);
-    container.addChild(label);
-
     for(i in 0...50){
       var icon:FaIcon = new FaIcon(Fa.char.apple, 56).scale(2).rotate(i);
       manualDisposer.push(icon);
       container.addChild(icon);
     }
 
-    manualDisposer.push(button);
-    manualDisposer.push(faButton);
-    manualDisposer.push(fa);
-    manualDisposer.push(label);
     manualRemover.push(container);
   }
 

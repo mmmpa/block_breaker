@@ -13,7 +13,7 @@ class Def {
   static public var debug:Bool = true;
   static public var fmt:TextFormat = new TextFormat('_等幅', 20);
 
-  static public var fontSizeNormal:Int = 16;
+  static public var fontSizeNormal:Int;
 
   static public var splashSize:Int = 16;
   static public var splashFrame:Int = 10;
@@ -53,6 +53,7 @@ class Def {
 
   static public function initialize() {
     topBarHeight = Sizing.mm(15);
+    fontSizeNormal = Sizing.mm(8);
     area = new StrictArea(0, topBarHeight, sw(), sh() - topBarHeight);
     fullArea = new StrictArea(0, 0, sw(), sh());
   }
