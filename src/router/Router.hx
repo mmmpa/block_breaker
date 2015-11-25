@@ -34,15 +34,17 @@ class Router extends Sprite {
     return context;
   }
 
-  public function replace(Context:Class<BaseContext>, insertProps:Dynamic = null):BaseContext {
-    if (Context == activeClass && insertProps == activeProp) {
+
+  public function replace(Context:Class<BaseContext>, insertProps:Dynamic = null, forceReload:Bool = false):BaseContext {
+    if (!forceReload && Context == activeClass && insertProps == activeProp) {
       return active;
     }
-    var context:BaseContext = Context.create([props, insertProps]);
-
     sweepChildren();
     deactivateActiveContext();
+
+    var context:BaseContext = Context.create([props, insertProps]);
     activateContext(Context, context, insertProps);
+
     return context;
   }
 

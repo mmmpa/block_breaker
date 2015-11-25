@@ -1,9 +1,7 @@
 package model.blockbreaker;
 import model.blockbreaker.BallData;
 import config.Def;
-import config.Configuration;
 import flash.geom.Point;
-import asset.Se;
 
 using Lambda;
 
@@ -14,7 +12,6 @@ class BlockBreaker {
   private var balls:Array<BallData> = new Array();
   private var blocks:Array<BlockData> = new Array();
   private var shocks:Array<ShockData> = new Array();
-  private var state:BlockBreakerState;
   public var status:BlockBreakerPlayingState = new BlockBreakerPlayingState();
 
   public function new(grid:BlockGrid) {
@@ -26,6 +23,10 @@ class BlockBreaker {
     balls = null;
     blocks = null;
     shocks = null;
+  }
+
+  public function start(){
+    status.state = BlockBreakerState.Playing;
   }
 
   public function hasBall():Bool {
@@ -43,11 +44,8 @@ class BlockBreaker {
       return !data.isCompleted();
     });
 
-    //サウンド再生は一度のみ
-    //最後に一度だけ再生
-    var playBroken:Bool = false;
-    var playHit:Bool = false;
-    var playHard:Bool = false;
+    status.blockBroken = false;
+    status.blockHitted = false;
 
     // 各ボールの衝突処理
     var data:BallData;
@@ -66,13 +64,13 @@ class BlockBreaker {
           block.hit();
           if (!block.isAlive()) {
             grid.removeBlock(block);
-            playBroken = true;
+            status.blockBroken = true;
             if (block.hasBall()) {
               var newBall:BallData = addBall(block.ballP, 70 + Math.floor(Math.random() * 40), block.color);
               status.newBalls.push(newBall);
             }
           } else {
-            playHard = true;
+            status.blockHitted = true;
           }
           switch(blockHit.hitSide){
             case BlockHitSide.Top:
@@ -130,13 +128,10 @@ class BlockBreaker {
       };
     }
 
-    if (Configuration.soundEnabled) {
-      if (playBroken) {Se.broken.play();}
-      if (playHit) {Se.hit.play();}
-      if (playHard) {Se.hard.play();}
-    }
-
     balls = nextBalls;
+    if(noBall()){
+      status.state = BlockBreakerState.Played;
+    }
     return status;
   }
 

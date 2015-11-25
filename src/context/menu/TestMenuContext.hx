@@ -1,4 +1,5 @@
 package context.menu;
+import model.blockbreaker.ImageBlockBreakerProp;
 import db.PlainGame;
 import model.blockbreaker.BlockBreakerProp;
 import model.common.ActorProp;
@@ -104,7 +105,12 @@ class TestMenuContext extends BaseContext {
       {
         icon: Fa.char.th,
         text: 'sample game',
-        route: new RouteData('/test/game', new BlockBreakerProp(PlainGame.plain1()))
+        route: new RouteData('/bb/plain', new BlockBreakerProp(PlainGame.plain1()), true)
+      },
+      {
+        icon: Fa.char.th,
+        text: 'sample game',
+        route: new RouteData('/bb/image', new ImageBlockBreakerProp('asset/kobito.png'), true)
       }
     ];
   }

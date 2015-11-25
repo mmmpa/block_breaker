@@ -24,7 +24,7 @@ class NormalBg extends Image {
     var matrix:Matrix = new Matrix();
     matrix.createGradientBox(Def.area.w, Def.area.h, Math.PI / 2, 0, 0);
     g.beginGradientFill(GradientType.LINEAR,
-    [Palette.whiteLightGray, Palette.white, Palette.white, Palette.whiteLightGray],
+    [Palette.whiteGrayD, Palette.whiteGray, Palette.whiteGray, Palette.whiteGrayD],
     [1, 1, 1, 1],
     [0, 100, 155, 255],
     matrix,

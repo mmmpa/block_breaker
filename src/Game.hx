@@ -1,4 +1,5 @@
 package ;
+import model.blockbreaker.ImageBlockBreakerProp;
 import db.PlainGame;
 import model.blockbreaker.BlockBreakerProp;
 import router.RouteData;
@@ -8,20 +9,19 @@ import router.Router;
 import flash.geom.Rectangle;
 import starling.core.Starling;
 import flash.display.Stage;
-import feathers.themes.MinimalMobileTheme;
 import starling.display.Sprite;
 
 class Game extends Sprite {
   public function new() {
     super();
 
-    var theme = new MinimalMobileTheme();
     var mainRouter:Router = new Router();
     addChild(mainRouter);
     //var route:RouteData = new RouteData('/test/ball', new BallTestProp(3000));
     //var route:RouteData = new RouteData('/test/parts');
     //var route:RouteData = new RouteData('/configuration');
-    var route:RouteData = new RouteData('/test/game', new BlockBreakerProp(PlainGame.plain1()));
+    //var route:RouteData = new RouteData('/bb/plain', new BlockBreakerProp(PlainGame.plain1()));
+    var route:RouteData = new RouteData('/bb/image', new ImageBlockBreakerProp('asset/kobito.png'), true);
     mainRouter.pushRoot(MainContext, route);
   }
 

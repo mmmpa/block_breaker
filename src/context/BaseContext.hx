@@ -1,4 +1,5 @@
 package context;
+import router.RouteData;
 import config.Def;
  import starling.events.Event;
 import event.ContextEvent;
@@ -155,8 +156,8 @@ class BaseContext extends EventDispatcher {
     actors = acted;
   }
 
-  public function go(route:String, insertProps:Dynamic = null) {
-    routeMap.get(route)(insertProps);
+  public function go(route:RouteData) {
+    routeMap.get(route.route)(route);
   }
 
   public function emit(e:Event) {

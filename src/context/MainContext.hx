@@ -1,9 +1,9 @@
 package context;
+import context.blockbreaker.ImageBlockBreakerContext;
 import db.PlainGame;
 import model.blockbreaker.BlockBreakerProp;
 import context.blockbreaker.PlainBlockBreakerContext;
 import config.Configuration;
-import config.Def;
 import model.ConfigurationProp;
 import context.test.BallBlockTestContext;
 import context.menu.TestMenuContext;
@@ -40,14 +40,14 @@ class MainContext extends BaseContext {
     this.ground.addChild(god);
 
     if (route != null) {
-      go(route.route, route.prop);
+      go(route);
     }
 
     this.startAnimation();
 
     this.addEventListener(ContextEvent.SCENE_CHANGE, function(e:Event) {
       var route:RouteData = e.data;
-      go(route.route, route.prop);
+      go(route);
     });
   }
 
@@ -77,62 +77,61 @@ class MainContext extends BaseContext {
   }
 
   private function initializeRouteMap() {
-    routeMap.set('/', function(insertProps) {
-      god.push(GodContext, insertProps);
-      menu.replace(MenuContext, null);
-      body.replace(BodyContext, insertProps);
-    });
-
-    routeMap.set('/configuration', function(insertProps) {
+    routeMap.set('/configuration', function(route:RouteData) {
       menu.replace(TestMenuContext, null);
 
       var configuration:ConfigurationProp = new ConfigurationProp();
-      body.replace(ConfigurationContext, insertProps);
+      body.replace(ConfigurationContext, configuration);
     });
 
-    routeMap.set('/test/parts', function(insertProps) {
+    routeMap.set('/test/parts', function(route:RouteData) {
       menu.replace(TestMenuContext, null);
-      body.replace(PartsTestContext, insertProps);
+      body.replace(PartsTestContext, route.prop);
     });
 
-    routeMap.set('/test/feather', function(insertProps) {
+    routeMap.set('/test/feather', function(route:RouteData) {
       menu.replace(TestMenuContext, null);
-      body.replace(FeatherTestContext, insertProps);
+      body.replace(FeatherTestContext, route.prop);
     });
 
-    routeMap.set('/test/splash', function(insertProps) {
+    routeMap.set('/test/splash', function(route:RouteData) {
       menu.replace(TestMenuContext, null);
-      body.replace(SplashTestContext, insertProps);
+      body.replace(SplashTestContext, route.prop);
     });
 
-    routeMap.set('/test/block/hit', function(insertProps) {
+    routeMap.set('/test/block/hit', function(route:RouteData) {
       menu.replace(TestMenuContext, null);
-      body.replace(BlockHitTestContext, insertProps);
+      body.replace(BlockHitTestContext, route.prop);
     });
 
-    routeMap.set('/test/ball', function(insertProps) {
+    routeMap.set('/test/ball', function(route:RouteData) {
       menu.replace(TestMenuContext, null);
-      body.replace(BallTestContext, insertProps);
+      body.replace(BallTestContext, route.prop);
     });
 
-    routeMap.set('/test/ball/block', function(insertProps) {
+    routeMap.set('/test/ball/block', function(route:RouteData) {
       menu.replace(TestMenuContext, null);
-      body.replace(BallBlockTestContext, insertProps);
+      body.replace(BallBlockTestContext, route.prop);
     });
 
-    routeMap.set('/test/shock', function(insertProps) {
+    routeMap.set('/test/shock', function(route:RouteData) {
       menu.replace(TestMenuContext, null);
-      body.replace(ShockTestContext, insertProps);
+      body.replace(ShockTestContext, route.prop);
     });
 
-    routeMap.set('/test/shock/hit', function(insertProps) {
+    routeMap.set('/test/shock/hit', function(route:RouteData) {
       menu.replace(TestMenuContext, null);
-      body.replace(ShockHitTestContext, insertProps);
+      body.replace(ShockHitTestContext, route.prop);
     });
 
-    routeMap.set('/test/game', function(insertProps) {
+    routeMap.set('/bb/plain', function(route:RouteData) {
       menu.replace(TestMenuContext, null);
-      body.replace(PlainBlockBreakerContext, insertProps);
+      body.replace(PlainBlockBreakerContext, route.prop, route.forceReload);
+    });
+
+    routeMap.set('/bb/image', function(route:RouteData) {
+      menu.replace(TestMenuContext, null);
+      body.replace(ImageBlockBreakerContext, route.prop, route.forceReload);
     });
   }
 

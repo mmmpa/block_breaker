@@ -1,4 +1,8 @@
 package context.blockbreaker;
+import view.blockbreaker.BlockTable;
+import model.blockbreaker.BlockGrid;
+import model.blockbreaker.ImageBlockGrid;
+import model.blockbreaker.ImageBlockBreakerProp;
 import config.Configuration;
 import asset.Se;
 import view.blockbreaker.GameOver;
@@ -6,13 +10,10 @@ import model.blockbreaker.BlockBreakerState;
 import view.blockbreaker.TapToStart;
 import view.NormalBg;
 import model.blockbreaker.BlockBreakerPlayingState;
-import model.blockbreaker.BlockBreakerProp;
 import model.blockbreaker.BallData;
 import model.blockbreaker.BlockBreaker;
 import model.blockbreaker.ShockData;
 import view.blockbreaker.Shock;
-import view.blockbreaker.BlockTable;
-import model.blockbreaker.BlockGrid;
 import view.blockbreaker.Ball;
 import starling.events.TouchPhase;
 import starling.display.Quad;
@@ -24,31 +25,30 @@ import model.RouterProp;
 
 using Lambda;
 
-class PlainBlockBreakerContext extends BaseContext {
+class ImageBlockBreakerContext extends BaseContext {
 
   private var game:BlockBreaker;
   private var listener:Quad;
   private var tapToStart:TapToStart = new TapToStart();
   private var gameOver:GameOver = new GameOver();
 
-  public function new(props:RouterProp, insertProps:BlockBreakerProp) {
+  public function new(props:RouterProp, insertProps:ImageBlockBreakerProp) {
     super(props);
     ground.y = Def.area.y;
     listener = new NormalBg();
 
-    var grid:BlockGrid = insertProps.grid;
-    game = new BlockBreaker(grid);
+    new ImageBlockGrid(insertProps.path, function(grid:BlockGrid){
+      game = new BlockBreaker(grid);
+      changeTouch();
+      var table:BlockTable = new BlockTable(grid);
+      beOnStage(table, true);
+      startAnimation();
+    }).process();
 
     ground.addChild(listener);
     ground.addChild(tapToStart);
     tapToStart.x = Std.int(Def.area.w - tapToStart.width) >> 1;
     tapToStart.y = Std.int(Def.area.h * 1.5 - tapToStart.height) >> 1;
-
-    var table:BlockTable = new BlockTable(grid);
-    beOnStage(table, true);
-    changeTouch();
-
-    startAnimation();
   }
 
   public function play(context:BaseContext) {

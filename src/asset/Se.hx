@@ -11,6 +11,7 @@ class Se extends Sound {
     var data = haxe.Resource.getBytes(name);
     var sound = new Se();
     sound.loadCompressedDataFromByteArray(data.getData(), data.length);
+    sound.play(0).stop();
     return sound;
   }
 
