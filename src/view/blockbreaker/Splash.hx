@@ -1,4 +1,4 @@
-package view;
+package view.blockbreaker;
 /*
 ブロックが破壊された時のアニメーション
  */

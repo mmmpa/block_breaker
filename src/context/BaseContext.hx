@@ -1,8 +1,7 @@
 package context;
 import config.Def;
- import starling.events.Event;
+import starling.events.Event;
 import event.ContextEvent;
-import haxe.macro.Context;
 import starling.display.Sprite;
 import starling.events.EventDispatcher;
 import router.Router;

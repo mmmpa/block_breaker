@@ -1,86 +1,41 @@
-package context.test;
-import model.ShockData;
-import model.BallData;
-import config.Configuration;
-import asset.Se;
-import db.PlainGame;
-import model.ShockHitData;
-import view.Shock;
-import view.BlockTable;
-import model.BlockHitSide;
-import model.BlockHitData;
-import model.BlockGrid;
-import model.ShockData;
-import model.BlockData;
-import model.FieldOutSide;
-import model.PlayFieldData;
-import model.BallData;
-import view.Ball;
-import model.BallData;
-import view.Splash;
-import starling.events.Event;
-import starling.events.TouchPhase;
-import starling.display.Quad;
+package model.blockbreaker;
 import config.Def;
+import config.Configuration;
 import flash.geom.Point;
-import starling.events.Touch;
-import starling.events.TouchEvent;
-import model.RouterProp;
+import asset.Se;
+import context.BaseContext;
 
 using Lambda;
 
-class SampleGameContext extends BaseContext {
+class BlockBreaker {
+  private var field:PlayFieldData;
+  private var grid:BlockGrid;
 
   private var balls:Array<BallData> = new Array();
   private var blocks:Array<BlockData> = new Array();
-  private var grid:BlockGrid;
   private var shocks:Array<ShockData> = new Array();
-  private var field:PlayFieldData;
-  private var listener:Quad;
+  private var state:BlockBreakerState;
 
-  public function new(props:RouterProp, insertProps:Dynamic = null) {
-    super(props);
-    ground.y = Def.area.y;
-    listener = new Quad(Def.area.w, Def.area.h, 0xcccccc);
-    ground.addChild(listener);
-    ground.addEventListener(TouchEvent.TOUCH, onTouch);
-
-    field = new PlayFieldData(0, 0, Def.area.w, Def.area.h);
-    grid = PlainGame.plain1();
-    var table:BlockTable = new BlockTable(grid);
-    beOnStage(table, true);
-
-    write(play);
-    startAnimation();
+  public function new(grid:BlockGrid) {
+    this.field = new PlayFieldData(0, 0, Def.area.w, Def.area.h);
+    this.grid = grid;
   }
 
-
-  private function onTouch(e:TouchEvent) {
-    var touch:Touch = e.getTouch(ground);
-
-    switch(touch.phase){
-      case TouchPhase.BEGAN:
-        var p:Point = touch.getLocation(ground);
-        if (balls.length == 0) {
-          var ballPoint:Point = new Point(p.x, p.y < Def.ballStartTop ? Def.ballStartTop : p.y);
-          var ball:BallData = addBall(ballPoint, 270);
-          var shock:ShockData = shock(p);
-          ball.hittedId = shock.id;
-        }else{
-          shock(p);
-        }
-    }
+  public function deactivate(){
+    balls = null;
+    blocks = null;
+    shocks = null;
   }
 
-  private function shock(p:Point):ShockData {
-    var data:ShockData = new ShockData(Std.int(p.x), Std.int(p.y), 2);
-    var shock:Shock = new Shock(data);
-    shocks.push(data);
-    beOnStage(shock);
-    return data;
+  public function hasBall():Bool {
+    return balls.length != 0;
   }
 
-  private function play(context:BaseContext) {
+  public function noBall():Bool {
+    return balls.length == 0;
+  }
+
+  public function play(context:BaseContext) {
     // shockの拡張処理処理
     shocks = shocks.filter(function(data:ShockData):Bool {
       data.spread();
@@ -114,7 +69,7 @@ class SampleGameContext extends BaseContext {
             if (block.hasBall()) {
               addBall(block.ballP, 70 + Math.floor(Math.random() * 40), block.color);
             }
-          }else{
+          } else {
             playHard = true;
           }
           switch(blockHit.hitSide){
@@ -182,11 +137,15 @@ class SampleGameContext extends BaseContext {
     balls = nextBalls;
   }
 
-  private function addBall(p:Point, degree:Int, color:Int = 0):BallData {
+  public function addShock(p:Point):ShockData {
+    var data:ShockData = new ShockData(Std.int(p.x), Std.int(p.y), 2);
+    shocks.push(data);
+    return data;
+  }
+
+  public function addBall(p:Point, degree:Int, color:Int = 0):BallData {
     var data:BallData = new BallData(p.x, p.y, color, 8, degree * Math.PI / 180);
-    var ball:Ball = Ball.create(data);
     balls.push(data);
-    beOnStage(ball);
     return data;
   }
 }

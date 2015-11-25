@@ -1,10 +1,8 @@
 package context.test;
-import model.FieldOutSide;
-import model.PlayFieldData;
-import model.BallData;
-import view.Ball;
-import model.BallData;
-import view.Splash;
+import model.blockbreaker.FieldOutSide;
+import model.blockbreaker.PlayFieldData;
+import model.blockbreaker.BallData;
+import view.blockbreaker.Ball;
 import starling.events.Event;
 import starling.events.TouchPhase;
 import starling.display.Quad;

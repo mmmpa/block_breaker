@@ -2,7 +2,6 @@ package model;
 
 import flash.geom.Point;
 import initializer.Trace;
-import view.Block;
 import massive.munit.Assert;
 import model.BlockGrid;
 

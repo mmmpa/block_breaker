@@ -1,10 +1,8 @@
 package;
 import initializer.FlashState;
-import config.Def;
- import initializer.Scale;
+import initializer.Scale;
 import initializer.Trace;
 import config.Sizing;
-import haxe.Json;
 import flash.Lib;
 import flash.display.Sprite;
 

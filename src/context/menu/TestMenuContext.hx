@@ -1,4 +1,6 @@
 package context.menu;
+import db.PlainGame;
+import model.blockbreaker.BlockBreakerProp;
 import model.common.ActorProp;
 import model.common.ButtonProp;
 import view.common.TopBar;
@@ -102,7 +104,7 @@ class TestMenuContext extends BaseContext {
       {
         icon: Fa.char.th,
         text: 'sample game',
-        route: new RouteData('/test/game')
+        route: new RouteData('/test/game', new BlockBreakerProp(PlainGame.plain1()))
       }
     ];
   }

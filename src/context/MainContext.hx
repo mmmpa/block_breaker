@@ -1,15 +1,13 @@
 package context;
-import model.test.BallTestProp;
+import context.blockbreaker.PlainBlockBreakerContext;
 import config.Configuration;
 import config.Def;
- import db.ConfigStore;
 import model.ConfigurationProp;
 import context.test.BallBlockTestContext;
 import context.menu.TestMenuContext;
 import router.RouteData;
 import context.test.FeatherTestContext;
 import context.test.PartsTestContext;
-import context.test.SampleGameContext;
 import context.test.ShockTestContext;
 import context.test.ShockHitTestContext;
 import context.test.BallTestContext;
@@ -20,7 +18,6 @@ import event.ContextEvent;
 import router.Router;
 import model.RouterProp;
 import starling.display.Sprite;
-import starling.text.TextField;
 
 class MainContext extends BaseContext {
   private var god:Router;
@@ -133,7 +130,7 @@ class MainContext extends BaseContext {
 
     routeMap.set('/test/game', function(insertProps) {
       menu.replace(TestMenuContext, null);
-      body.replace(SampleGameContext, insertProps);
+      body.replace(PlainBlockBreakerContext, insertProps);
     });
   }
 

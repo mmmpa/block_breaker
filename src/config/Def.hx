@@ -1,9 +1,7 @@
 package config;
 import starling.core.Starling;
 import model.common.StrictArea;
-import flash.geom.Rectangle;
 import db.Palette;
-import initializer.Scale;
 import starling.display.Stage;
 import flash.text.TextFormat;
 

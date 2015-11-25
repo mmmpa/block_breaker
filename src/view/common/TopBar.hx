@@ -1,8 +1,6 @@
 package view.common;
 
 import feathers.layout.HorizontalLayout;
-import starling.filters.BlurFilter;
-import db.Palette;
 import config.Def;
  import feathers.controls.LayoutGroup;
 import starling.display.Quad;

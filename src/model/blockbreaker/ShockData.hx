@@ -1,4 +1,4 @@
-package model;
+package model.blockbreaker;
 import flash.geom.Point;
 import config.Def;
  class ShockData {

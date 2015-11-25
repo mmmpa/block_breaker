@@ -3,8 +3,7 @@ import db.ConfigStore;
 import starling.utils.VAlign;
 import starling.utils.HAlign;
 import starling.core.Starling;
-import config.Def;
- class Configuration {
+class Configuration {
   public static var soundEnabled:Bool = false;
   public static var statusEnabled:Bool = false;
 

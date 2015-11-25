@@ -1,4 +1,4 @@
-package model;
+package model.blockbreaker;
 import flash.geom.Point;
 class BallData {
   public var hittedId:Int = 0;
@@ -32,7 +32,7 @@ class BallData {
     this.radian = radian;
     resetMovement();
   }
-
+  
   public function die() {
     alive = false;
   }

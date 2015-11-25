@@ -1,6 +1,5 @@
 package context.test;
-import view.Splash;
-import starling.events.Event;
+import view.blockbreaker.Splash;
 import starling.events.TouchPhase;
 import starling.display.Quad;
 import config.Def;

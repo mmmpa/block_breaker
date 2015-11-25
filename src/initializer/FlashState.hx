@@ -1,10 +1,7 @@
 package initializer;
-import flash.display.DisplayObjectContainer;
 import flash.Lib;
 import flash.display.StageAlign;
 import flash.display.StageScaleMode;
-import flash.display.StageQuality;
-import flash.display.Sprite;
 import flash.display.Stage;
 class FlashState {
   static public function initialize() {

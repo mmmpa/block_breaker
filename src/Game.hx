@@ -1,11 +1,6 @@
 package ;
-import model.test.BallTestProp;
-import starling.utils.VAlign;
-import starling.utils.HAlign;
 import router.RouteData;
 import config.Def;
- import starling.events.Event;
-import event.ContextEvent;
 import context.MainContext;
 import router.Router;
 import flash.geom.Rectangle;

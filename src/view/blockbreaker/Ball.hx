@@ -1,4 +1,4 @@
-package view;
+package view.blockbreaker;
 /*
 
 実際に表示されているボール。
@@ -8,7 +8,7 @@ import starling.display.QuadBatch;
 import context.BaseContext;
 import starling.display.DisplayObjectContainer;
 import config.Def;
- import model.BallData;
+import model.blockbreaker.BallData;
 import starling.display.Quad;
 
 class Ball extends Quad {

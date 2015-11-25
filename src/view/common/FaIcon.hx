@@ -1,7 +1,4 @@
 package view.common;
-import starling.display.Quad;
-import starling.display.DisplayObjectContainer;
-import context.BaseContext;
 import asset.Fa;
 import starling.text.TextField;
 import starling.text.TextFieldAutoSize;

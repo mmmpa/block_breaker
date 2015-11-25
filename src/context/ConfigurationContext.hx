@@ -1,21 +1,15 @@
 package context;
-import asset.Se;
 import view.common.Spacer;
 import view.common.Label;
 import feathers.layout.HorizontalLayout;
-import feathers.layout.HorizontalSpinnerLayout;
 import feathers.controls.LayoutGroup;
 import feathers.layout.VerticalLayout;
 import model.common.ActorProp.ActorHorizontal;
 import view.common.Checkbox;
 import config.Configuration;
-import view.common.Button;
 import config.Def;
 import model.ConfigurationProp;
-import starling.events.Event;
-import starling.text.TextField;
 import model.RouterProp;
-import event.ContextEvent;
 
 using Lambda;
 

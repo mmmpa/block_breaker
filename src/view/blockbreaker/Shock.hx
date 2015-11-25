@@ -1,10 +1,11 @@
-package view;
+package view.blockbreaker;
+
 import config.Def;
- import starling.display.DisplayObjectContainer;
+import starling.display.DisplayObjectContainer;
 import context.BaseContext;
 import starling.display.Image;
 import starling.textures.Texture;
-import model.ShockData;
+import model.blockbreaker.ShockData;
 import flash.display.BitmapData;
 
 class Shock extends Image {

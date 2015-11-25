@@ -1,11 +1,11 @@
-package view;
+package view.blockbreaker;
 /*
 
 実際に表示されているブロック。
 
  */
 import context.BaseContext;
-import model.BlockData;
+import model.blockbreaker.BlockData;
 import config.Def;
  import starling.display.DisplayObjectContainer;
 import starling.display.Quad;

@@ -1,8 +1,8 @@
-package view;
+package view.blockbreaker;
 import context.BaseContext;
-import model.BlockData;
+import model.blockbreaker.BlockData;
 import starling.display.DisplayObjectContainer;
-import model.BlockGrid;
+import model.blockbreaker.BlockGrid;
 
 using Lambda;
 

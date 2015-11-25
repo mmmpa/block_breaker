@@ -2,21 +2,12 @@ package view.common;
 import config.Configuration;
 import asset.Se;
 import model.common.ActorProp.ActorHorizontal;
-import asset.Fa;
 import model.common.ButtonProp;
 import context.BaseContext;
-import starling.text.TextFieldAutoSize;
 import db.Palette;
-import starling.events.TouchEvent;
-import starling.events.Touch;
-import flash.geom.Point;
-import starling.events.TouchPhase;
 import config.Def;
 import starling.display.DisplayObjectContainer;
-import starling.text.TextField;
-import flash.geom.Rectangle;
 import starling.display.Quad;
-import starling.display.Sprite;
 
 using addition.NullOr;
 
