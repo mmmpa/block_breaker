@@ -1,4 +1,5 @@
 package context.test;
+import view.NormalBg;
 import model.blockbreaker.PlayFieldData;
 import db.Palette;
 import model.blockbreaker.BlockHitSide;
@@ -29,7 +30,7 @@ class BlockHitTestContext extends BaseContext {
     ground.y = Def.area.y;
     field = new PlayFieldData(0, 0, Def.area.w, Def.area.h);
     startAnimation();
-    ground.addChild(new Quad(Def.area.w, Def.area.h, Def.testBg));
+    ground.addChild(new NormalBg());
     ground.name = 'block hit context';
 
     lineState = 'ready';

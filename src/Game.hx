@@ -1,4 +1,6 @@
 package ;
+import db.PlainGame;
+import model.blockbreaker.BlockBreakerProp;
 import router.RouteData;
 import config.Def;
 import context.MainContext;
@@ -18,7 +20,8 @@ class Game extends Sprite {
     addChild(mainRouter);
     //var route:RouteData = new RouteData('/test/ball', new BallTestProp(3000));
     //var route:RouteData = new RouteData('/test/parts');
-    var route:RouteData = new RouteData('/configuration');
+    //var route:RouteData = new RouteData('/configuration');
+    var route:RouteData = new RouteData('/test/game', new BlockBreakerProp(PlainGame.plain1()));
     mainRouter.pushRoot(MainContext, route);
   }
 
@@ -27,6 +30,7 @@ class Game extends Sprite {
     var starling:Starling = new Starling(Game, stage);
     Def.stage = starling.stage;
     Def.starling = starling;
+    Def.initialize();
     starling.enableErrorChecking = false;
     starling.viewPort = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
     starling.start();

@@ -1,4 +1,5 @@
 package context.test;
+import view.NormalBg;
 import view.blockbreaker.Shock;
 import model.blockbreaker.ShockData;
 import model.blockbreaker.ShockHitData;
@@ -22,7 +23,7 @@ class ShockHitTestContext extends BaseContext {
     ground.y = Def.area.y;
 
     startAnimation();
-    ground.addChild(new Quad(Def.area.w, Def.area.h, Def.testBg));
+    ground.addChild(new NormalBg());
 
     lineState = 'ready';
 

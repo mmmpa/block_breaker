@@ -1,4 +1,5 @@
 package context.test;
+import view.NormalBg;
 import view.blockbreaker.Shock;
 import model.blockbreaker.ShockHitData;
 import model.blockbreaker.BlockHitSide;
@@ -39,7 +40,7 @@ class BallBlockTestContext extends BaseContext {
     super(props);
     ground.y = Def.area.y;
     field = new PlayFieldData(0, 0, Def.area.w, Def.area.h);
-    listener = new Quad(Def.area.w, Def.area.h, 0xcccccc);
+    listener = new NormalBg();
     ground.addChild(new Quad(Def.area.w, Def.area.h, Def.testBg));
     ground.addEventListener(TouchEvent.TOUCH, onTouch);
 

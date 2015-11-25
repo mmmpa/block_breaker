@@ -1,4 +1,5 @@
 package context;
+import view.NormalBg;
 import view.common.Spacer;
 import view.common.Label;
 import feathers.layout.HorizontalLayout;
@@ -18,6 +19,7 @@ class ConfigurationContext extends BaseContext {
     super(props);
     ground.y = Def.area.y;
     startAnimation();
+    ground.addChild(new NormalBg());
 
     var layout:VerticalLayout = new VerticalLayout();
     layout.gap = 20;

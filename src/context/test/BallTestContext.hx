@@ -1,4 +1,5 @@
 package context.test;
+import view.NormalBg;
 import asset.BlockFont;
 import db.Palette;
 import model.test.BallTestProp;
@@ -28,7 +29,7 @@ class BallTestContext extends BaseContext {
     ground.y = Def.area.y;
 
     field = new PlayFieldData(0, 0, Def.area.w, Def.area.h);
-    ground.addChild(new Quad(Def.area.w, Def.fullArea.h, Def.testBg));
+    ground.addChild(new NormalBg());
     ground.addEventListener(TouchEvent.TOUCH, onTouch);
 
     write(book);
@@ -37,7 +38,6 @@ class BallTestContext extends BaseContext {
     var w:Int = Def.area.w;
     var h:Int = Def.area.h;
 
-    trace(insertProps);
     var limitation:Int = insertProps.be() ? insertProps.limitation : 10;
     var i:Int = 0;
     var fn:Dynamic = null;
@@ -60,6 +60,12 @@ class BallTestContext extends BaseContext {
       }
     });
   }
+
+  override function deactivate() {
+    balls = null;
+    super.deactivate();
+  }
+
 
   private function random(n:Float):Float {
     return Std.int(Math.floor(Math.random() * n));

@@ -1,7 +1,8 @@
 package context;
 import config.Def;
-import starling.events.Event;
+ import starling.events.Event;
 import event.ContextEvent;
+import haxe.macro.Context;
 import starling.display.Sprite;
 import starling.events.EventDispatcher;
 import router.Router;
@@ -49,7 +50,7 @@ class BaseContext extends EventDispatcher {
       rooter.removeActors(this);
       rooter.removeBooks(this);
     }
-    trace([isRoot(), rooter]);
+    trace(rooter);
   }
 
   public function toString():String{

@@ -1,4 +1,5 @@
 package context.test;
+import view.NormalBg;
 import model.blockbreaker.FieldOutSide;
 import model.blockbreaker.PlayFieldData;
 import model.blockbreaker.BallData;
@@ -23,7 +24,7 @@ class BlockBallHitTestContext extends BaseContext {
     super(props);
     ground.y = Def.area.y;
     field = new PlayFieldData(0, 0, Def.area.w, Def.area.h);
-    ground.addChild(new Quad(Def.area.w, Def.area.h, Def.testBg));
+    ground.addChild(new NormalBg());
     ground.addEventListener(TouchEvent.TOUCH, onTouch);
 
     write(book);

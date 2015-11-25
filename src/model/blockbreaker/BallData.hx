@@ -32,7 +32,7 @@ class BallData {
     this.radian = radian;
     resetMovement();
   }
-  
+
   public function die() {
     alive = false;
   }

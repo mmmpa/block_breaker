@@ -1,9 +1,9 @@
 package model.blockbreaker;
+import model.blockbreaker.BallData;
 import config.Def;
 import config.Configuration;
 import flash.geom.Point;
 import asset.Se;
-import context.BaseContext;
 
 using Lambda;
 
@@ -15,6 +15,7 @@ class BlockBreaker {
   private var blocks:Array<BlockData> = new Array();
   private var shocks:Array<ShockData> = new Array();
   private var state:BlockBreakerState;
+  public var status:BlockBreakerPlayingState = new BlockBreakerPlayingState();
 
   public function new(grid:BlockGrid) {
     this.field = new PlayFieldData(0, 0, Def.area.w, Def.area.h);
@@ -35,7 +36,7 @@ class BlockBreaker {
     return balls.length == 0;
   }
 
-  public function play(context:BaseContext) {
+  public function play():BlockBreakerPlayingState {
     // shockの拡張処理処理
     shocks = shocks.filter(function(data:ShockData):Bool {
       data.spread();
@@ -67,7 +68,8 @@ class BlockBreaker {
             grid.removeBlock(block);
             playBroken = true;
             if (block.hasBall()) {
-              addBall(block.ballP, 70 + Math.floor(Math.random() * 40), block.color);
+              var newBall:BallData = addBall(block.ballP, 70 + Math.floor(Math.random() * 40), block.color);
+              status.newBalls.push(newBall);
             }
           } else {
             playHard = true;
@@ -135,6 +137,7 @@ class BlockBreaker {
     }
 
     balls = nextBalls;
+    return status;
   }
 
   public function addShock(p:Point):ShockData {

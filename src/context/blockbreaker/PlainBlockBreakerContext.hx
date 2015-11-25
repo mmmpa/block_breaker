@@ -1,4 +1,6 @@
 package context.blockbreaker;
+import view.NormalBg;
+import model.blockbreaker.BlockBreakerPlayingState;
 import model.blockbreaker.BlockBreakerProp;
 import model.blockbreaker.BallData;
 import model.blockbreaker.BlockBreaker;
@@ -26,7 +28,7 @@ class PlainBlockBreakerContext extends BaseContext {
     super(props);
     ground.y = Def.area.y;
 
-    listener = new Quad(Def.area.w, Def.area.h, 0xcccccc);
+    listener = new NormalBg();
     ground.addChild(listener);
     ground.addEventListener(TouchEvent.TOUCH, onTouch);
 
@@ -35,8 +37,17 @@ class PlainBlockBreakerContext extends BaseContext {
     game = new BlockBreaker(grid);
     beOnStage(table, true);
 
-    write(game.play);
+    write(play);
     startAnimation();
+  }
+
+  public function play(context:BaseContext){
+    var now:BlockBreakerPlayingState = game.play();
+    var ball:BallData = now.newBalls.pop();
+    while(ball != null){
+      beOnStage(Ball.create(ball));
+      ball = now.newBalls.pop();
+    }
   }
 
   override public function deactivate(){
@@ -50,27 +61,26 @@ class PlainBlockBreakerContext extends BaseContext {
     switch(touch.phase){
       case TouchPhase.BEGAN:
         var p:Point = touch.getLocation(ground);
+        var shock:ShockData = game.addShock(p);
         if (game.noBall()) {
           var ballPoint:Point = new Point(p.x, p.y < Def.ballStartTop ? Def.ballStartTop : p.y);
-          var ball:BallData = game.addBall(ballPoint, 270);
-          var shock:ShockData = game.addShock(p);
-          ball.hittedId = shock.id;
+          var newBall:BallData = game.addBall(ballPoint, 270);
+          newBall.hittedId = shock.id;
+          addBall(newBall);
+          addShock(shock);
         }else{
-          addShock(p);
+          addShock(shock);
         }
     }
   }
 
-  private function addShock(p:Point):ShockData {
-    var data:ShockData = game.addShock(p);
+  private function addShock(data:ShockData) {
     var shock:Shock = new Shock(data);
     beOnStage(shock);
-    return data;
   }
 
-  private function addBall(p:Point, degree:Int, color:Int = 0):BallData {
-    var data:BallData = game.addBall(p, degree, color);
+  private function addBall(data:BallData) {
     var ball:Ball = Ball.create(data);
-    return data;
+    beOnStage(ball);
   }
 }

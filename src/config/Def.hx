@@ -1,4 +1,7 @@
 package config;
+import flash.display.BitmapData;
+import flash.display.GradientType;
+import starling.textures.Texture;
 import starling.core.Starling;
 import model.common.StrictArea;
 import db.Palette;
@@ -65,4 +68,5 @@ class Def {
   static public function sw():Int {
     return Std.int(stage.stageWidth);
   }
+
 }

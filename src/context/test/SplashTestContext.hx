@@ -1,4 +1,5 @@
 package context.test;
+import view.NormalBg;
 import view.blockbreaker.Splash;
 import starling.events.TouchPhase;
 import starling.display.Quad;
@@ -12,7 +13,7 @@ class SplashTestContext extends BaseContext {
   public function new(props:RouterProp, insertProps:Dynamic = null) {
     super(props);
     ground.y = Def.area.y;
-    ground.addChild(new Quad(Def.area.w, Def.area.h, Def.testBg));
+    ground.addChild(new NormalBg());
     ground.addEventListener(TouchEvent.TOUCH, onTouch);
 
     startAnimation();

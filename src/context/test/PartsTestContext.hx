@@ -1,4 +1,5 @@
 package context.test;
+import view.NormalBg;
 import model.common.ButtonProp;
 import model.common.ActorProp;
 import view.common.Checkbox;
@@ -19,6 +20,7 @@ class PartsTestContext extends BaseContext {
     super(props);
     ground.y = Def.area.y;
     startAnimation();
+    ground.addChild(new NormalBg());
 
     var layout:VerticalLayout = new VerticalLayout();
     layout.gap = 20;

@@ -1,4 +1,6 @@
 package context;
+import db.PlainGame;
+import model.blockbreaker.BlockBreakerProp;
 import context.blockbreaker.PlainBlockBreakerContext;
 import config.Configuration;
 import config.Def;
@@ -38,17 +40,18 @@ class MainContext extends BaseContext {
     this.ground.addChild(god);
 
     if (route != null) {
-      trace(route);
       go(route.route, route.prop);
     }
 
     this.startAnimation();
+
     this.addEventListener(ContextEvent.SCENE_CHANGE, function(e:Event) {
       var route:RouteData = e.data;
       go(route.route, route.prop);
     });
+  }
 
-    /*
+  private function checkLeak(){
     var timer:Int = 0;
     this.ground.addEventListener(Event.ENTER_FRAME, function(e:Event){
       timer ++;
@@ -59,9 +62,9 @@ class MainContext extends BaseContext {
         new Event(
         ContextEvent.SCENE_CHANGE,
         false,
-        new RouteData('/test/ball/block', new BallTestProp(1000))
+        new RouteData('/test/game', new BlockBreakerProp(PlainGame.plain1()))
         ));
-    });*/
+    });
   }
 
   private function initialize() {
@@ -70,7 +73,6 @@ class MainContext extends BaseContext {
   }
 
   private function initializeSetting() {
-    Def.initialize();
     Configuration.initialize();
   }
 
