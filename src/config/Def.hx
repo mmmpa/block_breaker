@@ -1,4 +1,5 @@
 package config;
+import starling.filters.BlurFilter;
 import flash.display.BitmapData;
 import flash.display.GradientType;
 import starling.textures.Texture;
@@ -43,6 +44,7 @@ class Def {
   static public var uiShadow:Int = Palette.black;
   static public var uiShadowBar:Int = Palette.whiteGrayD;
   static public var testBg:Int = Palette.white;
+  static public var uiDs:BlurFilter;
 
   // 一度にdeactiveするactorの数
   // 画面のフリーズ対策
@@ -59,6 +61,7 @@ class Def {
 
   // 計算により決定
   static public var fontSizeNormal:Int;
+  static public var fontSizeBig:Int;
   static public var paddingTop:Int;
   static public var paddingSide:Int;
   static public var topBarHeight:Int;
@@ -66,7 +69,8 @@ class Def {
   static public function initialize() {
     topBarHeight = Sizing.mm(15);
     fontSizeNormal = Sizing.mm(8);
-    paddingTop = Sizing.mm(4);
+    fontSizeBig = Sizing.mm(16);
+    paddingTop = Sizing.mm(8);
     paddingSide = Sizing.mm(8);
     area = new StrictArea(0, topBarHeight, sw(), sh() - topBarHeight);
     innerWidth = Std.int(area.w / 1.618);
@@ -75,6 +79,8 @@ class Def {
     innerHeight = Std.int(area.h - (area.w - innerWidth));
     fullArea = new StrictArea(0, 0, sw(), sh());
     ballStartTop = area.h - 100;
+
+    uiDs = BlurFilter.createDropShadow(4, Math.PI / 180 * 90, uiShadow, 0.5);
   }
 
   static public function sh():Int {

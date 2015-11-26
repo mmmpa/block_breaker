@@ -19,7 +19,7 @@ using addition.Support;
 
 class Notification extends BaseActor {
   public var bg:Quad = new Quad(1, 1, Palette.white);
-  public var ds:BlurFilter = BlurFilter.createDropShadow(4, Math.PI / 180 * 90, Def.uiShadow, 0.5);
+  public var ds:BlurFilter = Def.uiDs;
   public var listener:ButtonListener = new ButtonListener(1, 1, 0);
 
   public var strictWidth = Def.innerWidth;

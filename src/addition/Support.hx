@@ -28,4 +28,33 @@ class Support {
 
     return a;
   }
+
+  static public function center(a:Dynamic, b:Dynamic, offset:Float = 0) {
+    a.x = Std.int(b.width - a.width) >> 1;
+    a.x += Std.int(offset);
+
+    return a;
+  }
+
+  static public function top(a:Dynamic, b:Dynamic, offset:Float = 0) {
+    a.y = b.y;
+    a.y += Std.int(offset);
+
+    return a;
+  }
+
+  static public function middle(a:Dynamic, b:Dynamic, offset:Float = 0) {
+    a.y = Std.int(b.y) + Std.int(b.height - a.height) >> 1;
+    a.y += Std.int(offset);
+
+    return a;
+  }
+
+  static public function bottom(a:Dynamic, b:Dynamic, offset:Float = 0) {
+    a.y = Std.int(b.y + b.height - a.height);
+    a.y += Std.int(offset);
+
+    return a;
+  }
+
 }

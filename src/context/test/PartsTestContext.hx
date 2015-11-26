@@ -1,4 +1,5 @@
 package context.test;
+import view.blockbreaker.GameOverWindow;
 import feathers.controls.ScrollContainer;
 import view.Notification;
 import view.common.PresetButton;
@@ -44,6 +45,9 @@ class PartsTestContext extends BaseContext {
     var ban:ButtonProp = new ButtonProp();
     ban.faChar = Fa.char.ban;
 
+    parts.push(new GameOverWindow(function(){
+      trace('retry');
+    }));
     parts.push(PresetButton.normal('normal button', null, function() {
       trace('push');
     }));
