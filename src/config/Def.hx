@@ -41,6 +41,7 @@ class Def {
   static public var dragDistance:Float = 5;
 
   static public var uiBg:Int = Palette.white;
+  static public var uiLine:Int = Palette.whiteGray;
   static public var uiShadow:Int = Palette.black;
   static public var uiShadowBar:Int = Palette.whiteGrayD;
   static public var testBg:Int = Palette.white;

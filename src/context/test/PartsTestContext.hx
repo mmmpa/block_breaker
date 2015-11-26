@@ -1,4 +1,6 @@
 package context.test;
+import feathers.controls.ScrollContainer;
+import view.Notification;
 import view.common.PresetButton;
 import feathers.layout.HorizontalLayout;
 import view.NormalBg;
@@ -6,7 +8,6 @@ import model.common.ButtonProp;
 import model.common.ActorProp;
 import view.common.Checkbox;
 import config.Def;
-import feathers.controls.LayoutGroup;
 import feathers.layout.VerticalLayout;
 import view.common.Label;
 import asset.Fa;
@@ -29,59 +30,52 @@ class PartsTestContext extends BaseContext {
     layout.paddingTop = 20;
     layout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_CENTER;
 
-    var container:LayoutGroup = new LayoutGroup();
+    var container:ScrollContainer = new ScrollContainer();
     container.layout = layout;
     container.width = Def.area.w;
     container.height = Def.area.h;
     ground.addChild(container);
 
-    var button:Button = PresetButton.normal('normal button', null, function(){
-      trace('push');
-    });
-
+    var parts:Array<Dynamic> = new Array();
     var fab:ButtonProp = new ButtonProp();
     fab.faChar = Fa.char.paw;
-
-    var faButton:Button = PresetButton.normal('button with icon', fab, function(){
-      trace('push');
-    });
-
     var thum:ButtonProp = new ButtonProp();
     thum.faChar = Fa.char.thumbsOUp;
-
-    var okButton:Button = PresetButton.forOk('ok', thum, function(){
-      trace('push');
-    });
-
-    var submitButton:Button = PresetButton.forSubmit('submit', thum, function(){
-      trace('push');
-    });
-
     var ban:ButtonProp = new ButtonProp();
     ban.faChar = Fa.char.ban;
 
-    var cancelButton:Button = PresetButton.forCansel('cancel', ban, function(){
+    parts.push(PresetButton.normal('normal button', null, function() {
       trace('push');
-    });
-
-    var check:Checkbox = Checkbox.normal('checked box', true, ActorHorizontal.Right, function(cb:Checkbox){
+    }));
+    parts.push(PresetButton.normal('button with icon', fab, function() {
+      trace('push');
+    }));
+    parts.push(PresetButton.forOk('ok', thum, function() {
+      trace('push');
+    }));
+    parts.push(PresetButton.forSubmit('submit', thum, function() {
+      trace('push');
+    }));
+    parts.push(PresetButton.forCansel('cancel', ban, function() {
+      trace('push');
+    }));
+    parts.push(Checkbox.normal('checked box', true, ActorHorizontal.Right, function(cb:Checkbox) {
       trace(cb.checked);
-    });
-    var uncheck:Checkbox = Checkbox.normal('unchecked box', false, ActorHorizontal.Left, function(cb:Checkbox){
+    }));
+    parts.push(Checkbox.normal('unchecked box', false, ActorHorizontal.Left, function(cb:Checkbox) {
       trace(cb.checked);
+    }));
+
+    parts.push(new Notification('', 'message only', function() { trace('push');}));
+    parts.push(new Notification('title', 'and message', function() {trace('push');}));
+    parts.push(new Notification('On death', "Can death be sleep, when life is but a dream, And scenes of bliss pass as a phantom by? The transient pleasures as a vision seem,\nAnd yet we think the greatest pain's to die.\n", function() {trace('push');}));
+    parts.push(new Notification('On death', "Can death be sleep, when life is but a dream, And scenes of bliss pass as a phantom by? The transient pleasures as a vision seem,\nAnd yet we think the greatest pain's to die.\n\nHow strange it is that man on earth should roam,And lead a life of woe, but not forsake His rugged path; nor dare he view alone His future doom which is but to awake.\nCan death be sleep, when life is but a dream, And scenes of bliss pass as a phantom by? The transient pleasures as a vision seem,\nAnd yet we think the greatest pain's to die.\n\nHow strange it is that man on earth should roam,And lead a life of woe, but not forsake His rugged path; nor dare he view alone His future doom which is but to awake.", function() {trace('push');}));
+
+    parts.push(new FaIcon(Fa.char.apple, 56).scale(2).rotate(0));
+    parts.push(new Label('ラベル', 20, Fa.char.apple));
+
+    parts.iter(function(actor:Dynamic) {
+      actor.activate(this, container);
     });
-
-    var fa:FaIcon = new FaIcon(Fa.char.apple, 56).scale(2).rotate(0);
-    var label:Label = new Label('ラベル', 20, Fa.char.apple);
-
-    button.activate(this, container);
-    faButton.activate(this, container);
-    okButton.activate(this, container);
-    submitButton.activate(this, container);
-    cancelButton.activate(this, container);
-    check.activate(this, container);
-    uncheck.activate(this, container);
-    fa.activate(this, container);
-    label.activate(this, container);
   }
 }
