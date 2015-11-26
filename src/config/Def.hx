@@ -14,6 +14,8 @@ class Def {
   static public var debug:Bool = true;
   static public var fmt:TextFormat = new TextFormat('_等幅', 20);
 
+  static public var tapHoldCount:Int = 30;
+
   static public var fontSizeNormal:Int;
 
   static public var splashSize:Int = 16;

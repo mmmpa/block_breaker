@@ -1,4 +1,5 @@
 package context.menu;
+import view.common.PresetButton;
 import model.blockbreaker.ImageBlockBreakerProp;
 import db.PlainGame;
 import model.blockbreaker.BlockBreakerProp;
@@ -27,7 +28,7 @@ class TestMenuContext extends BaseContext {
 
     bar = new TopBar();
     menu = new SideMenu(routesSrc);
-    var faButton:Button = Button.normal('', new ButtonProp(Def.topBarHeight, Def.topBarHeight, 0, 0, ActorHorizontal.Center, Fa.char.bars), function(){
+    var faButton:Button = PresetButton.normal('', new ButtonProp(Def.topBarHeight, Def.topBarHeight, 0, 0, ActorHorizontal.Center, Fa.char.bars), function(){
       menu.open();
     });
 
@@ -109,8 +110,13 @@ class TestMenuContext extends BaseContext {
       },
       {
         icon: Fa.char.th,
-        text: 'sample game',
+        text: 'sample game: kobito',
         route: new RouteData('/bb/image', new ImageBlockBreakerProp('asset/kobito.png'), true)
+      },
+      {
+        icon: Fa.char.th,
+        text: 'sample game: octcat',
+        route: new RouteData('/bb/image', new ImageBlockBreakerProp('asset/octcat.png'), true)
       }
     ];
   }

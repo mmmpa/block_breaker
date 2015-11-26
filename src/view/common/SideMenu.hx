@@ -122,7 +122,7 @@ class SideMenu extends BaseActor {
     return menuRecipes.map(function(recipe:MenuRecipe):Button {
       var buttonProp:ButtonProp = new ButtonProp();
       buttonProp.faChar = recipe.icon;
-      var button:Button = Button.normal(recipe.text, buttonProp, function() {
+      var button:Button = PresetButton.normal(recipe.text, buttonProp, function() {
         close();
         emit(new Event(ContextEvent.SCENE_CHANGE, false, recipe.route));
       });

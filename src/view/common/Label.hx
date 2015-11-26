@@ -8,17 +8,18 @@ class Label extends PartsActor {
   private var tf:TextField;
   private var icon:FaIcon;
 
-  public function new(text:String, size:Int = 0, ?iconChar:String) {
+  public function new(text:String, size:Int = 0, ?color:Int = 0, ?iconChar:String) {
     super();
 
     this.tf = new TextField(1, 1, text);
+    tf.color = color;
     tf.fontSize = size == 0 ? Def.fontSizeNormal : size;
     tf.fontName = BlockFont.name;
     tf.autoSize = TextFieldAutoSize.BOTH_DIRECTIONS;
     this.addChild(tf);
 
     if (iconChar != null && iconChar.length != 0) {
-      this.icon = new FaIcon(iconChar, Std.int(size * 0.7));
+      this.icon = new FaIcon(iconChar, Std.int(size * 0.7), color);
       this.addChild(icon);
     }
 

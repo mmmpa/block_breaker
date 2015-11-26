@@ -1,4 +1,6 @@
 package view.common;
+import starling.events.Event;
+import starling.filters.BlurFilter;
 import config.Configuration;
 import asset.Se;
 import model.common.ActorProp.ActorHorizontal;
@@ -14,6 +16,7 @@ using addition.NullOr;
 class Button extends PartsActor {
   private var listener:ButtonListener;
   private var bg:Quad;
+  private var hover:Quad;
   private var effect:Quad;
   private var label:Label;
   private var prop:ButtonProp;
@@ -21,32 +24,72 @@ class Button extends PartsActor {
   private var callback:Dynamic;
   //private var Map<Dynamic, CallbackList>;
 
-  public static function normal(text:String, ?prop:ButtonProp, callback:Dynamic):Button {
-    var prop:ButtonProp = prop.or(new ButtonProp());
-    prop.bg = Palette.white;
-    prop.effect = Palette.whiteGray;
-
-    return new Button(text, prop, callback);
-  }
-
-  public function new(text:String, ?prop:ButtonProp, callback:Dynamic) {
+  public function new(text:String, ?prop:ButtonProp, callback:Dynamic, ?hoverCallback:Dynamic, ?outCallback:Dynamic, ?holdCallback:Dynamic) {
     super();
     this.prop = prop;
 
-    this.label = new Label(text, Def.fontSizeNormal, prop.faChar);
+    this.label = new Label(text, Def.fontSizeNormal, prop.color, prop.faChar);
     this.bg = new Quad(1, 1, prop.bg);
+    this.hover = new Quad(1, 1, prop.effect);
     this.effect = new Quad(1, 1, prop.effect);
     this.listener = new ButtonListener(1, 1);
+
+    bg.filter = prop.filter;
+    effect.alpha = 0;
+    hover.alpha = 0.5;
+    hover.visible = false;
+
+    listener.down = function() {
+      startHold();
+    }
+
+    listener.release = function() {
+      endHold();
+    }
 
     listener.click = function() {
       callback();
       if (Configuration.soundEnabled) {Se.broken.play(); }
     }
+
+    listener.hover = function() {
+      if (hoverCallback != null) {hoverCallback();}
+      hover.visible = true;
+    }
+
+    listener.out = function() {
+      if (outCallback != null) {outCallback();}
+      hover.visible = false;
+    }
+
+    if (holdCallback != null) {
+      listener.long = function() {
+        endHold();
+        holdCallback();
+      }
+    }
+
+
     addChild(bg);
+    addChild(hover);
+    addChild(effect);
     addChild(label);
     addChild(listener);
 
     initialize();
+  }
+
+  private function startHold() {
+    Def.stage.addEventListener(Event.ENTER_FRAME, hold);
+  }
+
+  private function endHold() {
+    Def.stage.removeEventListener(Event.ENTER_FRAME, hold);
+    effect.alpha = 0;
+  }
+
+  private function hold(e:Event) {
+    effect.alpha = listener.holdingRate;
   }
 
   public function resize(w:Float, h:Float):Button {
@@ -86,12 +129,13 @@ class Button extends PartsActor {
         label.y = Std.int(bg.height - label.height) >> 1;
     }
 
-    listener.width = bg.width;
-    listener.height = bg.height;
-    flatten();
+    listener.width = hover.width = effect.width = bg.width;
+    listener.height = hover.height = effect.height = bg.height;
+    //flatten();
   }
 
   override public function deactivate() {
+    Def.stage.removeEventListener(Event.ENTER_FRAME, hold);
     listener.deactivate();
     label.deactivate();
     super.deactivate();

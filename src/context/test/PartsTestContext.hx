@@ -1,4 +1,6 @@
 package context.test;
+import view.common.PresetButton;
+import feathers.layout.HorizontalLayout;
 import view.NormalBg;
 import model.common.ButtonProp;
 import model.common.ActorProp;
@@ -25,19 +27,40 @@ class PartsTestContext extends BaseContext {
     var layout:VerticalLayout = new VerticalLayout();
     layout.gap = 20;
     layout.paddingTop = 20;
+    layout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_CENTER;
 
     var container:LayoutGroup = new LayoutGroup();
     container.layout = layout;
+    container.width = Def.area.w;
+    container.height = Def.area.h;
     ground.addChild(container);
 
-    var button:Button = Button.normal('normal button', null, function(){
+    var button:Button = PresetButton.normal('normal button', null, function(){
       trace('push');
     });
 
-
     var fab:ButtonProp = new ButtonProp();
     fab.faChar = Fa.char.paw;
-    var faButton:Button = Button.normal('button with icon', fab, function(){
+
+    var faButton:Button = PresetButton.normal('button with icon', fab, function(){
+      trace('push');
+    });
+
+    var thum:ButtonProp = new ButtonProp();
+    thum.faChar = Fa.char.thumbsOUp;
+
+    var okButton:Button = PresetButton.forOk('ok', thum, function(){
+      trace('push');
+    });
+
+    var submitButton:Button = PresetButton.forSubmit('submit', thum, function(){
+      trace('push');
+    });
+
+    var ban:ButtonProp = new ButtonProp();
+    ban.faChar = Fa.char.ban;
+
+    var cancelButton:Button = PresetButton.forCansel('cancel', ban, function(){
       trace('push');
     });
 
@@ -53,6 +76,9 @@ class PartsTestContext extends BaseContext {
 
     button.activate(this, container);
     faButton.activate(this, container);
+    okButton.activate(this, container);
+    submitButton.activate(this, container);
+    cancelButton.activate(this, container);
     check.activate(this, container);
     uncheck.activate(this, container);
     fa.activate(this, container);

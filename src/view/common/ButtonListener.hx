@@ -1,6 +1,7 @@
 package view.common;
+import starling.events.Event;
 import config.Def;
- import starling.events.TouchEvent;
+import starling.events.TouchEvent;
 import flash.geom.Point;
 import starling.events.Touch;
 import starling.events.TouchPhase;
@@ -13,6 +14,7 @@ class ButtonListener extends Quad {
   private var prev:Point;
   private var movement:Float;
   private var state:ButtonListenerState = ButtonListenerState.Ready;
+  private var count:Int = 0;
 
   // calllback
   public var down:Dynamic;
@@ -21,9 +23,12 @@ class ButtonListener extends Quad {
   public var release:Dynamic;
   public var hover:Dynamic;
   public var out:Dynamic;
+  public var long:Dynamic;
 
   // state getter
+  public var holdingRate(get, never):Float;
   public var ready(get, never):Bool;
+  public var began(get, never):Bool;
   public var moved(get, never):Bool;
   public var hovered(get, never):Bool;
 
@@ -56,6 +61,7 @@ class ButtonListener extends Quad {
         state = ButtonListenerState.Began;
         movement = 0;
         down.be() && down();
+        startCount();
       case TouchPhase.HOVER:
         if (ready) {
           hover.be() && hover();
@@ -68,18 +74,35 @@ class ButtonListener extends Quad {
             state = ButtonListenerState.Moved;
           }
         }
-        drag.be() && drag();
+        if (!ready || long == null) { drag.be() && drag(); }
       case TouchPhase.ENDED:
-        if (!moved) {
-          click.be() && click();
-        }
-        release.be() && release();
+        if (!moved && (!ready || long == null)) { click.be() && click(); }
+        if (!ready || long == null) { release.be() && release(); }
         state = ButtonListenerState.Ready;
     }
 
+    if (!began) { stopCount();}
     if (nowHovered && !hovered) { out.be() && out(); }
 
     prev = position;
+  }
+
+  private function startCount() {
+    count = 0;
+    Def.stage.addEventListener(Event.ENTER_FRAME, doCount);
+  }
+
+  private function stopCount() {
+    Def.stage.removeEventListener(Event.ENTER_FRAME, doCount);
+  }
+
+  private function doCount(e:Event) {
+    count++;
+    if (count > Def.tapHoldCount) {
+      long.be() && long();
+      state = ButtonListenerState.Ready;
+      stopCount();
+    }
   }
 
   private function inArea(p:Point):Bool {
@@ -100,6 +123,14 @@ class ButtonListener extends Quad {
 
   private function get_ready():Bool {
     return state == ButtonListenerState.Ready;
+  }
+
+  private function get_began():Bool {
+    return state == ButtonListenerState.Began;
+  }
+
+  private function get_holdingRate():Float {
+    return count / Def.tapHoldCount;
   }
 
   @:extern inline function distance(a:Point, b:Point):Float {
