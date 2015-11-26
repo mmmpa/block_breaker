@@ -26,7 +26,7 @@ import starling.events.TouchEvent;
 import model.RouterProp;
 
 using Lambda;
-using addition.NullOr;
+using addition.Support;
 
 class BallBlockTestContext extends BaseContext {
   private var balls:Array<BallData> = new Array();

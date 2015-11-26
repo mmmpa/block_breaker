@@ -4,7 +4,7 @@ import config.Def;
 import db.Palette;
 import model.common.ButtonProp;
 
-using addition.NullOr;
+using addition.Support;
 
 class PresetButton {
   public static function normal(text:String, ?prop:ButtonProp, callback:Dynamic):Button {

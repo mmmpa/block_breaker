@@ -7,7 +7,7 @@ import starling.events.Touch;
 import starling.events.TouchPhase;
 import starling.display.Quad;
 
-using addition.NullOr;
+using addition.Support;
 
 class ButtonListener extends Quad {
   // for state

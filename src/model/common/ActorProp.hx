@@ -1,7 +1,7 @@
 package model.common;
 
 import config.Def;
-using addition.NullOr;
+using addition.Support;
 
 class ActorProp {
   public var w:Int;

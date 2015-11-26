@@ -2,7 +2,7 @@ package model.common;
 import starling.filters.BlurFilter;
 import model.common.ActorProp.ActorHorizontal;
 
-using addition.NullOr;
+using addition.Support;
 
 class ButtonProp extends ActorProp {
   public var faChar:String;

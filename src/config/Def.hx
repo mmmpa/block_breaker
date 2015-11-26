@@ -16,12 +16,10 @@ class Def {
 
   static public var tapHoldCount:Int = 30;
 
-  static public var fontSizeNormal:Int;
-
   static public var splashSize:Int = 16;
   static public var splashFrame:Int = 10;
 
-  static public var cellMargin:Int = 1;
+  static public var cellMargin:Int = 0;
 
   static public var ballSize:Int = 8;
   static public var ballSize1:Int = 6;
@@ -46,20 +44,35 @@ class Def {
   static public var uiShadowBar:Int = Palette.whiteGrayD;
   static public var testBg:Int = Palette.white;
 
-  static public var area:StrictArea;
-  static public var fullArea:StrictArea;
-  static public var ballStartTop:Float;
-
   // 一度にdeactiveするactorの数
   // 画面のフリーズ対策
   static public var deactiveLimit:Int = 10;
 
+  // 起動後に決定される
+  static public var area:StrictArea;
+  static public var fullArea:StrictArea;
+  static public var ballStartTop:Float;
+  static public var innerWidth:Int;
+  static public var innerHeight:Int;
+  static public var innerMinHeight:Int;
+  static public var innerPadding:Int;
+
+  // 計算により決定
+  static public var fontSizeNormal:Int;
+  static public var paddingTop:Int;
+  static public var paddingSide:Int;
   static public var topBarHeight:Int;
 
   static public function initialize() {
     topBarHeight = Sizing.mm(15);
     fontSizeNormal = Sizing.mm(8);
+    paddingTop = Sizing.mm(4);
+    paddingSide = Sizing.mm(8);
     area = new StrictArea(0, topBarHeight, sw(), sh() - topBarHeight);
+    innerWidth = Std.int(area.w / 1.618);
+    innerMinHeight = Std.int(innerWidth / 1.618);
+    innerPadding = Std.int(area.w - innerWidth / 2);
+    innerHeight = Std.int(area.h - (area.w - innerWidth));
     fullArea = new StrictArea(0, 0, sw(), sh());
     ballStartTop = area.h - 100;
   }

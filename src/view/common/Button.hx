@@ -11,7 +11,7 @@ import config.Def;
 import starling.display.DisplayObjectContainer;
 import starling.display.Quad;
 
-using addition.NullOr;
+using addition.Support;
 
 class Button extends PartsActor {
   private var listener:ButtonListener;

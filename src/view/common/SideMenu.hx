@@ -13,7 +13,7 @@ import starling.events.Event;
 import router.RouteData;
 
 using Lambda;
-using addition.NullOr;
+using addition.Support;
 
 typedef MenuRecipe = {icon:String, text:String, route:RouteData}
 

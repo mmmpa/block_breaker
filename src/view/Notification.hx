@@ -1,4 +1,5 @@
 package view;
+import view.app.BlockText;
 import feathers.controls.ScrollContainer;
 import feathers.layout.HorizontalLayout;
 import feathers.layout.VerticalLayout;
@@ -14,13 +15,17 @@ import config.Def;
 import db.Palette;
 import starling.display.Quad;
 
+using addition.Support;
+
 class Notification extends BaseActor {
   public var bg:Quad = new Quad(1, 1, Palette.white);
   public var ds:BlurFilter = BlurFilter.createDropShadow(4, Math.PI / 180 * 90, Def.uiShadow, 0.5);
-  public var strictWidth = Std.int(Def.area.w / 1.618);
-  public var minHeight = Std.int(Def.area.w / 1.1618 / 1.618);
-  public var maxHeight = Std.int(Def.area.h - (Def.area.w - Def.area.w / 1.618));
-  public var listener:ButtonListener = new ButtonListener(1, 1);
+  public var listener:ButtonListener = new ButtonListener(1, 1, 0);
+
+  public var strictWidth = Def.innerWidth;
+  public var minHeight = Def.innerMinHeight;
+  public var maxHeight = Def.innerHeight;
+  private var tfWidth:Int = Def.innerWidth - Def.paddingSide * 2;
 
   public var messageTf:TextField;
   public var titleTf:TextField;
@@ -28,57 +33,52 @@ class Notification extends BaseActor {
 
   public function new(title:String, message:String, callback:Dynamic) {
     super();
+    bg.shape(strictWidth, minHeight);
 
-    bg.width = strictWidth;
-    bg.height = minHeight;
     bg.filter = ds;
     addChild(bg);
+    addChild(listener);
+    listener.click = callback;
 
     if (title.length != 0) {
-      titleTf = new TextField(strictWidth - 20, 1, title);
-      titleTf.x = 10;
-      titleTf.y = 5;
-      titleTf.autoSize = TextFieldAutoSize.VERTICAL;
-      titleTf.fontName = BlockFont.name;
-      titleTf.fontSize = Def.fontSizeNormal;
+      titleTf = new BlockText(tfWidth, 1, title);
+      titleTf.posit(Def.paddingSide, Def.paddingTop);
       addChild(titleTf);
       underline = new Quad(strictWidth, 1, Def.uiLine);
-      underline.y = titleTf.bounds.bottom + 5;
+      underline.y = titleTf.bounds.bottom + Def.paddingTop;
       addChild(underline);
     }
 
-    messageTf = new TextField(strictWidth - 20, 1, message);
-    messageTf.hAlign = HAlign.LEFT;
-    messageTf.vAlign = VAlign.CENTER;
-    messageTf.autoSize = TextFieldAutoSize.VERTICAL;
-    messageTf.fontName = BlockFont.name;
-    messageTf.fontSize = Def.fontSizeNormal;
-    messageTf.x = 10;
+    messageTf = new BlockText(tfWidth, 1, message);
+    messageTf.x = Def.paddingSide;
     addChild(messageTf);
 
     if (titleTf == null) {
-      messageTf.y = 5;
+      messageTf.y = Def.paddingTop;
     } else {
-      messageTf.y = titleTf.bounds.bottom + 11;
+      messageTf.y = titleTf.bounds.bottom + Def.paddingTop * 2;
     }
 
-    var need:Float = messageTf.bounds.bottom + 10;
+    var need:Float = messageTf.bounds.bottom + Def.paddingTop;
     if (maxHeight < need) {
-      var container:ScrollContainer = new ScrollContainer();
-      container.width = strictWidth;
-      container.height = maxHeight;
       bg.height = maxHeight;
+
+      var container:ScrollContainer = new ScrollContainer();
+      container.shape(strictWidth, maxHeight);
       addChild(container);
+
       if (titleTf != null) {
         container.addChild(titleTf);
         container.addChild(underline);
       }
       container.addChild(messageTf);
-    }else if(need > minHeight){
+    } else if (need > minHeight) {
       bg.height = need;
     } else {
       messageTf.autoSize = TextFieldAutoSize.NONE;
-      messageTf.height = minHeight - messageTf.y - 10;
+      messageTf.height = minHeight - messageTf.y - Def.paddingTop;
     }
+
+    listener.fit(bg);
   }
 }
