@@ -7,7 +7,7 @@ import model.common.ButtonProp;
 using addition.Support;
 
 class PresetButton {
-  public static function normal(text:String, ?prop:ButtonProp, callback:Dynamic):Button {
+  public static function normal(text:String, ?prop:ButtonProp, callback:Dynamic, ?hoverCallback:Dynamic, ?outCallback:Dynamic, ?holdCallback:Dynamic):Button {
     var prop:ButtonProp = prop.or(new ButtonProp());
     prop.bg = Palette.white;
     prop.effect = Palette.whiteGray;

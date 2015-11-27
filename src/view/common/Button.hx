@@ -24,7 +24,7 @@ class Button extends PartsActor {
   private var callback:Dynamic;
   //private var Map<Dynamic, CallbackList>;
 
-  public function new(text:String, ?prop:ButtonProp, callback:Dynamic, ?hoverCallback:Dynamic, ?outCallback:Dynamic, ?holdCallback:Dynamic) {
+  public function new(text:String, ?prop:ButtonProp, ?callback:Dynamic, ?hoverCallback:Dynamic, ?outCallback:Dynamic, ?holdCallback:Dynamic) {
     super();
     this.prop = prop;
 

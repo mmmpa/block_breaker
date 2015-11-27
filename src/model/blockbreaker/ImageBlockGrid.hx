@@ -16,7 +16,7 @@ class ImageBlockGrid {
   }
 
   public function process() {
-    BitmapLoader.load(path, onLoad);
+    BitmapLoader.loadGemaData(path, onLoad);
     return this;
   }
 

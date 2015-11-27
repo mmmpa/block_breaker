@@ -25,6 +25,7 @@ class Label extends PartsActor {
 
     posit();
     initializeArea();
+    flatten();
   }
 
   override public function deactivate(){

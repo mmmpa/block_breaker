@@ -1,4 +1,12 @@
 package context.test;
+import starling.textures.TextureSmoothing;
+import starling.textures.Texture;
+import starling.display.Image;
+import flash.display.BitmapData;
+import service.BitmapLoader;
+import view.common.PartsActor;
+import starling.display.Sprite;
+import view.blockbreaker.FinderPiece;
 import view.blockbreaker.GamePassedWindow;
 import view.blockbreaker.GameOverWindow;
 import feathers.controls.ScrollContainer;
@@ -46,6 +54,23 @@ class PartsTestContext extends BaseContext {
     var ban:ButtonProp = new ButtonProp();
     ban.faChar = Fa.char.ban;
 
+    var p1:FinderPiece = FinderPiece.noImage(function() {
+      trace('retry');
+    });
+    var p2:FinderPiece = FinderPiece.loading(function() {
+      trace('retry');
+    });
+    BitmapLoader.load('asset/kobito.png', function(data:BitmapData){
+      var image:Image = new Image(Texture.fromBitmapData(data));
+      image.smoothing = TextureSmoothing.NONE;
+      p2.replaceImage(image);
+    });
+    var pieces:PartsActor = new PartsActor();
+    pieces.addChild(p1);
+    pieces.addChild(p2);
+    p2.x = Def.paddingTop + p1.width;
+
+    parts.push(pieces);
     parts.push(new GameOverWindow(function() {
       trace('retry');
     }));
