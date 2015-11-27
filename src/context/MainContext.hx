@@ -62,7 +62,7 @@ class MainContext extends BaseContext {
         new Event(
         ContextEvent.SCENE_CHANGE,
         false,
-        new RouteData('/test/game', new BlockBreakerProp(PlainGame.plain1()))
+        new RouteData('/test/game', new BlockBreakerProp('sa,ple1', PlainGame.plain1()))
         ));
     });
   }

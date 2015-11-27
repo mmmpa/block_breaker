@@ -7,7 +7,7 @@ import model.common.ActorProp;
 import model.common.ButtonProp;
 import view.common.TopBar;
 import config.Def;
- import model.test.BallTestProp;
+import model.test.BallTestProp;
 import view.common.Button;
 import view.common.SideMenu;
 import asset.Fa;
@@ -28,7 +28,7 @@ class TestMenuContext extends BaseContext {
 
     bar = new TopBar();
     menu = new SideMenu(routesSrc);
-    var faButton:Button = PresetButton.normal('', new ButtonProp(Def.topBarHeight, Def.topBarHeight, 0, 0, ActorHorizontal.Center, Fa.char.bars), function(){
+    var faButton:Button = PresetButton.normal('', new ButtonProp(Def.topBarHeight, Def.topBarHeight, 0, 0, ActorHorizontal.Center, Fa.char.bars), function() {
       menu.open();
     });
 
@@ -37,7 +37,7 @@ class TestMenuContext extends BaseContext {
     beOnStage(faButton);
   }
 
-  override public function deactivate(){
+  override public function deactivate() {
     super.deactivate();
   }
 
@@ -106,17 +106,17 @@ class TestMenuContext extends BaseContext {
       {
         icon: Fa.char.th,
         text: 'sample game',
-        route: new RouteData('/bb/plain', new BlockBreakerProp(PlainGame.plain1()), true)
+        route: new RouteData('/bb/plain', new BlockBreakerProp('sample1', PlainGame.plain1()), true)
       },
       {
         icon: Fa.char.th,
         text: 'sample game: kobito',
-        route: new RouteData('/bb/image', new ImageBlockBreakerProp('asset/kobito.png'), true)
+        route: new RouteData('/bb/image', new ImageBlockBreakerProp('kobito', 'asset/kobito.png'), true)
       },
       {
         icon: Fa.char.th,
         text: 'sample game: octcat',
-        route: new RouteData('/bb/image', new ImageBlockBreakerProp('asset/octcat.png'), true)
+        route: new RouteData('/bb/image', new ImageBlockBreakerProp('octcat', 'asset/octcat.png'), true)
       }
     ];
   }

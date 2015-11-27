@@ -6,15 +6,20 @@ import flash.geom.Point;
 using Lambda;
 
 class BlockBreaker {
+  public var id:String;
   private var field:PlayFieldData;
   private var grid:BlockGrid;
 
   private var balls:Array<BallData> = new Array();
+  private var ballsNum:Int = 0;
   private var blocks:Array<BlockData> = new Array();
   private var shocks:Array<ShockData> = new Array();
   public var status:BlockBreakerPlayingState = new BlockBreakerPlayingState();
+  public var score:Int = 0;
+  public var scoreRate:Int = 1;
 
-  public function new(grid:BlockGrid) {
+  public function new(id:String, grid:BlockGrid) {
+    this.id = id;
     this.field = new PlayFieldData(0, 0, Def.area.w, Def.area.h);
     this.grid = grid;
   }
@@ -63,6 +68,7 @@ class BlockBreaker {
           var block:BlockData = blockHit.block;
           block.hit();
           if (!block.isAlive()) {
+            addScore(block);
             grid.removeBlock(block);
             status.blockBroken = true;
             if (block.hasBall()) {
@@ -129,10 +135,18 @@ class BlockBreaker {
     }
 
     balls = nextBalls;
+    ballsNum = balls.length;
+    scoreRate = Std.int(ballsNum * ballsNum);
     if(noBall()){
       status.state = BlockBreakerState.Played;
+    }else if(!grid.hasBlock()){
+      status.state = BlockBreakerState.Passed;
     }
     return status;
+  }
+
+  public function addScore(block:BlockData){
+    score += block.score * scoreRate;
   }
 
   public function addShock(p:Point):ShockData {

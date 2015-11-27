@@ -63,7 +63,7 @@ class BaseContext extends EventDispatcher {
   }
 
   public function erase(target:Dynamic) {
-    books.filter(function(book:Dynamic):Bool {
+    books = books.filter(function(book:Dynamic):Bool {
       return book != target;
     });
   }

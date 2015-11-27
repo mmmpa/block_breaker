@@ -1,8 +1,9 @@
 package model.blockbreaker;
-class ImageBlockBreakerProp {
+class ImageBlockBreakerProp extends BlockBreakerPropBase {
   public var path:String;
 
-  public function new(path:String) {
+  public function new(id:Dynamic, path:String) {
+    super(id);
     this.path = path;
   }
 }

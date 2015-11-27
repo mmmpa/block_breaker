@@ -3,4 +3,5 @@ enum BlockBreakerState {
   Ready;
   Playing;
   Played;
+  Passed;
 }

@@ -57,4 +57,22 @@ class Support {
     return a;
   }
 
+  static public function bottomLine(a:Dynamic, offset:Float = 0) {
+    return Std.int(a.y + a.height + offset);
+  }
+
+
+  static public function under(a:Dynamic, b:Dynamic, offset:Float = 0) {
+    a.y = Std.int(b.y + b.height);
+    a.y += Std.int(offset);
+
+    return a;
+  }
+
+  static public function over(a:Dynamic, b:Dynamic, offset:Float = 0) {
+    a.y = Std.int(b.y - a.height);
+    a.y += Std.int(offset);
+
+    return a;
+  }
 }

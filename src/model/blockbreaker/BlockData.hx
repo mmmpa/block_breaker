@@ -5,6 +5,8 @@ class BlockData {
   public var life:Int;
   public var ball:Int;
 
+  public var score:Int;
+
   public var col:Int;
   public var row:Int;
 
@@ -24,6 +26,7 @@ class BlockData {
     this.color = color;
     this.life = life;
     this.ball = ball;
+    this.score = (life + 1) * (life + 1);
   }
 
   public function realize(col:Int, row:Int, width:Int, height:Int) {

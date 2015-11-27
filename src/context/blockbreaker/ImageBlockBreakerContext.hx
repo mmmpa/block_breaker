@@ -1,11 +1,14 @@
 package context.blockbreaker;
+import view.blockbreaker.GamePassedWindow;
+import db.RecordStore;
+import view.blockbreaker.ScoreDisplay;
+import view.blockbreaker.GameOverWindow;
 import view.blockbreaker.BlockTable;
 import model.blockbreaker.BlockGrid;
 import model.blockbreaker.ImageBlockGrid;
 import model.blockbreaker.ImageBlockBreakerProp;
 import config.Configuration;
 import asset.Se;
-import view.blockbreaker.GameOver;
 import model.blockbreaker.BlockBreakerState;
 import view.blockbreaker.TapToStart;
 import view.NormalBg;
@@ -24,39 +27,64 @@ import starling.events.TouchEvent;
 import model.RouterProp;
 
 using Lambda;
+using addition.Support;
 
 class ImageBlockBreakerContext extends BaseContext {
 
   private var game:BlockBreaker;
+  private var table:BlockTable;
   private var listener:Quad;
   private var tapToStart:TapToStart = new TapToStart();
-  private var gameOver:GameOver = new GameOver();
+  private var gameOver:GameOverWindow;
+  private var scoreDisplay:ScoreDisplay = new ScoreDisplay();
+  private var gamePassed:GamePassedWindow;
+  private var retry:Dynamic;
 
   public function new(props:RouterProp, insertProps:ImageBlockBreakerProp) {
     super(props);
     ground.y = Def.area.y;
     listener = new NormalBg();
 
-    new ImageBlockGrid(insertProps.path, function(grid:BlockGrid){
-      game = new BlockBreaker(grid);
-      changeTouch();
-      var table:BlockTable = new BlockTable(grid);
-      beOnStage(table, true);
-      startAnimation();
-    }).process();
+    var start:Dynamic = function() {
+      new ImageBlockGrid(insertProps.path, function(grid:BlockGrid) {
+        game = new BlockBreaker(insertProps.id, grid);
+        table = new BlockTable(grid);
+        beOnStage(table, true);
+        scoreDisplay.score = game.score;
+        startAnimation();
+        changeTouch();
+      }).process();
 
-    ground.addChild(listener);
-    ground.addChild(tapToStart);
-    tapToStart.x = Std.int(Def.area.w - tapToStart.width) >> 1;
-    tapToStart.y = Std.int(Def.area.h * 1.5 - tapToStart.height) >> 1;
+      ground.addChild(listener);
+      ground.addChild(tapToStart);
+      ground.addChild(scoreDisplay);
+      tapToStart.center(listener);
+      tapToStart.y = Std.int(Def.area.h * 1.75 - tapToStart.height) >> 1;
+      scoreDisplay.bottom(listener);
+    };
+
+    retry = function() {
+      game.deactivate();
+      table.deactivate();
+      start();
+    };
+
+    gameOver = new GameOverWindow(retry);
+
+    start();
+  }
+
+  public function record():Record {
+    trace('read');
+    return RecordStore.read(game.id);
+  }
+
+  public function writeRecord(record:Record) {
+    return RecordStore.write(game.id, record);
   }
 
   public function play(context:BaseContext) {
     var now:BlockBreakerPlayingState = game.play();
-    if(now.state == BlockBreakerState.Played){
-      over();
-      return;
-    }
     var ball:BallData = now.newBalls.pop();
     while (ball != null) {
       beOnStage(Ball.create(ball));
@@ -66,15 +94,40 @@ class ImageBlockBreakerContext extends BaseContext {
       if (now.blockBroken) {Se.broken.play();}
       if (now.blockHitted) {Se.hit.play();}
     }
+    scoreDisplay.score = game.score;
+    if (now.state == BlockBreakerState.Played) {
+      over();
+      return;
+    }else if(now.state == BlockBreakerState.Passed){
+      pass();
+      return;
+    }
   }
 
-  private function over(){
+  private function pass() {
+    erase(play);
     stopAnimation();
     changeTouch();
+    trace(record());
 
+    var bestScore:Int = record() == null ? 0 : record().score;
+    var broke:Bool = game.score > bestScore;
+    if (broke) {
+      writeRecord({time:0, score:game.score});
+    }
+    gamePassed = new GamePassedWindow(game.score, bestScore, broke, retry);
+    gamePassed.middle(listener);
+    gamePassed.activate(this, ground);
+  }
+
+  private function over() {
+    erase(play);
+    stopAnimation();
+    changeTouch();
+    trace(game.score);
     ground.addChild(gameOver);
-    gameOver.x = Std.int(Def.area.w - gameOver.width) >> 1;
-    gameOver.y = Std.int(Def.area.h - gameOver.height) >> 1;
+    gameOver.center(listener);
+    gameOver.middle(listener);
   }
 
   override public function deactivate() {
@@ -84,6 +137,7 @@ class ImageBlockBreakerContext extends BaseContext {
 
 
   private function changeTouch() {
+    trace(game.status.state);
     ground.removeEventListeners(TouchEvent.TOUCH);
     switch(game.status.state){
       case BlockBreakerState.Ready:
@@ -91,6 +145,7 @@ class ImageBlockBreakerContext extends BaseContext {
       case BlockBreakerState.Playing:
         ground.addEventListener(TouchEvent.TOUCH, onPlayingTouch);
       case BlockBreakerState.Played:
+      case BlockBreakerState.Passed:
     }
   }
 

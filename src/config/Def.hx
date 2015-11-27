@@ -20,7 +20,7 @@ class Def {
   static public var splashSize:Int = 16;
   static public var splashFrame:Int = 10;
 
-  static public var cellMargin:Int = 0;
+  static public var cellMargin:Int = 1;
 
   static public var ballSize:Int = 8;
   static public var ballSize1:Int = 6;

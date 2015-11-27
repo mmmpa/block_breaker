@@ -37,7 +37,7 @@ class PlainBlockBreakerContext extends BaseContext {
     listener = new NormalBg();
 
     var grid:BlockGrid = insertProps.grid;
-    game = new BlockBreaker(grid);
+    game = new BlockBreaker(insertProps.id, grid);
 
     ground.addChild(listener);
     ground.addChild(tapToStart);
@@ -91,6 +91,7 @@ class PlainBlockBreakerContext extends BaseContext {
       case BlockBreakerState.Playing:
         ground.addEventListener(TouchEvent.TOUCH, onPlayingTouch);
       case BlockBreakerState.Played:
+      case BlockBreakerState.Passed:
     }
   }
 
