@@ -25,6 +25,7 @@ class Game extends Sprite {
     var route:RouteData = new RouteData('/bb/finder');
     //var route:RouteData = new RouteData('/bb/plain', new BlockBreakerProp(PlainGame.plain1()));
     //var route:RouteData = new RouteData('/bb/image', new ImageBlockBreakerProp('kobito', 'asset/kobito.png'), true);
+
     mainRouter.pushRoot(MainContext, route);
   }
 

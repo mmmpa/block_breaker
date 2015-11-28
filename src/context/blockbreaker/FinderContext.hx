@@ -1,4 +1,14 @@
 package context.blockbreaker;
+import event.ContextEvent;
+import router.RouteData;
+import router.RouteData;
+import starling.textures.Texture;
+import starling.display.Image;
+import flash.display.BitmapData;
+import starling.textures.TextureSmoothing;
+import service.BitmapLoader;
+import view.common.Spacer;
+import starling.display.Sprite;
 import view.blockbreaker.FinderPiece;
 import view.blockbreaker.FinderPiece;
 import model.blockbreaker.FinderProp;
@@ -53,10 +63,12 @@ class FinderContext extends BaseContext {
     super(props);
     ground.y = Def.area.y;
     listener = new NormalBg();
+    ground.addChild(listener);
 
     var layout:VerticalLayout = new VerticalLayout();
-    layout.gap = 20;
-    layout.paddingTop = 20;
+    layout.gap = Def.paddingTop;
+    layout.paddingTop = Def.paddingTop;
+    layout.paddingBottom = Def.paddingTop;
     layout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_CENTER;
 
     var container:LayoutGroup = new LayoutGroup();
@@ -69,21 +81,53 @@ class FinderContext extends BaseContext {
     scroller.addChild(container);
     ground.addChild(scroller);
 
-    scroller.addEventListener(FeathersEventType.SCROLL_START, function(e:Event){
+    scroller.addEventListener(FeathersEventType.SCROLL_START, function(e:Event) {
       container.flatten();
       container.touchable = false;
     });
 
-    scroller.addEventListener(FeathersEventType.SCROLL_COMPLETE, function(e:Event){
+    scroller.addEventListener(FeathersEventType.SCROLL_COMPLETE, function(e:Event) {
       container.unflatten();
       container.touchable = true;
     });
 
-    insertProps.games.iter(function(data:BlockBreakerRouteProp){
+    var loading:Array<FinderImage> = new Array();
+    var newLine:Bool = true;
+    var line:Sprite = null;
+    insertProps.games.iter(function(data:BlockBreakerRouteProp) {
+      if (newLine) {
+        line = new Sprite();
+        line.y = container.height + Def.paddingTop;
+        container.addChild(line);
+      }
       var child:FinderPiece = FinderPiece.loading(function() {
-        trace('retry');
+        var route:RouteData = new RouteData('/bb/image', new ImageBlockBreakerProp(data.id, data.thumnailPath), true);
+        emit(new Event(ContextEvent.SCENE_CHANGE, false, route));
       });
-      container.addChild(child);
+      loading.push({finder: child, path: data.blockImagePath});
+      line.addChild(child);
+      if (!newLine) {
+        child.x = line.width + Def.paddingTop;
+      }
+      newLine = !newLine;
     });
+
+    loadImage(loading);
+  }
+
+  public function loadImage(loading:Array<FinderImage>) {
+    if (loading.length == 0) {
+      return;
+    }
+    var target:FinderImage = loading.shift();
+    BitmapLoader.load(target.path, function(data:BitmapData) {
+      var image:Image = new Image(Texture.fromBitmapData(data));
+      image.smoothing = TextureSmoothing.NONE;
+      target.finder.replaceImage(image);
+      loadImage(loading);
+    });
+
   }
 }
+
+typedef FinderImage = {finder:FinderPiece, path:String};

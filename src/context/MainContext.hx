@@ -1,4 +1,5 @@
 package context;
+import db.BlockBreakerStage;
 import model.blockbreaker.BlockBreakerType;
 import model.blockbreaker.FinderProp;
 import context.blockbreaker.FinderContext;
@@ -139,18 +140,7 @@ class MainContext extends BaseContext {
 
     routeMap.set('/bb/finder', function(route:RouteData) {
       menu.replace(TestMenuContext, null);
-      body.replace(FinderContext, new FinderProp([
-        {
-          type: BlockBreakerType.Image,
-          id: 'kobito',
-          blockImagePath: 'asset/kobito.png'
-        },
-        {
-          type: BlockBreakerType.Image,
-          id: 'octcat',
-          blockImagePath: 'asset/octcat.png'
-        }
-      ]), route.forceReload);
+      body.replace(FinderContext, BlockBreakerStage.all, route.forceReload);
     });
   }
 

@@ -11,6 +11,7 @@ typedef BlockBreakerRouteProp = {
   type: BlockBreakerType,
   id: String,
   ?datas: Array<BlockData>,
+  ?thumnailPath: String,
   ?blockImagePath: String,
   ?backgroundPath: String
 }

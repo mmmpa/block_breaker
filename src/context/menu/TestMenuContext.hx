@@ -105,18 +105,8 @@ class TestMenuContext extends BaseContext {
       },
       {
         icon: Fa.char.th,
-        text: 'sample game',
-        route: new RouteData('/bb/plain', new BlockBreakerProp('sample1', PlainGame.plain1()), true)
-      },
-      {
-        icon: Fa.char.th,
-        text: 'sample game: kobito',
-        route: new RouteData('/bb/image', new ImageBlockBreakerProp('kobito', 'asset/kobito.png'), true)
-      },
-      {
-        icon: Fa.char.th,
-        text: 'sample game: octcat',
-        route: new RouteData('/bb/image', new ImageBlockBreakerProp('octcat', 'asset/octcat.png'), true)
+        text: 'stage Finder',
+        route: new RouteData('/bb/finder')
       }
     ];
   }
