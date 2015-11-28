@@ -1,4 +1,7 @@
 package context.test;
+import starling.events.Event;
+import feathers.events.FeathersEventType;
+import feathers.controls.LayoutGroup;
 import starling.textures.TextureSmoothing;
 import starling.textures.Texture;
 import starling.display.Image;
@@ -40,11 +43,26 @@ class PartsTestContext extends BaseContext {
     layout.paddingTop = 20;
     layout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_CENTER;
 
-    var container:ScrollContainer = new ScrollContainer();
+    var container:LayoutGroup = new LayoutGroup();
+
+
     container.layout = layout;
-    container.width = Def.area.w;
-    container.height = Def.area.h;
-    ground.addChild(container);
+
+    var scroller:ScrollContainer = new ScrollContainer();
+    scroller.width = Def.area.w;
+    scroller.height = Def.area.h;
+    scroller.addChild(container);
+    ground.addChild(scroller);
+
+    scroller.addEventListener(FeathersEventType.SCROLL_START, function(e:Event){
+      container.flatten();
+      container.touchable = false;
+    });
+
+    scroller.addEventListener(FeathersEventType.SCROLL_COMPLETE, function(e:Event){
+      container.unflatten();
+      container.touchable = true;
+    });
 
     var parts:Array<Dynamic> = new Array();
     var fab:ButtonProp = new ButtonProp();
@@ -53,6 +71,7 @@ class PartsTestContext extends BaseContext {
     thum.faChar = Fa.char.thumbsOUp;
     var ban:ButtonProp = new ButtonProp();
     ban.faChar = Fa.char.ban;
+
 
     var p1:FinderPiece = FinderPiece.noImage(function() {
       trace('retry');
@@ -113,5 +132,7 @@ class PartsTestContext extends BaseContext {
     parts.iter(function(actor:Dynamic) {
       actor.activate(this, container);
     });
+
+
   }
 }

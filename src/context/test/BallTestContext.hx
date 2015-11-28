@@ -1,20 +1,14 @@
 package context.test;
 import view.NormalBg;
-import asset.BlockFont;
 import db.Palette;
 import model.test.BallTestProp;
-import starling.text.TextField;
 import model.blockbreaker.FieldOutSide;
 import model.blockbreaker.PlayFieldData;
 import model.blockbreaker.BallData;
 import view.blockbreaker.Ball;
 import starling.events.Event;
-import starling.events.TouchPhase;
-import starling.display.Quad;
 import config.Def;
 import flash.geom.Point;
-import starling.events.Touch;
-import starling.events.TouchEvent;
 import model.RouterProp;
 
 using Lambda;
@@ -27,10 +21,9 @@ class BallTestContext extends BaseContext {
   public function new(props:RouterProp, insertProps:BallTestProp = null) {
     super(props);
     ground.y = Def.area.y;
-
+    ground.touchable = false;
     field = new PlayFieldData(0, 0, Def.area.w, Def.area.h);
     ground.addChild(new NormalBg());
-    ground.addEventListener(TouchEvent.TOUCH, onTouch);
 
     write(book);
     startAnimation();
@@ -41,11 +34,6 @@ class BallTestContext extends BaseContext {
     var limitation:Int = insertProps.be() ? insertProps.limitation : 10;
     var i:Int = 0;
     var fn:Dynamic = null;
-    var tf:TextField = new TextField(w, 50, '');
-    tf.y = (h + 50) >> 1;
-    tf.fontName = BlockFont.name;
-    tf.fontSize = 40;
-    ground.addChild(tf);
     ground.addEventListener(Event.ENTER_FRAME, fn = function(e:Event) {
       for (ii in 0...100) {
         i++;
@@ -54,11 +42,14 @@ class BallTestContext extends BaseContext {
         balls.push(data);
         beOnStage(ball);
       }
-      tf.text = Std.string(i);
       if (i >= limitation) {
         ground.removeEventListener(Event.ENTER_FRAME, fn);
       }
     });
+
+    for(i in 0...ground.numChildren){
+      ground.getChildAt(i).touchable = false;
+    }
   }
 
   override function deactivate() {
@@ -66,19 +57,8 @@ class BallTestContext extends BaseContext {
     super.deactivate();
   }
 
-
   private function random(n:Float):Float {
     return Std.int(Math.floor(Math.random() * n));
-  }
-
-  private function onTouch(e:TouchEvent) {
-    var touch:Touch = e.getTouch(ground);
-
-    switch(touch.phase){
-      case TouchPhase.BEGAN:
-        var position:Point = touch.getLocation(ground);
-        addBall(position);
-    }
   }
 
   private function book(context:BaseContext) {

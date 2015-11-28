@@ -1,4 +1,7 @@
 package context;
+import model.blockbreaker.BlockBreakerType;
+import model.blockbreaker.FinderProp;
+import context.blockbreaker.FinderContext;
 import context.blockbreaker.ImageBlockBreakerContext;
 import db.PlainGame;
 import model.blockbreaker.BlockBreakerProp;
@@ -105,7 +108,7 @@ class MainContext extends BaseContext {
     });
 
     routeMap.set('/test/ball', function(route:RouteData) {
-      menu.replace(TestMenuContext, null);
+      //menu.replace(TestMenuContext, null);
       body.replace(BallTestContext, route.prop);
     });
 
@@ -132,6 +135,22 @@ class MainContext extends BaseContext {
     routeMap.set('/bb/image', function(route:RouteData) {
       menu.replace(TestMenuContext, null);
       body.replace(ImageBlockBreakerContext, route.prop, route.forceReload);
+    });
+
+    routeMap.set('/bb/finder', function(route:RouteData) {
+      menu.replace(TestMenuContext, null);
+      body.replace(FinderContext, new FinderProp([
+        {
+          type: BlockBreakerType.Image,
+          id: 'kobito',
+          blockImagePath: 'asset/kobito.png'
+        },
+        {
+          type: BlockBreakerType.Image,
+          id: 'octcat',
+          blockImagePath: 'asset/octcat.png'
+        }
+      ]), route.forceReload);
     });
   }
 

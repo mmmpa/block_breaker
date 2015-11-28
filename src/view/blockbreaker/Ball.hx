@@ -4,7 +4,9 @@ package view.blockbreaker;
 実際に表示されているボール。
 
  */
-import starling.display.QuadBatch;
+import starling.events.Event;
+import starling.display.DisplayObject;
+import flash.geom.Point;
 import context.BaseContext;
 import starling.display.DisplayObjectContainer;
 import config.Def;
@@ -40,6 +42,14 @@ class Ball extends Quad {
     child2 = Ball.createChild(Def.ballSize2, Def.ballOffset2, data);
     child3 = Ball.createChild(Def.ballSize3, Def.ballOffset3, data);
     this.data = data;
+
+    this.addEventListener(Event.ADDED_TO_STAGE, function(e:Event){
+    });
+  }
+
+  override public function hitTest(localPoint:Point, forTouch:Bool = false):DisplayObject{
+    trace('hit test');
+    return null;
   }
 
   public function activate(context:BaseContext, parent:DisplayObjectContainer) {
@@ -47,13 +57,6 @@ class Ball extends Quad {
     parent.addChild(child1);
     parent.addChild(child2);
     parent.addChild(child3);
-  }
-
-  public function intoBatch(batch:QuadBatch) {
-    batch.addQuad(this);
-    batch.addQuad(child1);
-    batch.addQuad(child2);
-    batch.addQuad(child3);
   }
 
   public function deactivate() {

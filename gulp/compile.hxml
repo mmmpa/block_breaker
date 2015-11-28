@@ -12,7 +12,9 @@
 
 -swf-lib-extern ../lib/playerglobal17_0.swc
 
+
 -main Main
+-D advanced-telemetry
 -cp "../src"
 -swf "../export/builded.swf"
 -swf-version 11
