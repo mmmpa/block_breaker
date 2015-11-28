@@ -1,17 +1,9 @@
 package model.blockbreaker;
-class FinderProp {
-  public var games:Array<BlockBreakerRouteProp>;
 
-  public function new(games:Array<BlockBreakerRouteProp>) {
+class FinderProp {
+  public var games:Array<FinderPieceProp>;
+
+  public function new(games:Array<FinderPieceProp>) {
     this.games = games;
   }
-}
-
-typedef BlockBreakerRouteProp = {
-  type: BlockBreakerType,
-  id: String,
-  ?datas: Array<BlockData>,
-  ?thumnailPath: String,
-  ?blockImagePath: String,
-  ?backgroundPath: String
 }

@@ -1,8 +1,13 @@
 package model.common;
 import starling.filters.BlurFilter;
-import model.common.ActorProp.ActorHorizontal;
+import model.common.ActorProp;
 
 using addition.Support;
+
+typedef ButtonPropOption = {
+  >ActorPropOption,
+  var faChar:String;
+}
 
 class ButtonProp extends ActorProp {
   public var faChar:String;
@@ -15,9 +20,11 @@ class ButtonProp extends ActorProp {
     return new ButtonProp().setFa(faChar);
   }
 
-  public function new(?w:Int, ?h:Int, ?padTop:Int, ?padSide:Int, ?horizontal:ActorHorizontal, ?faChar:String) {
-    super(w, h, padTop, padSide, horizontal);
-    this.faChar = faChar.or('');
+  public function new(option:ButtonPropOption = null) {
+    super();
+    this.deploy(option,{
+      faChar: ''
+    });
   }
 
   public function setFa(faChar:String):ButtonProp {

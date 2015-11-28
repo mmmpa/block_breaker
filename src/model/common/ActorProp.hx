@@ -3,6 +3,15 @@ package model.common;
 import config.Def;
 using addition.Support;
 
+typedef ActorPropOption ={
+  @:optional var w:Int;
+  @:optional var h:Int;
+  @:optional var padTop:Int;
+  @:optional var padSide:Int;
+  @:optional var vertical:ActorVertical;
+  @:optional var horizontal:ActorHorizontal;
+}
+
 class ActorProp {
   public var w:Int;
   public var h:Int;
@@ -11,13 +20,13 @@ class ActorProp {
   public var vertical:ActorVertical;
   public var horizontal:ActorHorizontal;
 
-  public function new(?w:Int, ?h:Int, ?padTop:Int, ?padSide:Int, ?horizontal:ActorHorizontal, ?vertical:ActorVertical) {
-    this.w = w;
-    this.h = h;
-    this.padTop = padTop.or(Def.fontSizeNormal >> 1);
-    this.padSide = padSide.or(Def.fontSizeNormal);
-    this.horizontal = horizontal.or(ActorHorizontal.Left);
-    this.vertical = vertical.or(ActorVertical.Middle);
+  public function new(option:ActorPropOption = null) {
+    this.deploy(option,{
+      padTop: Def.fontSizeNormal >> 1,
+      padSide: Def.fontSizeNormal,
+      horizontal: ActorHorizontal.Left,
+      vertical: ActorVertical.Middle
+    });
   }
 }
 

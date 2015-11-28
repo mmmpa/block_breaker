@@ -27,11 +27,18 @@ class TestMenuContext extends BaseContext {
     startAnimation();
 
     bar = new TopBar();
+    trace('button');
     menu = new SideMenu(routesSrc);
-    var faButton:Button = PresetButton.normal('', new ButtonProp(Def.topBarHeight, Def.topBarHeight, 0, 0, ActorHorizontal.Center, Fa.char.bars), function() {
+    trace('button');
+    var faButton:Button = PresetButton.normal('', new ButtonProp({
+      w: Def.topBarHeight,
+      h: Def.topBarHeight,
+      horizontal: ActorHorizontal.Center,
+      faChar: Fa.char.bars
+    }), function() {
       menu.open();
     });
-
+trace('button');
     beOnStage(bar);
     beOnStage(menu);
     beOnStage(faButton);

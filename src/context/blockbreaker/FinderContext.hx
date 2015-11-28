@@ -1,4 +1,6 @@
 package context.blockbreaker;
+import model.blockbreaker.BlockBreakerType;
+import model.blockbreaker.FinderPieceProp;
 import event.ContextEvent;
 import router.RouteData;
 import router.RouteData;
@@ -48,8 +50,9 @@ import model.RouterProp;
 using Lambda;
 using addition.Support;
 
-class FinderContext extends BaseContext {
+typedef FinderImage = {finder:FinderPiece, path:String};
 
+class FinderContext extends BaseContext {
   private var game:BlockBreaker;
   private var table:BlockTable;
   private var listener:Quad;
@@ -94,7 +97,7 @@ class FinderContext extends BaseContext {
     var loading:Array<FinderImage> = new Array();
     var newLine:Bool = true;
     var line:Sprite = null;
-    insertProps.games.iter(function(data:BlockBreakerRouteProp) {
+    insertProps.games.iter(function(data:FinderPieceProp) {
       if (newLine) {
         line = new Sprite();
         line.y = container.height + Def.paddingTop;
@@ -126,8 +129,6 @@ class FinderContext extends BaseContext {
       target.finder.replaceImage(image);
       loadImage(loading);
     });
-
   }
 }
 
-typedef FinderImage = {finder:FinderPiece, path:String};

@@ -75,4 +75,13 @@ class Support {
 
     return a;
   }
+
+  static public function deploy(a:Dynamic, b:Dynamic, defaultValue:Dynamic = null) {
+    if (defaultValue != null) {deploy(a, defaultValue);}
+    if (b == null) { return; }
+
+    for (key in Reflect.fields(b)) {
+      untyped{ a[key] = b[key]; }
+    }
+  }
 }
