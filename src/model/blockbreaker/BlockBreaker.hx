@@ -4,11 +4,20 @@ import config.Def;
 import flash.geom.Point;
 
 using Lambda;
+using addition.Support;
+
+typedef BlockBreakerOption = {
+  var id:String;
+  var grid:BlockGrid;
+  var speed:Int;
+  var field:PlayFieldData;
+}
 
 class BlockBreaker {
   public var id:String;
   private var field:PlayFieldData;
   private var grid:BlockGrid;
+  private var speed:Int;
 
   private var balls:Array<BallData> = new Array();
   private var ballsNum:Int = 0;
@@ -18,19 +27,17 @@ class BlockBreaker {
   public var score:Int = 0;
   public var scoreRate:Int = 1;
 
-  public function new(id:String, grid:BlockGrid) {
-    this.id = id;
-    this.field = new PlayFieldData(0, 0, Def.area.w, Def.area.h);
-    this.grid = grid;
+  public function new(option:BlockBreakerOption) {
+    this.deploy(option);
   }
 
-  public function deactivate(){
+  public function deactivate() {
     balls = null;
     blocks = null;
     shocks = null;
   }
 
-  public function start(){
+  public function start() {
     status.state = BlockBreakerState.Playing;
   }
 
@@ -137,15 +144,15 @@ class BlockBreaker {
     balls = nextBalls;
     ballsNum = balls.length;
     scoreRate = Std.int(ballsNum * ballsNum);
-    if(noBall()){
+    if (noBall()) {
       status.state = BlockBreakerState.Played;
-    }else if(!grid.hasBlock()){
+    } else if (!grid.hasBlock()) {
       status.state = BlockBreakerState.Passed;
     }
     return status;
   }
 
-  public function addScore(block:BlockData){
+  public function addScore(block:BlockData) {
     score += block.score * scoreRate;
   }
 
@@ -156,7 +163,7 @@ class BlockBreaker {
   }
 
   public function addBall(p:Point, degree:Int, color:Int = 0):BallData {
-    var data:BallData = new BallData(p.x, p.y, color, 8, degree * Math.PI / 180);
+    var data:BallData = new BallData(p.x, p.y, color, speed, degree * Math.PI / 180);
     balls.push(data);
     return data;
   }

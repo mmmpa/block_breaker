@@ -5,8 +5,6 @@ import router.RouteData;
 import config.Def;
  import starling.events.Event;
 import event.ContextEvent;
-import haxe.macro.Context;
-import starling.display.Sprite;
 import starling.events.EventDispatcher;
 import router.Router;
 import model.RouterProp;
@@ -101,6 +99,13 @@ class BaseContext extends EventDispatcher {
       var actor:Dynamic = actors.pop();
       actor.deactivate();
     }
+  }
+
+  public function sweep(){
+    for(actor in actors){
+      actor.deactivate();
+    }
+    actors = [];
   }
 
   public function removeBooks(subBooks:BaseContext) {

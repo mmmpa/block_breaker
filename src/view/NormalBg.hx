@@ -21,8 +21,8 @@ class NormalBg extends Image {
   }
 
   override public function hitTest(localPoint:Point, forTouch:Bool = false):DisplayObject {
-    trace(this);
-    return null;
+    //trace(this);
+    return super.hitTest(localPoint, forTouch);
   }
 
   static public function generateBg():Texture {

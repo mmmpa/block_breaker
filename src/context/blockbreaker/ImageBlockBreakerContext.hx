@@ -1,4 +1,6 @@
 package context.blockbreaker;
+import view.common.Spacer;
+import model.blockbreaker.PlayFieldData;
 import view.blockbreaker.Calm;
 import view.common.Sp;
 import starling.events.Event;
@@ -39,8 +41,9 @@ class ImageBlockBreakerContext extends BaseContext {
 
   private var game:BlockBreaker;
   private var table:BlockTable;
-  private var bg:Quad;
-  private var listener:Quad;
+  private var bg:NormalBg;
+  private var deadBg:Quad;
+  private var listener:Spacer;
   private var calm:Calm = new Calm();
   private var tapToStart:TapToStart = new TapToStart();
   private var gameOver:GameOverWindow;
@@ -51,14 +54,28 @@ class ImageBlockBreakerContext extends BaseContext {
 
   public function new(props:RouterProp, insertProps:ImageBlockBreakerProp) {
     super(props);
+    deadBg = new Quad(Def.area.w, Def.area.h, Def.deadBg);
+    ground.addChild(deadBg);
     ground.y = Def.area.y;
-    listener = new Quad(Def.area.w, Def.area.h, 0);
-    listener.alpha = 0;
+    listener = new Spacer(Def.gameArea.w, Def.gameArea.h);
+    bg = new NormalBg();
     calm.touchable = false;
+    bg.shape(Def.gameArea.w, Def.gameArea.h);
+
+    calm.addChild(bg);
+    calm.center(deadBg);
+    calm.middle(deadBg);
+    listener.center(deadBg);
+    listener.middle(deadBg);
 
     var start:Dynamic = function() {
       new ImageBlockGrid(insertProps.path, function(grid:BlockGrid) {
-        game = new BlockBreaker(insertProps.id, grid);
+        game = new BlockBreaker({
+          id: insertProps.id,
+          grid: grid,
+          speed: Def.ballSpeedNormal,
+          field: Def.gameField
+        });
         table = new BlockTable(grid);
         table.activate(this, calm);
         scoreDisplay.score = game.score;
@@ -68,25 +85,24 @@ class ImageBlockBreakerContext extends BaseContext {
 
       ground.addChild(listener);
       ground.addChild(calm);
-      calm.addChild(new NormalBg());
       calm.addChild(scoreDisplay);
+      calm.addChild(tapToStart);
 
-      tapToStart.center(listener);
-      tapToStart.y = Std.int(Def.area.h * 1.75 - tapToStart.height) >> 1;
-      scoreDisplay.bottom(listener);
+      tapToStart.center(bg);
+      tapToStart.y = Std.int(Def.gameArea.h * 1.75 - tapToStart.height) >> 1;
+      scoreDisplay.bottom(bg);
     };
 
     retry = function() {
       game.deactivate();
       table.deactivate();
+      sweep();
       start();
     };
 
     back = function() {
       emit(new Event(ContextEvent.SCENE_CHANGE, false, new RouteData('/bb/finder')));
     };
-
-    gameOver = new GameOverWindow({retryCallback: retry, backCallback: back});
 
     start();
   }
@@ -135,7 +151,8 @@ class ImageBlockBreakerContext extends BaseContext {
       retryCallback: retry,
       backCallback: back
     });
-    gamePassed.middle(listener);
+    gameOver.center(deadBg);
+    gamePassed.middle(deadBg);
     gamePassed.activate(this, ground);
   }
 
@@ -144,9 +161,11 @@ class ImageBlockBreakerContext extends BaseContext {
     stopAnimation();
     changeTouch();
     trace(game.score);
-    ground.addChild(gameOver);
-    gameOver.center(listener);
-    gameOver.middle(listener);
+
+    gameOver = new GameOverWindow({retryCallback: retry, backCallback: back});
+    gameOver.center(deadBg);
+    gameOver.middle(deadBg);
+    gameOver.activate(this, ground);
   }
 
   override public function deactivate() {
@@ -177,6 +196,7 @@ class ImageBlockBreakerContext extends BaseContext {
         var p:Point = touch.getLocation(listener);
         var shock:ShockData = game.addShock(p);
         var ballPoint:Point = new Point(p.x, p.y < Def.ballStartTop ? Def.ballStartTop : p.y);
+        trace(ballPoint);
         var newBall:BallData = game.addBall(ballPoint, 270);
         newBall.hittedId = shock.id;
         addBall(newBall);

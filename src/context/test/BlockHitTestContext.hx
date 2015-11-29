@@ -1,4 +1,6 @@
 package context.test;
+import view.common.Spacer;
+import view.blockbreaker.Calm;
 import view.NormalBg;
 import model.blockbreaker.PlayFieldData;
 import db.Palette;
@@ -23,6 +25,7 @@ class BlockHitTestContext extends BaseContext {
   private var lineState:String;
   private var grid:BlockGrid;
   private var table:BlockTable;
+  private var calm:Calm = new Calm();
 
 
   public function new(props:RouterProp, insertProps:Dynamic = null) {
@@ -31,6 +34,7 @@ class BlockHitTestContext extends BaseContext {
     field = new PlayFieldData(0, 0, Def.area.w, Def.area.h);
     startAnimation();
     ground.addChild(new NormalBg());
+    ground.addChild(calm);
     ground.name = 'block hit context';
 
     lineState = 'ready';
@@ -53,7 +57,7 @@ class BlockHitTestContext extends BaseContext {
 
     grid = new BlockGrid(col, width, height, datas);
     table = new BlockTable(grid);
-    beOnStage(table, true);
+    beOnStage(table, true, calm);
 
     var drawStore:Array<Dynamic> = new Array();
     var start:Point = null;

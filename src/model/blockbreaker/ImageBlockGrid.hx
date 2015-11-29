@@ -21,7 +21,7 @@ class ImageBlockGrid {
   }
 
   private function onLoad(data:BitmapMap) {
-    var width:Int = Std.int(Def.area.w / data.w);
+    var width:Int = Std.int(Def.gameArea.w / data.w);
     var height:Int = width;
     var datas:Array<BlockData> = data.colors.map(function(data:BitmapMapColor){
       if(data == null){

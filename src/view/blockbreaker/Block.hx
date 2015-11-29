@@ -49,8 +49,8 @@ class Block extends Quad {
   }
 
   public function deactivate():Block {
+    context.beOnStage(splash, false, parent);
     removeFromParent();
-    context.beOnStage(splash);
     return this;
   }
 

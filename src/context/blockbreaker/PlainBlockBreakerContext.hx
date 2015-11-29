@@ -37,7 +37,12 @@ class PlainBlockBreakerContext extends BaseContext {
     listener = new NormalBg();
 
     var grid:BlockGrid = insertProps.grid;
-    game = new BlockBreaker(insertProps.id, grid);
+    game = new BlockBreaker({
+      id: insertProps.id,
+      grid: grid,
+      speed: Def.ballSpeedNormal,
+      field: Def.gameField
+    });
 
     ground.addChild(listener);
     ground.addChild(tapToStart);
