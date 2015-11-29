@@ -56,12 +56,12 @@ class PartsTestContext extends BaseContext {
     ground.addChild(scroller);
 
     scroller.addEventListener(FeathersEventType.SCROLL_START, function(e:Event) {
-      container.flatten();
+      //container.flatten();
       container.touchable = false;
     });
 
     scroller.addEventListener(FeathersEventType.SCROLL_COMPLETE, function(e:Event) {
-      container.unflatten();
+      //container.unflatten();
       container.touchable = true;
     });
 
@@ -87,20 +87,29 @@ class PartsTestContext extends BaseContext {
     p2.x = Def.paddingTop + p1.width;
 
     parts.push(pieces);
-    parts.push(new GameOverWindow(function() {
-      trace('retry');
-    }, function() {
-      trace('back');
+    parts.push(new GameOverWindow({
+      retryCallback: function() {
+        trace('retry');
+      },
+      backCallback: function() {
+        trace('back');
+      }
     }));
-    parts.push(new GamePassedWindow(1000, 2000, false, function() {
-      trace('retry');
-    }, function() {
-      trace('back');
+
+    parts.push(new GamePassedWindow({
+      score: 1000,
+      bestScore: 2000,
+      recordBroken: false,
+      retryCallback: function() { trace('retry'); },
+      backCallback: function() { trace('back'); }
     }));
-    parts.push(new GamePassedWindow(10000, 10000, true, function() {
-      trace('retry');
-    }, function() {
-      trace('back');
+
+    parts.push(new GamePassedWindow({
+      score: 10000,
+      bestScore: 2000,
+      recordBroken: true,
+      retryCallback: function() { trace('retry'); },
+      backCallback: function() { trace('back'); }
     }));
 
     parts.push(PresetButton.normal({

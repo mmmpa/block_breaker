@@ -1,4 +1,6 @@
 package view;
+import starling.display.DisplayObject;
+import flash.geom.Point;
 import db.Palette;
 import flash.display.SpreadMethod;
 import flash.geom.Matrix;
@@ -6,7 +8,6 @@ import config.Def;
 import flash.display.BitmapData;
 import flash.display.GradientType;
 import starling.textures.Texture;
-import config.Def;
 import starling.display.Image;
 class NormalBg extends Image {
   static public var tex:Texture;
@@ -16,6 +17,12 @@ class NormalBg extends Image {
       tex = generateBg();
     }
     super(tex);
+    //this.touchable = false;
+  }
+
+  override public function hitTest(localPoint:Point, forTouch:Bool = false):DisplayObject {
+    trace(this);
+    return null;
   }
 
   static public function generateBg():Texture {

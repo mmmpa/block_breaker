@@ -1,4 +1,5 @@
 package view.blockbreaker;
+import starling.display.Image;
 import starling.display.Sprite;
 import starling.events.Event;
 import flash.geom.Point;
@@ -72,15 +73,16 @@ class FinderPiece extends PartsActor {
     masker.addChild(image);
   }
 
-  public function replaceImage(newImage:DisplayObject, fit:Bool = true) {
+  public function replaceImage(newImage:Image, fit:Bool = true) {
     image.removeFromParent();
     this.image = newImage;
-
+    newImage.texture;
     image.touchable = false;
     var sx:Int = Std.int(bg.width / image.width);
     var sy:Int = Std.int(bg.height / image.height);
     var detected:Int = sx > sy ? sx : sy;
-    image.scaleX = image.scaleY = detected + 1;
+    image.width *=  detected + 1;
+    image.height *= detected + 1;
     image.center(bg);
     image.middle(bg);
     masker.addChild(image);

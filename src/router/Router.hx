@@ -1,4 +1,5 @@
 package router;
+import view.common.Sp;
 import starling.events.Event;
 import event.ContextEvent;
 import model.RouterProp;
@@ -8,7 +9,7 @@ import starling.display.Sprite;
 using addition.Creator;
 using addition.Support;
 
-class Router extends Sprite {
+class Router extends Sp {
   private var history:Array<BaseContext>;
   private var active:BaseContext;
   private var rooter:Router;

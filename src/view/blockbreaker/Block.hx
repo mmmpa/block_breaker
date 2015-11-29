@@ -4,6 +4,8 @@ package view.blockbreaker;
 実際に表示されているブロック。
 
  */
+import starling.display.DisplayObject;
+import flash.geom.Point;
 import context.BaseContext;
 import model.blockbreaker.BlockData;
 import config.Def;
@@ -65,4 +67,8 @@ class Block extends Quad {
     return this;
   }
 
+  override public function hitTest(localPoint:Point, forTouch:Bool = false):DisplayObject {
+    trace(this);
+    return null;
+  }
 }

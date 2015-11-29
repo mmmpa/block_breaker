@@ -10,18 +10,26 @@ import view.common.PartsActor;
 
 using addition.Support;
 
+typedef GameOverWindowOption = {
+  var retryCallback:Dynamic;
+  var backCallback:Dynamic;
+}
+
 class GameOverWindow extends PartsActor {
   public var bg:Quad = new Quad(1, 1, Palette.black);
   public var gameover:GameOver = new GameOver();
-  public var retry:Button;
-  public var back:Button;
 
-  public function new(retryCallback:Dynamic, backCallback:Dynamic) {
+  public var retryCallback:Dynamic;
+  public var backCallback:Dynamic;
+
+  public function new(option:GameOverWindowOption) {
     super();
+    this.deploy(option);
+
     bg.filter = Def.uiDs;
     bg.shape(Def.area.w, Def.innerMinHeight);
 
-    retry = PresetButton.forOk({
+    var retry:Button = PresetButton.forOk({
       text: 'retry',
       prop: new ButtonProp({faChar: Fa.char.refresh}),
       callback: function() {
@@ -30,7 +38,7 @@ class GameOverWindow extends PartsActor {
       }
     });
 
-    back = PresetButton.forSubmit({
+    var back:Button = PresetButton.forSubmit({
       text: 'back to stage finder',
       prop: new ButtonProp({faChar: Fa.char.arrowCircleLeft}),
       callback: function() {

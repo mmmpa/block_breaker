@@ -13,15 +13,27 @@ import view.common.PartsActor;
 
 using addition.Support;
 
+typedef GamePassedWindowOption = {
+  var score:Int;
+  var bestScore:Int;
+  var recordBroken:Bool;
+  var retryCallback:Dynamic;
+  var backCallback:Dynamic;
+}
+
 class GamePassedWindow extends PartsActor {
   public var bg:Quad = new Quad(1, 1, Palette.white);
-  public var retry:Button;
-  public var back:Button;
+  public var score:Int;
+  public var bestScore:Int;
+  public var recordBroken:Bool;
+  public var retryCallback:Dynamic;
+  public var backCallback:Dynamic;
 
-  public function new(score:Float, bestScore:Float, reacordBroken:Bool, retryCallback:Dynamic, backCallback:Dynamic) {
+  public function new(option:GamePassedWindowOption) {
     super();
+    this.deploy(option);
 
-    retry = PresetButton.forOk({
+    var retry:Button = PresetButton.forOk({
       text: 'retry',
       prop: new ButtonProp({faChar: Fa.char.refresh}),
       callback: function() {
@@ -30,8 +42,7 @@ class GamePassedWindow extends PartsActor {
       }
     });
 
-
-    back = PresetButton.forSubmit({
+    var back:Button = PresetButton.forSubmit({
       text: 'back to stage finder',
       prop: new ButtonProp({faChar: Fa.char.arrowCircleLeft}),
       callback: function() {
@@ -43,7 +54,7 @@ class GamePassedWindow extends PartsActor {
     bg.filter = Def.uiDs;
     bg.shape(Def.area.w, Def.innerMinHeight);
 
-    var clearMessage:String = reacordBroken ? 'break a record!!' : 'clear!' ;
+    var clearMessage:String = recordBroken ? 'break a record!!' : 'clear!' ;
     var clear:BlockText = new BlockText(1, 1, clearMessage);
     var score:BlockText = new BlockText(1, 1, 'score:' + Std.string(score));
     var bestScore:BlockText = new BlockText(1, 1, 'best:' + Std.string(bestScore));

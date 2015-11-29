@@ -1,4 +1,6 @@
 package context.blockbreaker;
+import view.blockbreaker.Calm;
+import view.common.Sp;
 import starling.events.Event;
 import event.ContextEvent;
 import router.RouteData;
@@ -39,7 +41,7 @@ class ImageBlockBreakerContext extends BaseContext {
   private var table:BlockTable;
   private var bg:Quad;
   private var listener:Quad;
-  private var calm:Sprite = new Sprite();
+  private var calm:Calm = new Calm();
   private var tapToStart:TapToStart = new TapToStart();
   private var gameOver:GameOverWindow;
   private var scoreDisplay:ScoreDisplay = new ScoreDisplay();
@@ -84,13 +86,12 @@ class ImageBlockBreakerContext extends BaseContext {
       emit(new Event(ContextEvent.SCENE_CHANGE, false, new RouteData('/bb/finder')));
     };
 
-    gameOver = new GameOverWindow(retry, back);
+    gameOver = new GameOverWindow({retryCallback: retry, backCallback: back});
 
     start();
   }
 
   public function record():Record {
-    trace('read');
     return RecordStore.read(game.id);
   }
 
@@ -123,14 +124,17 @@ class ImageBlockBreakerContext extends BaseContext {
     erase(play);
     stopAnimation();
     changeTouch();
-    trace(record());
 
     var bestScore:Int = record() == null ? 0 : record().score;
     var broke:Bool = game.score > bestScore;
-    if (broke) {
-      writeRecord({time:0, score:game.score});
-    }
-    gamePassed = new GamePassedWindow(game.score, bestScore, broke, retry, back);
+    if (broke) { writeRecord({time:0, score:game.score}); }
+    gamePassed = new GamePassedWindow({
+      score:game.score,
+      bestScore:bestScore,
+      recordBroken: broke,
+      retryCallback: retry,
+      backCallback: back
+    });
     gamePassed.middle(listener);
     gamePassed.activate(this, ground);
   }

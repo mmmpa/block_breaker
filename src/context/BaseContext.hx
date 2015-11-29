@@ -1,4 +1,5 @@
 package context;
+import view.common.Sp;
 import starling.display.DisplayObjectContainer;
 import router.RouteData;
 import config.Def;
@@ -14,7 +15,7 @@ using Lambda;
 
 class BaseContext extends EventDispatcher {
   public var rooter:BaseContext;
-  public var ground:Sprite;
+  public var ground:Sp;
   public var props:RouterProp;
   public var router:Router;
   public var routeMap:Map<String, Dynamic> = new Map();
@@ -28,7 +29,7 @@ class BaseContext extends EventDispatcher {
     this.router = props.router;
     this.rooter = props.contextRoot;
 
-    ground = new Sprite();
+    ground = new Sp();
     ground.addEventListener(Event.ADDED_TO_STAGE, _onCreate);
   }
 

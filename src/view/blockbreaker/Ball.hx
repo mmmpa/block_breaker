@@ -44,6 +44,11 @@ class Ball extends Quad {
     this.data = data;
   }
 
+  override public function hitTest(localPoint:Point, forTouch:Bool = false):DisplayObject {
+    trace(this);
+    return null;
+  }
+
   public function activate(context:BaseContext, parent:DisplayObjectContainer) {
     parent.addChild(this);
     parent.addChild(child1);

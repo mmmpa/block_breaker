@@ -38,9 +38,13 @@ class MainContext extends BaseContext {
     menu = new Router(this.router, this);
     body = new Router(this.router, this);
 
-    this.ground.addChild(body);
-    this.ground.addChild(menu);
-    this.ground.addChild(god);
+    ground.addChild(body);
+    ground.addChild(menu);
+    ground.addChild(god);
+
+    body.name = 'body';
+    menu.name = 'menu';
+    god.name = 'god';
 
     if (route != null) {
       go(route);
