@@ -42,14 +42,6 @@ class Ball extends Quad {
     child2 = Ball.createChild(Def.ballSize2, Def.ballOffset2, data);
     child3 = Ball.createChild(Def.ballSize3, Def.ballOffset3, data);
     this.data = data;
-
-    this.addEventListener(Event.ADDED_TO_STAGE, function(e:Event){
-    });
-  }
-
-  override public function hitTest(localPoint:Point, forTouch:Bool = false):DisplayObject{
-    trace('hit test');
-    return null;
   }
 
   public function activate(context:BaseContext, parent:DisplayObjectContainer) {

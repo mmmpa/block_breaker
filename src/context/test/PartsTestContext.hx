@@ -1,4 +1,5 @@
 package context.test;
+import model.common.CheckboxProp;
 import starling.events.Event;
 import feathers.events.FeathersEventType;
 import feathers.controls.LayoutGroup;
@@ -54,36 +55,32 @@ class PartsTestContext extends BaseContext {
     scroller.addChild(container);
     ground.addChild(scroller);
 
-    scroller.addEventListener(FeathersEventType.SCROLL_START, function(e:Event){
+    scroller.addEventListener(FeathersEventType.SCROLL_START, function(e:Event) {
       container.flatten();
       container.touchable = false;
     });
 
-    scroller.addEventListener(FeathersEventType.SCROLL_COMPLETE, function(e:Event){
+    scroller.addEventListener(FeathersEventType.SCROLL_COMPLETE, function(e:Event) {
       container.unflatten();
       container.touchable = true;
     });
 
     var parts:Array<Dynamic> = new Array();
-    var fab:ButtonProp = new ButtonProp();
-    fab.faChar = Fa.char.paw;
-    var thum:ButtonProp = new ButtonProp();
-    thum.faChar = Fa.char.thumbsOUp;
-    var ban:ButtonProp = new ButtonProp();
-    ban.faChar = Fa.char.ban;
-
 
     var p1:FinderPiece = FinderPiece.noImage(function() {
       trace('retry');
     });
+
     var p2:FinderPiece = FinderPiece.loading(function() {
       trace('retry');
     });
-    BitmapLoader.load('asset/kobito.png', function(data:BitmapData){
+
+    BitmapLoader.load('asset/kobito.png', function(data:BitmapData) {
       var image:Image = new Image(Texture.fromBitmapData(data));
       image.smoothing = TextureSmoothing.NONE;
       p2.replaceImage(image);
     });
+
     var pieces:PartsActor = new PartsActor();
     pieces.addChild(p1);
     pieces.addChild(p2);
@@ -92,33 +89,67 @@ class PartsTestContext extends BaseContext {
     parts.push(pieces);
     parts.push(new GameOverWindow(function() {
       trace('retry');
+    }, function() {
+      trace('back');
     }));
     parts.push(new GamePassedWindow(1000, 2000, false, function() {
       trace('retry');
+    }, function() {
+      trace('back');
     }));
     parts.push(new GamePassedWindow(10000, 10000, true, function() {
       trace('retry');
+    }, function() {
+      trace('back');
     }));
-    parts.push(PresetButton.normal('normal button', null, function() {
-      trace('push');
+
+    parts.push(PresetButton.normal({
+      text: 'normal button',
+      callback: function() {
+        trace('push');
+      }
     }));
-    parts.push(PresetButton.normal('button with icon', fab, function() {
-      trace('push');
+
+    parts.push(PresetButton.normal({
+      text: 'button with icon',
+      prop: new ButtonProp({faChar: Fa.char.paw}),
+      callback: function() { trace('push'); }
     }));
-    parts.push(PresetButton.forOk('ok', thum, function() {
-      trace('push');
+
+    parts.push(PresetButton.forOk({
+      text: 'ok',
+      prop: new ButtonProp({faChar: Fa.char.thumbsOUp}),
+      callback: function() { trace('push'); }
     }));
-    parts.push(PresetButton.forSubmit('submit', thum, function() {
-      trace('push');
+
+    parts.push(PresetButton.forSubmit({
+      text: 'submit',
+      prop: new ButtonProp({faChar: Fa.char.thumbsOUp}),
+      callback: function() { trace('push'); }
     }));
-    parts.push(PresetButton.forCansel('cancel', ban, function() {
-      trace('push');
+
+    parts.push(PresetButton.forCansel({
+      text: 'cancel',
+      prop: new ButtonProp({faChar: Fa.char.ban}),
+      callback: function() { trace('push'); }
     }));
-    parts.push(Checkbox.normal('checked box', true, ActorHorizontal.Right, function(cb:Checkbox) {
-      trace(cb.checked);
+
+    parts.push(Checkbox.normal({
+      text: 'checked box',
+      checked: true,
+      prop: new CheckboxProp({position: ActorHorizontal.Right}),
+      callback: function(cb:Checkbox) {
+        trace(cb.checked);
+      }
     }));
-    parts.push(Checkbox.normal('unchecked box', false, ActorHorizontal.Left, function(cb:Checkbox) {
-      trace(cb.checked);
+
+    parts.push(Checkbox.normal({
+      text: 'unchecked box',
+      checked: false,
+      prop: new CheckboxProp({position: ActorHorizontal.Left}),
+      callback: function(cb:Checkbox) {
+        trace(cb.checked);
+      }
     }));
 
     parts.push(new Notification('', 'message only', function() { trace('push');}));

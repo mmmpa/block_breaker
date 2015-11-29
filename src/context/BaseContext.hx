@@ -1,4 +1,5 @@
 package context;
+import starling.display.DisplayObjectContainer;
 import router.RouteData;
 import config.Def;
  import starling.events.Event;
@@ -108,8 +109,12 @@ class BaseContext extends EventDispatcher {
   }
 
 
-  public function beOnStage(actor:Dynamic, calm:Bool = false) {
-    actor.activate(this, ground);
+  public function beOnStage(actor:Dynamic, calm:Bool = false, container:DisplayObjectContainer = null) {
+    if(container == null){
+      actor.activate(this, ground);
+    }else{
+      actor.activate(this, container);
+    }
 
     if (!calm) {
       actors.push(actor);

@@ -5,7 +5,7 @@ import model.common.ActorProp;
 using addition.Support;
 
 typedef ButtonPropOption = {
-  >ActorPropOption,
+>ActorPropOption,
   var faChar:String;
 }
 
@@ -21,10 +21,10 @@ class ButtonProp extends ActorProp {
   }
 
   public function new(option:ButtonPropOption = null) {
-    super();
-    this.deploy(option,{
+    super(option);
+    this.deploy(option, {
       faChar: ''
-    });
+    }, ['faChar']);
   }
 
   public function setFa(faChar:String):ButtonProp {

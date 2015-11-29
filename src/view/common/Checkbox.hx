@@ -7,29 +7,48 @@ import model.common.ActorProp.ActorHorizontal;
 import model.common.CheckboxProp;
 import config.Def;
 
+using addition.Support;
+
+typedef CheckboxOption = {
+  var text:String;
+  var callback:Dynamic;
+  @:optional var checked:Bool;
+  @:optional var prop:CheckboxProp;
+}
+
 class Checkbox extends PartsActor {
-  public var prop:CheckboxProp;
   private var listener:ButtonListener;
 
+  public var text:String;
   public var checked:Bool;
+  public var prop:CheckboxProp;
+  public var callback:Dynamic;
+
   private var label:Label;
   private var checkedIcon:FaIcon;
   private var uncheckedIcon:FaIcon;
-  private var callback:Dynamic;
 
-  public static function normal(text:String, checked:Bool, position:ActorHorizontal, callback:Dynamic) {
-    return new Checkbox(text, checked, new CheckboxProp(Palette.blueD, Palette.grayD, position), callback);
+  public static function normal(option:CheckboxOption) {
+    if(option.prop == null){
+      option.prop = new CheckboxProp();
+    }
+    option.prop.checkedColor = Palette.blueD;
+    option.prop.uncheckedColor = Palette.grayD;
+
+    return new Checkbox(option);
   }
 
-  public function new(text:String, checked:Bool, prop:CheckboxProp, callback:Dynamic) {
+  public function new(option:CheckboxOption) {
     super();
-    this.prop = prop;
-    this.checked = checked;
+    this.deploy(option,{
+      checked: false,
+      prop: new CheckboxProp()
+    });
+
     this.label = new Label(text, Def.fontSizeNormal);
     this.listener = new ButtonListener(1, 1);
     this.checkedIcon = new FaIcon(Fa.char.checkSquare, Def.fontSizeNormal, prop.checkedColor);
     this.uncheckedIcon = new FaIcon(Fa.char.squareO, Def.fontSizeNormal, prop.uncheckedColor);
-    this.callback = callback;
     listener.click = toggle;
 
     addChild(checkedIcon);

@@ -1,4 +1,12 @@
 package context;
+import event.ContextEvent;
+import starling.events.Event;
+import router.RouteData;
+import view.common.Button;
+import asset.Fa;
+import model.common.ButtonProp;
+import view.common.PresetButton;
+import model.common.CheckboxProp;
 import view.NormalBg;
 import view.common.Spacer;
 import view.common.Label;
@@ -31,30 +39,51 @@ class ConfigurationContext extends BaseContext {
     container.width = Def.area.w;
     container.height = Def.area.h;
 
-    var title:Label = new Label('setup');
+    var title:Label = new Label('Configuration');
 
-    var statusCheck:Checkbox = Checkbox.normal('show status', Configuration.statusEnabled, ActorHorizontal.Right, function(cb:Checkbox) {
-      Configuration.statusEnabled = !Configuration.statusEnabled;
-      Configuration.save();
+    var statusCheck:Checkbox = Checkbox.normal({
+      text: 'show status',
+      checked: Configuration.statusEnabled,
+      prop: new CheckboxProp({position: ActorHorizontal.Right}),
+      callback: function(cb:Checkbox) {
+        Configuration.statusEnabled = !Configuration.statusEnabled;
+        Configuration.save();
+      }
     });
 
-    var soundCheck:Checkbox = Checkbox.normal('play sound', Configuration.soundEnabled, ActorHorizontal.Right, function(cb:Checkbox) {
-      Configuration.soundEnabled = !Configuration.soundEnabled;
-      Configuration.save();
+    var soundCheck:Checkbox = Checkbox.normal({
+      text: 'play sound',
+      checked: Configuration.soundEnabled,
+      prop: new CheckboxProp({position: ActorHorizontal.Right}),
+      callback: function(cb:Checkbox) {
+        Configuration.soundEnabled = !Configuration.soundEnabled;
+        Configuration.save();
+      }
+    });
+
+    var finder:Button = PresetButton.forSubmit({
+      text: 'go to stage finder',
+      prop: new ButtonProp({faChar: Fa.char.th}),
+      callback: function() {
+        emit(new Event(ContextEvent.SCENE_CHANGE, false, new RouteData('/bb/finder')));
+      }
     });
 
     var maxwidth:Float = 0;
-    [statusCheck, soundCheck].map(function(cb:Checkbox){
+    [statusCheck, soundCheck].map(function(cb:Checkbox) {
       maxwidth = cb.width > maxwidth ? cb.width : maxwidth;
       return cb;
-    }).iter(function(cb:Checkbox){
+    }).iter(function(cb:Checkbox) {
       cb.resize(maxwidth + 50, 0);
     });
 
 
+
     title.activate(this, container);
-    container.addChild(new Spacer(1,40));
+    container.addChild(new Spacer(1, 40));
     statusCheck.activate(this, container);
     soundCheck.activate(this, container);
+    container.addChild(new Spacer(1, 40));
+    finder.activate(this, container);
   }
 }

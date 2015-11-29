@@ -104,10 +104,10 @@ class FinderContext extends BaseContext {
         container.addChild(line);
       }
       var child:FinderPiece = FinderPiece.loading(function() {
-        var route:RouteData = new RouteData('/bb/image', new ImageBlockBreakerProp(data.id, data.thumnailPath), true);
+        var route:RouteData = new RouteData('/bb/image', new ImageBlockBreakerProp(data.id, data.blockImagePath), true);
         emit(new Event(ContextEvent.SCENE_CHANGE, false, route));
       });
-      loading.push({finder: child, path: data.blockImagePath});
+      loading.push({finder: child, path: data.thumnailPath});
       line.addChild(child);
       if (!newLine) {
         child.x = line.width + Def.paddingTop;

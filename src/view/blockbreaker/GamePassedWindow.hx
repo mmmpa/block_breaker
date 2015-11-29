@@ -16,13 +16,28 @@ using addition.Support;
 class GamePassedWindow extends PartsActor {
   public var bg:Quad = new Quad(1, 1, Palette.white);
   public var retry:Button;
+  public var back:Button;
 
-  public function new(score:Float, bestScore:Float, reacordBroken:Bool, retryCallback:Dynamic) {
+  public function new(score:Float, bestScore:Float, reacordBroken:Bool, retryCallback:Dynamic, backCallback:Dynamic) {
     super();
 
-    retry = PresetButton.forSubmit('retry', ButtonProp.fa(Fa.char.refresh), function() {
-      retryCallback();
-      removeFromParent();
+    retry = PresetButton.forOk({
+      text: 'retry',
+      prop: new ButtonProp({faChar: Fa.char.refresh}),
+      callback: function() {
+        retryCallback();
+        removeFromParent();
+      }
+    });
+
+
+    back = PresetButton.forSubmit({
+      text: 'back to stage finder',
+      prop: new ButtonProp({faChar: Fa.char.arrowCircleLeft}),
+      callback: function() {
+        backCallback();
+        removeFromParent();
+      }
     });
 
     bg.filter = Def.uiDs;
@@ -57,14 +72,16 @@ class GamePassedWindow extends PartsActor {
 
     retry.center(bg);
     retry.under(bestScore, Def.paddingTop);
+    back.center(bg);
+    back.under(retry, Def.paddingTop);
 
-    bg.height = retry.bottomLine(Def.paddingTop);
+    bg.height = back.bottomLine(Def.paddingTop);
 
     addChild(bg);
     addChild(clear);
     addChild(score);
     addChild(bestScore);
     addChild(retry);
-
+    addChild(back);
   }
 }

@@ -6,12 +6,20 @@ import asset.Se;
 import model.common.ActorProp.ActorHorizontal;
 import model.common.ButtonProp;
 import context.BaseContext;
-import db.Palette;
 import config.Def;
 import starling.display.DisplayObjectContainer;
 import starling.display.Quad;
 
 using addition.Support;
+
+typedef ButtonOption = {
+  var text:String;
+  @:optional var prop:ButtonProp;
+  @:optional var callback:Dynamic;
+  @:optional var hoverCallback:Dynamic;
+  @:optional var outCallback:Dynamic;
+  @:optional var holdCallback:Dynamic;
+}
 
 class Button extends PartsActor {
   private var listener:ButtonListener;
@@ -19,14 +27,17 @@ class Button extends PartsActor {
   private var hover:Quad;
   private var effect:Quad;
   private var label:Label;
+
+  private var text:String;
   private var prop:ButtonProp;
-
   private var callback:Dynamic;
-  //private var Map<Dynamic, CallbackList>;
+  private var hoverCallback:Dynamic;
+  private var outCallback:Dynamic;
+  private var holdCallback:Dynamic;
 
-  public function new(text:String, ?prop:ButtonProp, ?callback:Dynamic, ?hoverCallback:Dynamic, ?outCallback:Dynamic, ?holdCallback:Dynamic) {
+  public function new(option:ButtonOption = null) {
     super();
-    this.prop = prop;
+    this.deploy(option);
 
     this.label = new Label(text, Def.fontSizeNormal, prop.color, prop.faChar);
     this.bg = new Quad(1, 1, prop.bg);

@@ -1,4 +1,8 @@
 package context.blockbreaker;
+import starling.events.Event;
+import event.ContextEvent;
+import router.RouteData;
+import starling.display.Sprite;
 import view.blockbreaker.GamePassedWindow;
 import db.RecordStore;
 import view.blockbreaker.ScoreDisplay;
@@ -33,31 +37,38 @@ class ImageBlockBreakerContext extends BaseContext {
 
   private var game:BlockBreaker;
   private var table:BlockTable;
+  private var bg:Quad;
   private var listener:Quad;
+  private var calm:Sprite = new Sprite();
   private var tapToStart:TapToStart = new TapToStart();
   private var gameOver:GameOverWindow;
   private var scoreDisplay:ScoreDisplay = new ScoreDisplay();
   private var gamePassed:GamePassedWindow;
   private var retry:Dynamic;
+  private var back:Dynamic;
 
   public function new(props:RouterProp, insertProps:ImageBlockBreakerProp) {
     super(props);
     ground.y = Def.area.y;
-    listener = new NormalBg();
+    listener = new Quad(Def.area.w, Def.area.h, 0);
+    listener.alpha = 0;
+    calm.touchable = false;
 
     var start:Dynamic = function() {
       new ImageBlockGrid(insertProps.path, function(grid:BlockGrid) {
         game = new BlockBreaker(insertProps.id, grid);
         table = new BlockTable(grid);
-        beOnStage(table, true);
+        table.activate(this, calm);
         scoreDisplay.score = game.score;
         startAnimation();
         changeTouch();
       }).process();
 
       ground.addChild(listener);
-      ground.addChild(tapToStart);
-      ground.addChild(scoreDisplay);
+      ground.addChild(calm);
+      calm.addChild(new NormalBg());
+      calm.addChild(scoreDisplay);
+
       tapToStart.center(listener);
       tapToStart.y = Std.int(Def.area.h * 1.75 - tapToStart.height) >> 1;
       scoreDisplay.bottom(listener);
@@ -69,7 +80,11 @@ class ImageBlockBreakerContext extends BaseContext {
       start();
     };
 
-    gameOver = new GameOverWindow(retry);
+    back = function() {
+      emit(new Event(ContextEvent.SCENE_CHANGE, false, new RouteData('/bb/finder')));
+    };
+
+    gameOver = new GameOverWindow(retry, back);
 
     start();
   }
@@ -87,7 +102,7 @@ class ImageBlockBreakerContext extends BaseContext {
     var now:BlockBreakerPlayingState = game.play();
     var ball:BallData = now.newBalls.pop();
     while (ball != null) {
-      beOnStage(Ball.create(ball));
+      addBall(ball);
       ball = now.newBalls.pop();
     }
     if (Configuration.soundEnabled) {
@@ -98,7 +113,7 @@ class ImageBlockBreakerContext extends BaseContext {
     if (now.state == BlockBreakerState.Played) {
       over();
       return;
-    }else if(now.state == BlockBreakerState.Passed){
+    } else if (now.state == BlockBreakerState.Passed) {
       pass();
       return;
     }
@@ -115,7 +130,7 @@ class ImageBlockBreakerContext extends BaseContext {
     if (broke) {
       writeRecord({time:0, score:game.score});
     }
-    gamePassed = new GamePassedWindow(game.score, bestScore, broke, retry);
+    gamePassed = new GamePassedWindow(game.score, bestScore, broke, retry, back);
     gamePassed.middle(listener);
     gamePassed.activate(this, ground);
   }
@@ -137,26 +152,25 @@ class ImageBlockBreakerContext extends BaseContext {
 
 
   private function changeTouch() {
-    trace(game.status.state);
-    ground.removeEventListeners(TouchEvent.TOUCH);
+    listener.removeEventListeners(TouchEvent.TOUCH);
     switch(game.status.state){
       case BlockBreakerState.Ready:
-        ground.addEventListener(TouchEvent.TOUCH, onReadyTouch);
+        listener.addEventListener(TouchEvent.TOUCH, onReadyTouch);
       case BlockBreakerState.Playing:
-        ground.addEventListener(TouchEvent.TOUCH, onPlayingTouch);
+        listener.addEventListener(TouchEvent.TOUCH, onPlayingTouch);
       case BlockBreakerState.Played:
       case BlockBreakerState.Passed:
     }
   }
 
   private function onReadyTouch(e:TouchEvent) {
-    var touch:Touch = e.getTouch(ground);
+    var touch:Touch = e.getTouch(listener);
 
     switch(touch.phase){
       case TouchPhase.BEGAN:
         tapToStart.removeFromParent();
 
-        var p:Point = touch.getLocation(ground);
+        var p:Point = touch.getLocation(listener);
         var shock:ShockData = game.addShock(p);
         var ballPoint:Point = new Point(p.x, p.y < Def.ballStartTop ? Def.ballStartTop : p.y);
         var newBall:BallData = game.addBall(ballPoint, 270);
@@ -171,23 +185,21 @@ class ImageBlockBreakerContext extends BaseContext {
 
 
   private function onPlayingTouch(e:TouchEvent) {
-    var touch:Touch = e.getTouch(ground);
+    var touch:Touch = e.getTouch(listener);
 
     switch(touch.phase){
       case TouchPhase.BEGAN:
-        var p:Point = touch.getLocation(ground);
+        var p:Point = touch.getLocation(listener);
         var shock:ShockData = game.addShock(p);
         addShock(shock);
     }
   }
 
   private function addShock(data:ShockData) {
-    var shock:Shock = new Shock(data);
-    beOnStage(shock);
+    beOnStage(new Shock(data), false, calm);
   }
 
   private function addBall(data:BallData) {
-    var ball:Ball = Ball.create(data);
-    beOnStage(ball);
+    beOnStage(Ball.create(data), false, calm);
   }
 }

@@ -1,4 +1,5 @@
 package view.blockbreaker;
+import starling.display.Sprite;
 import starling.events.Event;
 import flash.geom.Point;
 import asset.Fa;
@@ -23,6 +24,7 @@ class FinderPiece extends PartsActor {
   private var play:Button;
   public var listener:Button;
   private var image:DisplayObject;
+  private var masker:Sprite = new Sprite();
 
   static public function noImage(callback:Dynamic, ?longCallback:Dynamic):FinderPiece {
     return new FinderPiece(new Label('no image'), callback, longCallback);
@@ -38,26 +40,36 @@ class FinderPiece extends PartsActor {
     addChild(bg);
 
 
-    listener = PresetButton.normal('', null, callback, null, null, longCallback);
+    listener = PresetButton.normal({
+      text: '',
+      callback: callback,
+      holdCallback:longCallback
+    });
 
     listener.fit(bg);
     addChild(listener);
 
-    play = PresetButton.forSubmit('play', ButtonProp.fa(Fa.char.paw), function() {
-      callback();
+    play = PresetButton.forSubmit({
+      text: 'play',
+      prop: new ButtonProp({faChar: Fa.char.paw}),
+      callback: function() {
+        callback();
+      }
     });
 
     var buttonArea:Int = Std.int(play.height + (Def.paddingTop << 1)) ;
     play.center(bg);
     play.bottom(bg, -Def.paddingTop);
 
+    masker.mask = new Quad(bg.width, bg.height, 0);
+    addChild(masker);
     addChild(play);
 
     this.image = image;
     image.touchable = false;
     image.center(bg);
     image.middle(bg, -buttonArea >> 1);
-    addChild(image);
+    masker.addChild(image);
   }
 
   public function replaceImage(newImage:DisplayObject, fit:Bool = true) {
@@ -67,9 +79,10 @@ class FinderPiece extends PartsActor {
     image.touchable = false;
     var sx:Int = Std.int(bg.width / image.width);
     var sy:Int = Std.int(bg.height / image.height);
-    var detected:Int = sx < sy ? sx : sy;
-    image.scaleX = image.scaleY = detected;
-
-    addChild(image);
+    var detected:Int = sx > sy ? sx : sy;
+    image.scaleX = image.scaleY = detected + 1;
+    image.center(bg);
+    image.middle(bg);
+    masker.addChild(image);
   }
 }

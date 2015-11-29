@@ -27,18 +27,19 @@ class TestMenuContext extends BaseContext {
     startAnimation();
 
     bar = new TopBar();
-    trace('button');
     menu = new SideMenu(routesSrc);
-    trace('button');
-    var faButton:Button = PresetButton.normal('', new ButtonProp({
-      w: Def.topBarHeight,
-      h: Def.topBarHeight,
-      horizontal: ActorHorizontal.Center,
-      faChar: Fa.char.bars
-    }), function() {
-      menu.open();
+    var faButton:Button = PresetButton.normal({
+      text: '',
+      prop: new ButtonProp({
+        w: Def.topBarHeight,
+        h: Def.topBarHeight,
+        horizontal: ActorHorizontal.Center,
+        faChar: Fa.char.bars
+      }),
+      callback: function() {
+        menu.open();
+      }
     });
-trace('button');
     beOnStage(bar);
     beOnStage(menu);
     beOnStage(faButton);
@@ -112,7 +113,7 @@ trace('button');
       },
       {
         icon: Fa.char.th,
-        text: 'stage Finder',
+        text: 'stage finder',
         route: new RouteData('/bb/finder')
       }
     ];

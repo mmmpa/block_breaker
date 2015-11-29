@@ -119,12 +119,14 @@ class SideMenu extends BaseActor {
   }
 
   private function makeButtons():Array<Button> {
-    trace('make buttons');
     return menuRecipes.map(function(recipe:MenuRecipe):Button {
-      var buttonProp:ButtonProp = new ButtonProp({faChar: recipe.icon});
-      var button:Button = PresetButton.normal(recipe.text, buttonProp, function() {
-        close();
-        emit(new Event(ContextEvent.SCENE_CHANGE, false, recipe.route));
+      var button:Button = PresetButton.normal({
+        text: recipe.text,
+        prop: new ButtonProp({faChar: recipe.icon}),
+        callback: function() {
+          close();
+          emit(new Event(ContextEvent.SCENE_CHANGE, false, recipe.route));
+        }
       });
 
       maxWidth = button.width > maxWidth ? button.width : maxWidth;

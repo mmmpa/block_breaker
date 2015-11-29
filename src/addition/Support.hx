@@ -76,11 +76,14 @@ class Support {
     return a;
   }
 
-  static public function deploy(a:Dynamic, b:Dynamic, defaultValue:Dynamic = null) {
+  static public function deploy(a:Dynamic, b:Dynamic, defaultValue:Dynamic = null, only:Array<String> = null) {
     if (defaultValue != null) {deploy(a, defaultValue);}
     if (b == null) { return; }
 
-    for (key in Reflect.fields(b)) {
+    var onlied:Bool = only != null;
+    var keys:Array<String> = onlied ? only : Reflect.fields(b);
+    for (key in keys) {
+      if (onlied && !Reflect.hasField(b, key)) { continue; }
       untyped{ a[key] = b[key]; }
     }
   }

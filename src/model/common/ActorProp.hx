@@ -1,6 +1,6 @@
 package model.common;
-
 import config.Def;
+
 using addition.Support;
 
 typedef ActorPropOption ={
@@ -20,13 +20,13 @@ class ActorProp {
   public var vertical:ActorVertical;
   public var horizontal:ActorHorizontal;
 
-  public function new(option:ActorPropOption = null) {
+  public function new(option:ActorPropOption) {
     this.deploy(option,{
       padTop: Def.fontSizeNormal >> 1,
       padSide: Def.fontSizeNormal,
       horizontal: ActorHorizontal.Left,
       vertical: ActorVertical.Middle
-    });
+    }, ['w','h','padTop','padSide','vertical','horizontal']);
   }
 }
 

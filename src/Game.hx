@@ -20,9 +20,9 @@ class Game extends Sprite {
     addChild(mainRouter);
     //var route:RouteData = new RouteData('/test/ball', new BallTestProp(5000));
     //var route:RouteData = new RouteData('/test/parts');
-    //var route:RouteData = new RouteData('/configuration');
+    var route:RouteData = new RouteData('/configuration');
     //var route:RouteData = new RouteData('/test/parts');
-    var route:RouteData = new RouteData('/bb/finder');
+    //var route:RouteData = new RouteData('/bb/finder');
     //var route:RouteData = new RouteData('/bb/plain', new BlockBreakerProp(PlainGame.plain1()));
     //var route:RouteData = new RouteData('/bb/image', new ImageBlockBreakerProp('kobito', 'asset/kobito.png'), true);
 
