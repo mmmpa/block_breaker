@@ -1,9 +1,9 @@
-package model;
+package models;
 
 import flash.geom.Point;
-import initializer.Trace;
+import initializers.Trace;
 import massive.munit.Assert;
-import model.BlockGrid;
+import models.BlockGrid;
 
 class BlockGridTest {
   var grid:BlockGrid;

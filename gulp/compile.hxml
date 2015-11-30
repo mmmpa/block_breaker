@@ -14,7 +14,7 @@
 
 
 -main Main
--D advanced-telemetry
+#-D advanced-telemetry
 -cp "../src"
 -swf "../export/builded.swf"
 -swf-version 11

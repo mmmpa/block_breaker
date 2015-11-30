@@ -1,6 +1,6 @@
 import massive.munit.TestSuite;
 
-import model.BlockGridTest;
+import models.BlockGridTest;
 
 /**
  * Auto generated Test Suite for MassiveUnit.

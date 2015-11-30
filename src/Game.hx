@@ -1,11 +1,11 @@
 package ;
-import model.blockbreaker.ImageBlockBreakerProp;
-import model.test.BallTestProp;
+import models.blockbreaker.ImageBlockBreakerProp;
+import models.test.BallTestProp;
 import starling.display.Sprite;
-import router.RouteData;
-import config.Def;
-import context.MainContext;
-import router.Router;
+import routers.RouteData;
+import configs.Def;
+import contexts.MainContext;
+import routers.Router;
 import flash.geom.Rectangle;
 import starling.core.Starling;
 import flash.display.Stage;
@@ -25,7 +25,7 @@ class Game extends Sprite {
     //var route:RouteData = new RouteData('/bb/finder');
     //var route:RouteData = new RouteData('/bb/plain', new BlockBreakerProp(PlainGame.plain1()));
     var route:RouteData = new RouteData('/bb/image', new ImageBlockBreakerProp('kobito', 'asset/kobito.png'), true);
-
+    //var route:RouteData = new RouteData('/test/ball/block', new BallTestProp(1000));
     mainRouter.pushRoot(MainContext, route);
   }
 
