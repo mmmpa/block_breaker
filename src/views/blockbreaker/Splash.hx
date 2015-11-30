@@ -25,7 +25,7 @@ class Splash {
   public function act():Bool {
     frame--;
 
-    var range:Int = Std.int(frame / 2);
+    var range:Int = Std.int(frame) >> 1;
 
     s1.x -= range;
     s1.y -= range - 2;

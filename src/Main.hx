@@ -1,4 +1,5 @@
 package;
+import assets.Fa;
 import events.AppEvent;
 import flash.events.Event;
 import dbs.Palette;
@@ -16,6 +17,7 @@ using configs.Sizing;
 class Main extends Sprite {
   static public function main():Void {
     initialize();
+    trace(Fa);
     Lib.current.stage.addEventListener('started', function(e:AppEvent){
       Game.start(Lib.current.stage);
     }, false, 1, true);

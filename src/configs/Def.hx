@@ -18,7 +18,6 @@ class Def {
   static public var stageWidth:Int;
   static public var stageHeight:Int;
   static public var debug:Bool = true;
-  static public var appController:Dynamic;
 
   // 環境によって変化が生じない値
   // 特に数値
@@ -125,7 +124,7 @@ class Def {
     ballSpeedNormal = Std.int(ballSpeedNormal * baseRate);
   }
 
-  static public function detectMm(){
+  static public function detectMm() {
     topBarHeight = Sizing.mm(6);
     fontSizeNormal = Sizing.mm(3);
     fontSizeBig = Sizing.mm(5);

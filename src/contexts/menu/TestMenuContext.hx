@@ -1,4 +1,5 @@
 package contexts.menu;
+import configs.OnAir;
 import views.common.PresetButton;
 import models.blockbreaker.ImageBlockBreakerProp;
 import dbs.PlainGame;
@@ -118,8 +119,7 @@ class TestMenuContext extends BaseContext {
       }
     ];
 
-    trace(Def.appController);
-    if(Def.appController != null){
+    if(OnAir.enable){
       base.push({
         icon: Fa.char.th,
         text: 'exit',

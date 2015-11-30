@@ -1,4 +1,5 @@
 package contexts;
+import configs.OnAir;
 import dbs.FinderList;
 import models.blockbreaker.FinderProp;
 import contexts.blockbreaker.FinderContext;
@@ -143,6 +144,10 @@ class MainContext extends BaseContext {
     routeMap.set('/bb/finder', function(route:RouteData) {
       menu.replace(TestMenuContext, null);
       body.replace(FinderContext, FinderList.all, route.forceReload);
+    });
+
+    routeMap.set('/app/exit', function(route:RouteData) {
+      OnAir.exit();
     });
   }
 

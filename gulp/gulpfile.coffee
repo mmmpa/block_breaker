@@ -23,8 +23,9 @@ gulp.task 'default', ->
           'echo '
           'echo building'
           'haxe "compile.hxml"'
-          'echo builded'
-          'cp -f ../export/builded.swf ../export/game.swf'
+          'echo built'
+          'cp -f ../export/built.swf ../export/game.swf'
+          'cp -f ../export/built.swf ../for_air/game.swf'
         ], {})
 
   watch(swf)

@@ -19,7 +19,6 @@ class Block extends Quad {
 
   public static function create(data:BlockData):Block {
     var block:Block = new Block(data.width - Def.cellMargin, data.height - Def.cellMargin, data.color, data.x, data.y, data);
-
     return block;
   }
 

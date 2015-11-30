@@ -1,0 +1,4 @@
+package impls;
+interface IAppControler {
+
+}
