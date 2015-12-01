@@ -6,29 +6,29 @@ using additions.Support;
 
 typedef ButtonPropOption = {
 >ActorPropOption,
-  var faChar:String;
+  @:optional var char:Dynamic;
 }
 
 class ButtonProp extends ActorProp {
-  public var faChar:String;
+  public var char:Class<Dynamic>;
   public var color:Int;
   public var bg:Int;
   public var effect:Int;
   public var filter:BlurFilter;
 
-  static public function fa(faChar:String):ButtonProp {
-    return new ButtonProp().setFa(faChar);
+  static public function fa(char):ButtonProp {
+    return new ButtonProp().setFa(char);
   }
 
   public function new(option:ButtonPropOption = null) {
     super(option);
     this.deploy(option, {
-      faChar: ''
-    }, ['faChar']);
+      char: null
+    }, ['char']);
   }
 
-  public function setFa(faChar:String):ButtonProp {
-    this.faChar = faChar;
+  public function setFa(char):ButtonProp {
+    this.char = char;
     return this;
   }
 }

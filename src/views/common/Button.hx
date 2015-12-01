@@ -39,7 +39,7 @@ class Button extends PartsActor {
     super();
     this.deploy(option);
 
-    this.label = new Label(text, Def.fontSizeNormal, prop.color, prop.faChar);
+    this.label = new Label(text, Def.fontSizeNormal, prop.color, prop.char);
     this.bg = new Quad(1, 1, prop.bg);
     this.hover = new Quad(1, 1, prop.effect);
     this.effect = new Quad(1, 1, prop.effect);

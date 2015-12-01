@@ -52,7 +52,7 @@ class FinderPiece extends PartsActor {
 
     play = PresetButton.forSubmit({
       text: 'play',
-      prop: new ButtonProp({faChar: Fa.char.paw}),
+      prop: new ButtonProp({char: Gamepad1}),
       callback: function() {
         callback();
       }

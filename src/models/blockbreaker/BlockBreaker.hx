@@ -2,7 +2,6 @@ package models.blockbreaker;
 import models.blockbreaker.BallData;
 import configs.Def;
 import flash.geom.Point;
-
 using Lambda;
 using additions.Support;
 
@@ -12,6 +11,7 @@ typedef BlockBreakerOption = {
   var speed:Int;
   var field:PlayFieldData;
 }
+
 
 class BlockBreaker {
   public var id:String;
@@ -30,6 +30,7 @@ class BlockBreaker {
   public function new(option:BlockBreakerOption) {
     this.deploy(option);
   }
+
 
   public function deactivate() {
     balls = null;

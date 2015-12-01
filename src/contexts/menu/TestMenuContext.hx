@@ -35,7 +35,7 @@ class TestMenuContext extends BaseContext {
         w: Def.topBarHeight,
         h: Def.topBarHeight,
         horizontal: ActorHorizontal.Center,
-        faChar: Fa.char.bars
+        char: Reorder
       }),
       callback: function() {
         menu.open();
@@ -53,67 +53,67 @@ class TestMenuContext extends BaseContext {
   private function get_routesSrc():Array<MenuRecipe> {
     var base:Array<MenuRecipe> = [
       {
-        icon: Fa.char.cog,
+        icon: Cog2,
         text: 'configration',
         route: new RouteData('/configuration')
       },
       {
-        icon: Fa.char.cogs,
+        icon: Cogs3,
         text: 'test: parts',
         route: new RouteData('/test/parts')
       },
       {
-        icon: Fa.char.spinner,
+        icon: Spinner8,
         text: 'test: splash animation',
         route: new RouteData('/test/splash')
       },
       {
-        icon: Fa.char.lineChart,
+        icon: Lightning14,
         text: 'test: block refrection',
         route: new RouteData('/test/block/hit')
       },
       {
-        icon: Fa.char.circleONotch,
+        icon: Circle33,
         text: 'shock wave test',
         route: new RouteData('/test/shock')
       },
       {
-        icon: Fa.char.lineChart,
+        icon: Lightning14,
         text: 'shock wave refrection test',
         route: new RouteData('/test/shock/hit')
       },
       {
-        icon: Fa.char.tint,
+        icon: Tint,
         text: 'test: only ball 1000',
         route: new RouteData('/test/ball', new BallTestProp(1000))
       },
       {
-        icon: Fa.char.tint,
+        icon: Tint,
         text: 'test: only ball 2500',
         route: new RouteData('/test/ball', new BallTestProp(2500))
       },
       {
-        icon: Fa.char.tint,
+        icon: Tint,
         text: 'test: only ball 5000',
         route: new RouteData('/test/ball', new BallTestProp(5000))
       },
       {
-        icon: Fa.char.square,
+        icon: Square62,
         text: 'test: block ball 1000',
         route: new RouteData('/test/ball/block', new BallTestProp(1000))
       },
       {
-        icon: Fa.char.square,
+        icon: Square62,
         text: 'test: block ball 1500',
         route: new RouteData('/test/ball/block', new BallTestProp(1500))
       },
       {
-        icon: Fa.char.square,
+        icon: Square62,
         text: 'test: block ball 2000',
         route: new RouteData('/test/ball/block', new BallTestProp(2000))
       },
       {
-        icon: Fa.char.th,
+        icon: Four29,
         text: 'stage finder',
         route: new RouteData('/bb/finder')
       }
@@ -121,7 +121,7 @@ class TestMenuContext extends BaseContext {
 
     if(OnAir.enable){
       base.push({
-        icon: Fa.char.th,
+        icon: Four29,
         text: 'exit',
         route: new RouteData('/app/exit')
       });

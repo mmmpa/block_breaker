@@ -1,37 +1,39 @@
 package views.common;
+import starling.display.Image;
+import flash.display.Bitmap;
 import flash.display.StageQuality;
 import configs.Def;
 import assets.Fa;
 import starling.text.TextField;
 import starling.text.TextFieldAutoSize;
+import starling.textures.Texture;
+
+using additions.Creator;
 
 class FaIcon extends PartsActor {
   private var baseSize:Int;
   private var scaleSize:Int = 1;
   private var icon:TextField;
+  private var max:Float;
+  private var size:Int;
+  private var image:Image;
 
-  public function new(char:String, size:Int, ?color:Int) {
+  public function new(Char:Class<Dynamic>, size:Int, ?color:Int) {
     super();
-    Def.rawStage.quality = StageQuality.BEST;
-    this.icon = new TextField(1, 1, char);
-    this.baseSize = size;
-    icon.fontName = Fa.name;
-    icon.color = color;
-    this.addChild(icon);
+    this.size = size;
+    var bitmap:Bitmap = Type.createInstance(Type.resolveClass(Type.getClassName(Char)), []);
+    max = bitmap.width > bitmap.height ? bitmap.width : bitmap.height;
+    image = new Image(Texture.fromBitmap(bitmap));
+    addChild(image);
     draw();
-    this.flatten();
-    Def.rawStage.quality = StageQuality.LOW;
   }
 
   public function draw():FaIcon{
-    icon.autoSize = TextFieldAutoSize.BOTH_DIRECTIONS;
-    icon.fontSize = baseSize * scaleSize;
-    var max:Float = icon.width > icon.height ? icon.width: icon.height;
-    initializeArea(max, max);
-    icon.x = max / 2;
-    icon.y = max / 2;
-    icon.pivotX = icon.width / 2;
-    icon.pivotY = icon.height / 2;
+    var rate:Float = size / max;
+    image.scaleX = image.scaleY = rate;
+    initializeArea(image.width, image.height);
+    image.pivotX = image.width / 2;
+    image.pivotY = image.height / 2;
     return this;
   }
 

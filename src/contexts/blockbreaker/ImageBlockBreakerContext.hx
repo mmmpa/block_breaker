@@ -1,4 +1,6 @@
 package contexts.blockbreaker;
+import starling.textures.Texture;
+import starling.display.Image;
 import views.common.Spacer;
 import models.blockbreaker.PlayFieldData;
 import views.blockbreaker.Calm;
@@ -69,6 +71,7 @@ class ImageBlockBreakerContext extends BaseContext {
     listener.center(deadBg);
     listener.y = Def.area.y;
     //listener.bottom(deadBg);
+
 
     var start:Dynamic = function() {
       new ImageBlockGrid(insertProps.path, function(grid:BlockGrid) {

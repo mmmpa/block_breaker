@@ -31,7 +31,7 @@ class GameOverWindow extends PartsActor {
 
     var retry:Button = PresetButton.forOk({
       text: 'retry',
-      prop: new ButtonProp({faChar: Fa.char.refresh}),
+      prop: new ButtonProp({char: Refresh36}),
       callback: function() {
         retryCallback();
         removeFromParent();
@@ -40,7 +40,7 @@ class GameOverWindow extends PartsActor {
 
     var back:Button = PresetButton.forSubmit({
       text: 'back to stage finder',
-      prop: new ButtonProp({faChar: Fa.char.arrowCircleLeft}),
+      prop: new ButtonProp({char: Chevron24}),
       callback: function() {
         backCallback();
         removeFromParent();

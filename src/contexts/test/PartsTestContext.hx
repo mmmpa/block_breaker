@@ -121,25 +121,25 @@ class PartsTestContext extends BaseContext {
 
     parts.push(PresetButton.normal({
       text: 'button with icon',
-      prop: new ButtonProp({faChar: Fa.char.paw}),
+      prop: new ButtonProp({char: Gamepad1}),
       callback: function() { trace('push'); }
     }));
 
     parts.push(PresetButton.forOk({
       text: 'ok',
-      prop: new ButtonProp({faChar: Fa.char.thumbsOUp}),
+      prop: new ButtonProp({char: Thumbs26}),
       callback: function() { trace('push'); }
     }));
 
     parts.push(PresetButton.forSubmit({
       text: 'submit',
-      prop: new ButtonProp({faChar: Fa.char.thumbsOUp}),
+      prop: new ButtonProp({char: Thumbs26}),
       callback: function() { trace('push'); }
     }));
 
     parts.push(PresetButton.forCansel({
       text: 'cancel',
-      prop: new ButtonProp({faChar: Fa.char.ban}),
+      prop: new ButtonProp({char: Ban}),
       callback: function() { trace('push'); }
     }));
 

@@ -1,6 +1,6 @@
 package views.common;
 import configs.Def;
- import assets.BlockFont;
+import assets.BlockFont;
 import starling.text.TextFieldAutoSize;
 import starling.text.TextField;
 
@@ -8,7 +8,7 @@ class Label extends PartsActor {
   private var tf:TextField;
   private var icon:FaIcon;
 
-  public function new(text:String, size:Int = 0, ?color:Int = 0, ?iconChar:String) {
+  public function new(text:String, size:Int = 0, ?color:Int = 0, ?char:Class<Dynamic>) {
     super();
 
     this.tf = new TextField(1, 1, text);
@@ -18,8 +18,8 @@ class Label extends PartsActor {
     tf.autoSize = TextFieldAutoSize.BOTH_DIRECTIONS;
     this.addChild(tf);
 
-    if (iconChar != null && iconChar.length != 0) {
-      this.icon = new FaIcon(iconChar, Std.int(size * 0.7), color);
+    if (char != null) {
+      this.icon = new FaIcon(char, Std.int(size * 1.2), color);
       this.addChild(icon);
     }
 
@@ -28,8 +28,8 @@ class Label extends PartsActor {
     flatten();
   }
 
-  override public function deactivate(){
-    if(icon != null){
+  override public function deactivate() {
+    if (icon != null) {
       icon.deactivate();
     }
     tf.dispose();
@@ -37,12 +37,11 @@ class Label extends PartsActor {
   }
 
   public function posit() {
-    if(icon != null){
+    if (icon != null) {
       tf.x = Std.int(tf.height);
-
-      if(tf.height > icon.height){
+      if (tf.height > icon.height) {
         icon.y = Std.int((tf.height - icon.height) / 2);
-      }else{
+      } else {
         tf.y = Std.int((icon.height - tf.height) / 2);
       }
     }

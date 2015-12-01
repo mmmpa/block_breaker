@@ -63,7 +63,7 @@ class ConfigurationContext extends BaseContext {
 
     var finder:Button = PresetButton.forSubmit({
       text: 'go to stage finder',
-      prop: new ButtonProp({faChar: Fa.char.th}),
+      prop: new ButtonProp({char: Four29}),
       callback: function() {
         emit(new Event(ContextEvent.SCENE_CHANGE, false, new RouteData('/bb/finder')));
       }

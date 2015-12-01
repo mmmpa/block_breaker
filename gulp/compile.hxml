@@ -1,12 +1,10 @@
--lib format
-
 -resource ../lib/sound/hit.mp3@hit
 -resource ../lib/sound/hard.mp3@hard
 -resource ../lib/sound/break.mp3@break
--resource ../lib/resource.swf@FaSwf
 
 ### font
 -swf-lib ../lib/resource.swc
+-swf-lib ../lib/fa.swc
 
 ### Starling
 -swf-lib ../lib/starling/starling.swc
@@ -21,21 +19,20 @@
 -main Main
 #-D advanced-telemetry
 -cp "../src"
--swf "../export/built.swf"
+-swf "../export/built.swc"
 -swf-version 11
 -swf-header 480:800:60:ffffff
 
 --next
 
--lib format
 
 -resource ../lib/sound/hit.mp3@hit
 -resource ../lib/sound/hard.mp3@hard
 -resource ../lib/sound/break.mp3@break
--resource ../lib/resource.swf@FaSwf
 
 ### font
 -swf-lib ../lib/resource.swc
+-swf-lib ../lib/fa.swc
 
 ### Starling
 -swf-lib ../lib/starling/starling.swc

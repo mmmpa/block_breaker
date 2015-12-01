@@ -15,7 +15,7 @@ import routers.RouteData;
 using Lambda;
 using additions.Support;
 
-typedef MenuRecipe = {icon:String, text:String, route:RouteData}
+typedef MenuRecipe = {icon:Class<Dynamic>, text:String, route:RouteData}
 
 enum SideMenuState {
   Ready;
@@ -122,7 +122,7 @@ class SideMenu extends BaseActor {
     return menuRecipes.map(function(recipe:MenuRecipe):Button {
       var button:Button = PresetButton.normal({
         text: recipe.text,
-        prop: new ButtonProp({faChar: recipe.icon}),
+        prop: new ButtonProp({char: recipe.icon}),
         callback: function() {
           close();
           emit(new Event(ContextEvent.SCENE_CHANGE, false, recipe.route));

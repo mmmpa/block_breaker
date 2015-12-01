@@ -1,10 +1,9 @@
 package;
-import assets.BlockFont;
 import flash.text.Font;
+import assets.BlockFont;
 import assets.Se;
 import assets.Fa;
 import events.AppEvent;
-import flash.events.Event;
 import dbs.Palette;
 import configs.Def;
 import initializers.FlashState;
@@ -35,6 +34,11 @@ class Main extends Sprite {
     Se.initialize();
     Fa.initialize();
     BlockFont.initialize();
+
+
+    for(font in Font.enumerateFonts()){
+      trace(font.fontName);
+    }
   }
 }
 

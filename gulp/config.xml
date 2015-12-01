@@ -8,9 +8,15 @@
         </external-library-path>
         <library-path>
             <path-element>../lib/resource.swc</path-element>
+            <path-element>../lib/fa.swc</path-element>
             <path-element>../lib/feathers</path-element>
             <path-element>../lib/starling</path-element>
         </library-path>
+        <fonts>
+            <local-font-paths>
+                <path-element>../lib/font-awesome/fonts/</path-element>
+            </local-font-paths>
+        </fonts>
         <optimize>false</optimize>
         <strict>false</strict>
         <show-actionscript-warnings>true</show-actionscript-warnings>
