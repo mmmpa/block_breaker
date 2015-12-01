@@ -9,6 +9,7 @@ import starling.text.TextFieldAutoSize;
 import starling.textures.Texture;
 
 using additions.Creator;
+using additions.Support;
 
 class FaIcon extends PartsActor {
   private var baseSize:Int;
@@ -17,23 +18,27 @@ class FaIcon extends PartsActor {
   private var max:Float;
   private var size:Int;
   private var image:Image;
+  private var bitmap:Bitmap;
 
   public function new(Char:Class<Dynamic>, size:Int, ?color:Int) {
     super();
     this.size = size;
-    var bitmap:Bitmap = Type.createInstance(Type.resolveClass(Type.getClassName(Char)), []);
+    bitmap = Type.createInstance(Type.resolveClass(Type.getClassName(Char)), []);
     max = bitmap.width > bitmap.height ? bitmap.width : bitmap.height;
     image = new Image(Texture.fromBitmap(bitmap));
+    image.color = color;
     addChild(image);
     draw();
   }
 
+
   public function draw():FaIcon{
     var rate:Float = size / max;
     image.scaleX = image.scaleY = rate;
-    initializeArea(image.width, image.height);
-    image.pivotX = image.width / 2;
-    image.pivotY = image.height / 2;
+    var realMax:Int = Std.int(image.width > image.height ? image.width : image.height);
+    initializeArea(realMax, realMax);
+    image.center(area);
+    image.middle(area);
     return this;
   }
 

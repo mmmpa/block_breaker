@@ -19,7 +19,7 @@ class Label extends PartsActor {
     this.addChild(tf);
 
     if (char != null) {
-      this.icon = new FaIcon(char, Std.int(size * 1.2), color);
+      this.icon = new FaIcon(char, Std.int(size * 0.8), color);
       this.addChild(icon);
     }
 

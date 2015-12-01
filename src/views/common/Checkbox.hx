@@ -47,8 +47,8 @@ class Checkbox extends PartsActor {
 
     this.label = new Label(text, Def.fontSizeNormal);
     this.listener = new ButtonListener(1, 1);
-    this.checkedIcon = new FaIcon(Fa.char.checkSquare, Def.fontSizeNormal, prop.checkedColor);
-    this.uncheckedIcon = new FaIcon(Fa.char.squareO, Def.fontSizeNormal, prop.uncheckedColor);
+    this.checkedIcon = new FaIcon(Check31, Def.fontSizeNormal, prop.checkedColor);
+    this.uncheckedIcon = new FaIcon(Check29, Def.fontSizeNormal, prop.uncheckedColor);
     listener.click = toggle;
 
     addChild(checkedIcon);
