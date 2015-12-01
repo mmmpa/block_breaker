@@ -1,6 +1,9 @@
+-lib format
+
 -resource ../lib/sound/hit.mp3@hit
 -resource ../lib/sound/hard.mp3@hard
 -resource ../lib/sound/break.mp3@break
+-resource ../lib/resource.swf@FaSwf
 
 ### font
 -swf-lib ../lib/resource.swc
@@ -15,7 +18,6 @@
 
 -swf-lib-extern ../lib/playerglobal.swc
 
-
 -main Main
 #-D advanced-telemetry
 -cp "../src"
@@ -25,9 +27,12 @@
 
 --next
 
+-lib format
+
 -resource ../lib/sound/hit.mp3@hit
 -resource ../lib/sound/hard.mp3@hard
 -resource ../lib/sound/break.mp3@break
+-resource ../lib/resource.swf@FaSwf
 
 ### font
 -swf-lib ../lib/resource.swc

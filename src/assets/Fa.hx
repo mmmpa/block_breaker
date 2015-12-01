@@ -1,12 +1,18 @@
 package assets;
+import flash.system.LoaderContext;
+import flash.system.ApplicationDomain;
+import flash.events.Event;
+import flash.display.Loader;
+import flash.utils.ByteArray;
+import format.swf.Reader;
+import haxe.io.BytesInput;
+import haxe.io.Bytes;
 import flash.text.Font;
-
-class Fa {
+@:font("../lib/font-awesome/fonts/fontawesome-webfont.ttf") class Fa extends Font {
   public static var name:String;
 
-  static public function initialize(){
-    Font.registerFont(FaSrc);
-    name = new FaSrc().fontName;
+  static public function initialize() {
+    name = 'FontAwesome Regular';
   }
 
   public static var char:Dynamic = {
@@ -684,4 +690,4 @@ class Fa {
     youtubePlay: "\uf16a",
     youtubeSquare: "\uf166"
   }
-}
+  }
