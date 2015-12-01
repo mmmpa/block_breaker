@@ -55,3 +55,4 @@ class FaIcon extends PartsActor {
     return n * Math.PI / 180;
   }
 }
+

@@ -7,3 +7,4 @@ class TapToStart extends Label{
     super('tap to start', Def.fontSizeNormal, 0, Fa.char.handOUp);
   }
 }
+

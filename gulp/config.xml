@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flex-config>
+    <target-player>19.0</target-player>
+    <compiler>
+        <allow-source-path-overlap>false</allow-source-path-overlap>
+        <external-library-path>
+            <path-element>../lib/playerglobal.swc</path-element>
+        </external-library-path>
+        <library-path>
+            <path-element>../lib/resource.swc</path-element>
+            <path-element>../lib/feathers</path-element>
+            <path-element>../lib/starling</path-element>
+        </library-path>
+        <optimize>false</optimize>
+        <strict>false</strict>
+        <show-actionscript-warnings>true</show-actionscript-warnings>
+        <warn-assignment-within-conditional>true</warn-assignment-within-conditional>
+        <warn-bad-array-cast>true</warn-bad-array-cast>
+        <warn-bad-date-cast>true</warn-bad-date-cast>
+        <warn-bad-nan-comparison>true</warn-bad-nan-comparison>
+        <warn-bad-null-assignment>true</warn-bad-null-assignment>
+        <warn-bad-undefined-comparison>true</warn-bad-undefined-comparison>
+        <warn-const-not-initialized>true</warn-const-not-initialized>
+        <warn-duplicate-variable-def>true</warn-duplicate-variable-def>
+        <warn-instance-of-changes>true</warn-instance-of-changes>
+        <warn-missing-namespace-decl>true</warn-missing-namespace-decl>
+        <warn-no-type-decl>true</warn-no-type-decl>
+    </compiler>
+    <use-network>true</use-network>
+    <metadata>
+        <title>Adobe ActionScript Application</title>
+        <description></description>
+        <publisher>unknown</publisher>
+        <creator>unknown</creator>
+        <language>JA</language>
+    </metadata>
+</flex-config>

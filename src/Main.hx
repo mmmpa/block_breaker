@@ -1,4 +1,7 @@
 package;
+import assets.BlockFont;
+import flash.text.Font;
+import assets.Se;
 import assets.Fa;
 import events.AppEvent;
 import flash.events.Event;
@@ -16,19 +19,23 @@ using configs.Sizing;
 
 class Main extends Sprite {
   static public function main():Void {
-    initialize();
-    trace(Fa);
     Lib.current.stage.addEventListener('started', function(e:AppEvent){
+      initialize();
       Game.start(Lib.current.stage);
     }, false, 1, true);
     Lib.current.stage.dispatchEvent(new AppEvent());
   }
 
-  static public function initialize():Void {
+  static public function initialize() {
     Palette;
     Def;
     Trace.initialize();
     FlashState.initialize();
     Scale.initialize();
+    Se.initialize();
+    Fa.initialize();
+    BlockFont.initialize();
   }
 }
+
+

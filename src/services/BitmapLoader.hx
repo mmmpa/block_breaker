@@ -49,16 +49,9 @@ class BitmapLoader {
   }
 
   static public function loadGemaData(path:String, callback:Dynamic) {
-    if (store.get(path) == null) {
-      var loader:Loader = new Loader();
-      loader.contentLoaderInfo.addEventListener(Event.COMPLETE, function(e:Event) {
-        var data:BitmapData = e.target.content.bitmapData;
-        callback(new BitmapMap(data.width, data.height, analyse(data)));
-      });
-      loader.load(new URLRequest(path), new LoaderContext(true));
-    } else {
-      var data:BitmapData = store.get(path);
+    load(path, function(data:BitmapData){
       callback(new BitmapMap(data.width, data.height, analyse(data)));
-    }
+    });
   }
 }
+

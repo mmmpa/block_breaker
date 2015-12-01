@@ -28,12 +28,12 @@ class Button extends PartsActor {
   private var effect:Quad;
   private var label:Label;
 
-  private var text:String;
-  private var prop:ButtonProp;
-  private var callback:Dynamic;
-  private var hoverCallback:Dynamic;
-  private var outCallback:Dynamic;
-  private var holdCallback:Dynamic;
+  public var text:String;
+  public var prop:ButtonProp;
+  public var callback:Dynamic;
+  public var hoverCallback:Dynamic;
+  public var outCallback:Dynamic;
+  public var holdCallback:Dynamic;
 
   public function new(option:ButtonOption = null) {
     super();

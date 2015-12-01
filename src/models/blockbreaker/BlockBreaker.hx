@@ -15,9 +15,9 @@ typedef BlockBreakerOption = {
 
 class BlockBreaker {
   public var id:String;
-  private var field:PlayFieldData;
-  private var grid:BlockGrid;
-  private var speed:Int;
+  public var field:PlayFieldData;
+  public var grid:BlockGrid;
+  public var speed:Int;
 
   private var balls:Array<BallData> = new Array();
   private var ballsNum:Int = 0;

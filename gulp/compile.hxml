@@ -3,7 +3,7 @@
 -resource ../lib/sound/break.mp3@break
 
 ### font
--swf-lib ../lib/resource.swf
+-swf-lib ../lib/resource.swc
 
 ### Starling
 -swf-lib ../lib/starling/starling.swc
@@ -13,7 +13,7 @@
 -swf-lib ../lib/feathers/feathers.swc
 -swf-lib ../lib/feathers/MinimalMobileTheme.swc
 
--swf-lib-extern ../lib/playerglobal17_0.swc
+-swf-lib-extern ../lib/playerglobal.swc
 
 
 -main Main
@@ -30,7 +30,7 @@
 -resource ../lib/sound/break.mp3@break
 
 ### font
--swf-lib ../lib/resource.swf
+-swf-lib ../lib/resource.swc
 
 ### Starling
 -swf-lib ../lib/starling/starling.swc
@@ -40,7 +40,7 @@
 -swf-lib ../lib/feathers/feathers.swc
 -swf-lib ../lib/feathers/MinimalMobileTheme.swc
 
--swf-lib-extern ../lib/playerglobal17_0.swc
+-swf-lib-extern ../lib/playerglobal.swc
 
 -main Main
 -cp "../src"

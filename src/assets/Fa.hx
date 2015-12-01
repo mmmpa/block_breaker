@@ -1,7 +1,13 @@
 package assets;
 import flash.text.Font;
-@:font("../lib/font-awesome/fonts/fontawesome-webfont.ttf") class Fa extends Font {
-  public static var name:String = 'FontAwesome Regular';
+
+class Fa {
+  public static var name:String;
+
+  static public function initialize(){
+    Font.registerFont(FaSrc);
+    name = new FaSrc().fontName;
+  }
 
   public static var char:Dynamic = {
     adjust: "\uf042",

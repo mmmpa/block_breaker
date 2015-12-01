@@ -14,4 +14,3 @@ class OnAir {
   static public var activate:Dynamic = function(e:Dynamic) {};
   static public var deactivate:Dynamic = function(e:Dynamic) {};
 }
-

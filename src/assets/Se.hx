@@ -2,20 +2,22 @@ package assets;
 import flash.media.SoundChannel;
 import flash.media.SoundTransform;
 import flash.media.Sound;
-class Se extends Sound {
-  static public var hard:Se = loadAsset('hard');
-  static public var hit:Se = loadAsset('hit');
-  static public var broken:Se = loadAsset('break');
+class Se {
+  static public var hard:Se;
+  static public var hit:Se;
+  static public var broken;
 
-  static public function loadAsset(name:String):Se {
-    var data = haxe.Resource.getBytes(name);
-    var sound = new Se();
-    sound.loadCompressedDataFromByteArray(data.getData(), data.length);
-    sound.play(0).stop();
-    return sound;
+  public function new() {
+
   }
 
-  override public function play(start:Float = 0, repeat:Int = 0, transform:SoundTransform = null):SoundChannel {
-    return super.play(40);
+  static public function initialize() {
+    hard = new Se();
+    hit = new Se();
+    broken = new Se();
+  }
+
+  public function play(start:Float = 0, repeat:Int = 0, transform:SoundTransform = null):SoundChannel {
+    return null;
   }
 }
