@@ -24,9 +24,9 @@ using Lambda;
 class ConfigurationContext extends BaseContext {
   public function new(props:RouterProp, insertProps:ConfigurationProp = null) {
     super(props);
-    ground.y = Def.area.y;
+    this.y = Def.area.y;
     startAnimation();
-    ground.addChild(new NormalBg());
+    addChild(new NormalBg());
 
     var layout:VerticalLayout = new VerticalLayout();
     layout.gap = 20;
@@ -34,7 +34,7 @@ class ConfigurationContext extends BaseContext {
     layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_MIDDLE;
     var container:LayoutGroup = new LayoutGroup();
     container.layout = layout;
-    ground.addChild(container);
+    addChild(container);
     container.width = Def.area.w;
     container.height = Def.area.h;
 

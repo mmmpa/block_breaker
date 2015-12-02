@@ -13,8 +13,8 @@ class PlayFieldTestContext extends BaseContext {
   public function new(props:RouterProp, insertProps:Dynamic = null) {
     super(props);
     ground.y = Def.area.y;
-    ground.addChild(new NormalBg());
-    ground.addEventListener(TouchEvent.TOUCH, onTouch);
+    addChild(new NormalBg());
+    addEventListener(TouchEvent.TOUCH, onTouch);
 
     startAnimation();
   }

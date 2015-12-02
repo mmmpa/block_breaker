@@ -24,10 +24,10 @@ class ShockTestContext extends BaseContext {
 
   public function new(props:RouterProp, insertProps:Dynamic = null) {
     super(props);
-    ground.y = Def.area.y;
+    this.y = Def.area.y;
     field = new PlayFieldData(0, 0, Def.area.w, Def.area.h);
-    ground.addChild(new NormalBg());
-    ground.addEventListener(TouchEvent.TOUCH, onTouch);
+    addChild(new NormalBg());
+    addEventListener(TouchEvent.TOUCH, onTouch);
 
     var data:BallData = new BallData(100, 100, 0xff0000, 10, Math.floor(Math.random() * 360));
     var ball:Ball = Ball.create(data);
@@ -83,8 +83,8 @@ class ShockTestContext extends BaseContext {
     });
   }
   private function onTouch(e:TouchEvent) {
-    var touch:Touch = e.getTouch(ground);
-    var position:Point = touch.getLocation(ground);
+    var touch:Touch = e.getTouch(this);
+    var position:Point = touch.getLocation(this);
 
     switch(touch.phase){
       case TouchPhase.BEGAN:

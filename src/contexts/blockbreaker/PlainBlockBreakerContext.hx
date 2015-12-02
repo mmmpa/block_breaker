@@ -33,7 +33,7 @@ class PlainBlockBreakerContext extends BaseContext {
 
   public function new(props:RouterProp, insertProps:BlockBreakerProp) {
     super(props);
-    ground.y = Def.area.y;
+    this.y = Def.area.y;
     listener = new NormalBg();
 
     var grid:BlockGrid = insertProps.grid;
@@ -44,8 +44,8 @@ class PlainBlockBreakerContext extends BaseContext {
       field: Def.gameField
     });
 
-    ground.addChild(listener);
-    ground.addChild(tapToStart);
+    addChild(listener);
+    addChild(tapToStart);
     tapToStart.x = Std.int(Def.area.w - tapToStart.width) >> 1;
     tapToStart.y = Std.int(Def.area.h * 1.5 - tapToStart.height) >> 1;
 
@@ -77,7 +77,7 @@ class PlainBlockBreakerContext extends BaseContext {
     stopAnimation();
     changeTouch();
 
-    ground.addChild(gameOver);
+    addChild(gameOver);
     gameOver.x = Std.int(Def.area.w - gameOver.width) >> 1;
     gameOver.y = Std.int(Def.area.h - gameOver.height) >> 1;
   }
@@ -89,25 +89,25 @@ class PlainBlockBreakerContext extends BaseContext {
 
 
   private function changeTouch() {
-    ground.removeEventListeners(TouchEvent.TOUCH);
+    removeEventListeners(TouchEvent.TOUCH);
     switch(game.status.state){
       case BlockBreakerState.Ready:
-        ground.addEventListener(TouchEvent.TOUCH, onReadyTouch);
+        addEventListener(TouchEvent.TOUCH, onReadyTouch);
       case BlockBreakerState.Playing:
-        ground.addEventListener(TouchEvent.TOUCH, onPlayingTouch);
+        addEventListener(TouchEvent.TOUCH, onPlayingTouch);
       case BlockBreakerState.Played:
       case BlockBreakerState.Passed:
     }
   }
 
   private function onReadyTouch(e:TouchEvent) {
-    var touch:Touch = e.getTouch(ground);
+    var touch:Touch = e.getTouch(this);
 
     switch(touch.phase){
       case TouchPhase.BEGAN:
         tapToStart.removeFromParent();
 
-        var p:Point = touch.getLocation(ground);
+        var p:Point = touch.getLocation(this);
         var shock:ShockData = game.addShock(p);
         var ballPoint:Point = new Point(p.x, p.y < Def.ballStartTop ? Def.ballStartTop : p.y);
         var newBall:BallData = game.addBall(ballPoint, 270);
@@ -122,11 +122,11 @@ class PlainBlockBreakerContext extends BaseContext {
 
 
   private function onPlayingTouch(e:TouchEvent) {
-    var touch:Touch = e.getTouch(ground);
+    var touch:Touch = e.getTouch(this);
 
     switch(touch.phase){
       case TouchPhase.BEGAN:
-        var p:Point = touch.getLocation(ground);
+        var p:Point = touch.getLocation(this);
         var shock:ShockData = game.addShock(p);
         addShock(shock);
     }

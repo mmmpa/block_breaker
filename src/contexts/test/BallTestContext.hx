@@ -20,10 +20,10 @@ class BallTestContext extends BaseContext {
 
   public function new(props:RouterProp, insertProps:BallTestProp = null) {
     super(props);
-    ground.y = Def.area.y;
-    ground.touchable = false;
+    this.y = Def.area.y;
+    this.touchable = false;
     field = new PlayFieldData(0, 0, Def.area.w, Def.area.h);
-    ground.addChild(new NormalBg());
+    addChild(new NormalBg());
 
     addBook(book);
     startAnimation();
@@ -34,7 +34,7 @@ class BallTestContext extends BaseContext {
     var limitation:Int = insertProps.be() ? insertProps.limitation : 10;
     var i:Int = 0;
     var fn:Dynamic = null;
-    ground.addEventListener(Event.ENTER_FRAME, fn = function(e:Event) {
+    addEventListener(Event.ENTER_FRAME, fn = function(e:Event) {
       for (ii in 0...100) {
         i++;
         var data:BallData = new BallData(random(w), random(h), Palette.random(), 5, i);
@@ -43,12 +43,12 @@ class BallTestContext extends BaseContext {
         addActor(ball);
       }
       if (i >= limitation) {
-        ground.removeEventListener(Event.ENTER_FRAME, fn);
+        removeEventListener(Event.ENTER_FRAME, fn);
       }
     });
 
-    for(i in 0...ground.numChildren){
-      ground.getChildAt(i).touchable = false;
+    for(i in 0...numChildren){
+      getChildAt(i).touchable = false;
     }
   }
 

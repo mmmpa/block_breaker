@@ -24,22 +24,22 @@ class BlockBallHitTestContext extends BaseContext {
     super(props);
     ground.y = Def.area.y;
     field = new PlayFieldData(0, 0, Def.area.w, Def.area.h);
-    ground.addChild(new NormalBg());
-    ground.addEventListener(TouchEvent.TOUCH, onTouch);
+    addChild(new NormalBg());
+    addEventListener(TouchEvent.TOUCH, onTouch);
 
     addBook(book);
     startAnimation();
 
     var i:Int = 0;
     var fn:Dynamic = null;
-    ground.addEventListener(Event.ENTER_FRAME, fn = function(e:Event){
+    addEventListener(Event.ENTER_FRAME, fn = function(e:Event){
       i++;
       var data:BallData = new BallData(100, 100, 0xff0000, 1, i);
       var ball:Ball = Ball.create(data);
       balls.push(data);
       addActor(ball);
       if(i % 360 == 0){
-        ground.removeEventListener(Event.ENTER_FRAME, fn);
+        removeEventListener(Event.ENTER_FRAME, fn);
       }
     });
   }

@@ -38,9 +38,9 @@ class MainContext extends BaseContext {
     menu = new Router(this.router, this);
     body = new Router(this.router, this);
 
-    ground.addChild(body);
-    ground.addChild(menu);
-    ground.addChild(god);
+    addChild(body);
+    addChild(menu);
+    addChild(god);
 
     body.name = 'body';
     menu.name = 'menu';
@@ -60,7 +60,7 @@ class MainContext extends BaseContext {
 
   private function checkLeak(){
     var timer:Int = 0;
-    this.ground.addEventListener(Event.ENTER_FRAME, function(e:Event){
+    this.addEventListener(Event.ENTER_FRAME, function(e:Event){
       timer ++;
       if(timer % 10 != 0){
         return;

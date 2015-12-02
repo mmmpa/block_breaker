@@ -58,7 +58,7 @@ class Router extends Sp {
     this.activeProp = insertProps;
 
     addEvent(context);
-    addChild(context.ground);
+    addChild(context);
 
     return context;
   }

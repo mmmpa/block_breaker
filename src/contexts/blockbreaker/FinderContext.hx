@@ -45,9 +45,9 @@ class FinderContext extends BaseContext {
 
   public function new(props:RouterProp, insertProps:FinderProp) {
     super(props);
-    ground.y = Def.area.y;
+    this.y = Def.area.y;
     listener = new NormalBg();
-    ground.addChild(listener);
+    addChild(listener);
 
     var layout:VerticalLayout = new VerticalLayout();
     layout.gap = Def.paddingTop;
@@ -63,7 +63,7 @@ class FinderContext extends BaseContext {
     scroller.width = Def.area.w;
     scroller.height = Def.area.h;
     scroller.addChild(container);
-    ground.addChild(scroller);
+    addChild(scroller);
 
     scroller.addEventListener(FeathersEventType.SCROLL_START, function(e:Event) {
       container.flatten();

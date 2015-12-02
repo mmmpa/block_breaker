@@ -57,8 +57,8 @@ class ImageBlockBreakerContext extends BaseContext {
   public function new(props:RouterProp, insertProps:ImageBlockBreakerProp) {
     super(props);
     deadBg = new Quad(Def.area.w, Def.area.h, Def.deadBg);
-    ground.addChild(deadBg);
-    ground.y = Def.area.y;
+    addChild(deadBg);
+    this.y = Def.area.y;
     listener = new Spacer(Def.gameArea.w, Def.gameArea.h);
     bg = new NormalBg();
     calm.touchable = false;
@@ -88,8 +88,8 @@ class ImageBlockBreakerContext extends BaseContext {
         changeTouch();
       }).process();
 
-      ground.addChild(listener);
-      ground.addChild(calm);
+      addChild(listener);
+      addChild(calm);
       calm.addChild(scoreDisplay);
       calm.addChild(tapToStart);
 
@@ -158,7 +158,7 @@ class ImageBlockBreakerContext extends BaseContext {
     });
     gamePassed.center(deadBg);
     gamePassed.middle(deadBg);
-    gamePassed.activate(this, ground);
+    gamePassed.activate(this, this);
   }
 
   private function over() {
@@ -170,7 +170,7 @@ class ImageBlockBreakerContext extends BaseContext {
     gameOver = new GameOverWindow({retryCallback: retry, backCallback: back});
     gameOver.center(deadBg);
     gameOver.middle(deadBg);
-    gameOver.activate(this, ground);
+    gameOver.activate(this, this);
   }
 
   override public function deactivate() {

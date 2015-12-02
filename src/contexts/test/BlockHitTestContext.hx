@@ -30,12 +30,12 @@ class BlockHitTestContext extends BaseContext {
 
   public function new(props:RouterProp, insertProps:Dynamic = null) {
     super(props);
-    ground.y = Def.area.y;
+    this.y = Def.area.y;
     field = new PlayFieldData(0, 0, Def.area.w, Def.area.h);
     startAnimation();
-    ground.addChild(new NormalBg());
-    ground.addChild(calm);
-    ground.name = 'block hit context';
+    addChild(new NormalBg());
+    addChild(calm);
+    this.name = 'block hit context';
 
     lineState = 'ready';
 
@@ -64,16 +64,16 @@ class BlockHitTestContext extends BaseContext {
     var end:Point = null;
     var hitData:BlockHitData;
 
-    ground.addEventListener(TouchEvent.TOUCH, function(e:TouchEvent) {
-      var touch:Touch = e.getTouch(ground);
-      var position:Point = touch.getLocation(ground);
+    addEventListener(TouchEvent.TOUCH, function(e:TouchEvent) {
+      var touch:Touch = e.getTouch(that);
+      var position:Point = touch.getLocation(that);
       switch(touch.phase){
         case TouchPhase.BEGAN:
           switch(lineState){
             case 'ready':
               start = position;
               var p:Quad = new Quad(4, 4, 0x00ff00);
-              ground.addChild(p);
+              addChild(p);
               drawStore.push(p);
               p.x = position.x - 2;
               p.y = position.y - 2;
@@ -82,13 +82,13 @@ class BlockHitTestContext extends BaseContext {
             case 'started':
               end = position;
               var p:Quad = new Quad(4, 4, 0x0000ff);
-              ground.addChild(p);
+              addChild(p);
               drawStore.push(p);
               p.x = position.x - 2;
               p.y = position.y - 2;
               //
               var line = drawLine(start, end);
-              ground.addChild(line);
+              addChild(line);
               drawStore.push(line);
               trace(grid.hit(start, end));
               hitData = grid.hit(start, end);
@@ -98,12 +98,12 @@ class BlockHitTestContext extends BaseContext {
 
               while(hitData != null) {
                 var refline = drawLine(start, hitData.point);
-                ground.addChild(refline);
+                addChild(refline);
                 drawStore.push(refline);
                 var hit:Quad = new Quad(4, 4, 0);
                 hit.x = hitData.point.x - 2;
                 hit.y = hitData.point.y - 2;
-                ground.addChild(hit);
+                addChild(hit);
                 drawStore.push(hit);
 
                 switch(hitData.hitSide){
@@ -124,7 +124,7 @@ class BlockHitTestContext extends BaseContext {
               var refrect:Quad = new Quad(4, 4, 0);
               refrect.x = data.next.x - 2;
               refrect.y = data.next.y - 2;
-              ground.addChild(refrect);
+              addChild(refrect);
               drawStore.push(refrect);
 
               trace('draw end point and line');

@@ -15,27 +15,29 @@ using Lambda;
 class BaseContext extends Sprite {
   public var iAmContext:Bool = true;
 
-  public var ground:Sp;
+  private var that:BaseContext;
 
   private var rooter:BaseContext;
   private var props:RouterProp;
   private var router:Router;
   private var routeMap:Map<String, Dynamic> = new Map();
 
-  private var actors:Array<Dynamic> = new Array();
-  private var books:Array<Dynamic> = new Array();
+  private var actors:List<Dynamic> = new List();
+  private var books:List<Dynamic> = new List();
+
+  private var subActors:List<BaseContext> = new List();
+  private var subBooks:List<BaseContext> = new List();
 
   public var isRoot(get, never):Bool;
 
   public function new(props:RouterProp, insertProps:Dynamic = null) {
     super();
-
+    this.that = this;
     this.props = props;
     this.router = props.router;
     this.rooter = props.contextRoot;
 
-    ground = new Sp();
-    ground.addEventListener(Event.ADDED_TO_STAGE, _onCreate);
+    addEventListener(Event.ADDED_TO_STAGE, _onCreate);
   }
 
   // 毎フレーム処理関係のメソッド
@@ -66,21 +68,20 @@ class BaseContext extends Sprite {
   // actorの処理
 
   public function action() {
-    var acted:Array<Dynamic> = new Array();
-    for (actor in actors) {
-      if (isContext(actor)) {
-        actor.action();
-        acted.push(actor);
-      } else {
-        actor.act() ? acted.push(actor) : actor.deactivate();
+    for(actor in actors){
+      if(!actor.act()){
+        actor.deactivate();
+        actors.remove(actor);
       }
     }
 
-    actors = acted;
+    for(sub in subActors){
+      sub.action();
+    }
   }
 
   public function addActor(actor:Dynamic, fixed:Bool = false, container:DisplayObjectContainer = null) {
-    actor.activate(this, container != null ? container : ground);
+    actor.activate(this, container != null ? container : this);
 
     if (!fixed) { warmUp(actor); }
   }
@@ -91,19 +92,20 @@ class BaseContext extends Sprite {
   }
 
   public function removeAllActors() {
-    for (actor in actors) { actor.deactivate(); }
-    actors = [];
+    for(actor in actors){
+      actor.deactivate();
+    }
+    actors.clear();
   }
 
   // bookの処理
 
   public function plan() {
-    for (book in books) {
-      try {
-        isContext(book) ? cast(book, BaseContext).plan() : book(this);
-      } catch (e:Dynamic) {
-        untyped{ trace(e.message); }
-      }
+    for(book in books){
+      book(this);
+    }
+    for(sub in subBooks){
+      sub.plan();
     }
   }
 
@@ -111,32 +113,26 @@ class BaseContext extends Sprite {
     books.push(book);
   }
 
-  public function removeBook(target:Dynamic) {
-    books = books.filter(function(book:Dynamic):Bool {
-      return book != target;
-    });
+  public function removeBook(book:Dynamic) {
+    books.remove(book);
   }
 
   // サブcontextからの処理
 
-  public function addSubActors(subActors:BaseContext) {
-    actors.push(subActors);
+  public function addSubActors(sub:BaseContext) {
+    subActors.push(sub);
   }
 
-  public function removeSubActors(subActors:BaseContext) {
-    actors = actors.filter(function(actor) {
-      return actor != subActors;
-    });
+  public function removeSubActors(sub:BaseContext) {
+    subActors.remove(sub);
   }
 
-  public function addSubBooks(subBooks:BaseContext) {
-    books.push(subBooks);
+  public function addSubBooks(sub:BaseContext) {
+    subBooks.push(sub);
   }
 
-  public function removeSubBooks(subBooks:BaseContext) {
-    books = books.filter(function(book) {
-      return book != subBooks;
-    });
+  public function removeSubBooks(sub:BaseContext) {
+    subBooks.remove(sub);
   }
 
   // routerから呼ばれる
@@ -144,7 +140,6 @@ class BaseContext extends Sprite {
   public function deactivate() {
     stopAnimation();
     removeEventListeners();
-    ground.removeEventListeners();
 
     Def.stage.addEventListener(Event.ENTER_FRAME, deactivateStepwise);
   }
@@ -155,7 +150,7 @@ class BaseContext extends Sprite {
     for (i in 0...Def.deactivationAmoutOnce) {
       if (actors.length == 0) {
         Def.stage.removeEventListener(Event.ENTER_FRAME, deactivateStepwise);
-        ground.removeChildren();
+        removeChildren();
         break;
       }
       var actor:Dynamic = actors.pop();
@@ -173,7 +168,7 @@ class BaseContext extends Sprite {
   }
 
   private function _onCreate(e:Event) {
-    ground.removeEventListener(Event.ADDED_TO_STAGE, _onCreate);
+    removeEventListener(Event.ADDED_TO_STAGE, _onCreate);
     emit(new Event(ContextEvent.CREATED));
   }
 

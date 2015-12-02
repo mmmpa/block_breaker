@@ -41,14 +41,14 @@ class BallBlockTestContext extends BaseContext {
   public function new(props:RouterProp, insertProps:BallTestProp = null) {
     super(props);
 
-    ground.y = Def.area.y;
+    this.y = Def.area.y;
     field = new PlayFieldData(0, 0, Def.area.w, Def.area.h);
     listener = new NormalBg();
-    //ground.addChild(new Quad(Def.area.w, Def.area.h, Def.testBg));
-    //ground.addEventListener(TouchEvent.TOUCH, onTouch);
-    ground.addChild(calm);
+    //addChild(new Quad(Def.area.w, Def.area.h, Def.testBg));
+    //addEventListener(TouchEvent.TOUCH, onTouch);
+    addChild(calm);
 
-    ground.touchable = false;
+    this.touchable = false;
     var col:Int = 20;
     var width:Int = Std.int(Def.area.w / col);
     var height:Int = width >> 1;
@@ -82,8 +82,8 @@ class BallBlockTestContext extends BaseContext {
     tf.y = (h + 50) >> 1;
     tf.fontName = BlockFont.name;
     tf.fontSize = 40;
-    //ground.addChild(tf);
-    ground.addEventListener(Event.ENTER_FRAME, fn = function(e:Event) {
+    //addChild(tf);
+    addEventListener(Event.ENTER_FRAME, fn = function(e:Event) {
       for (ii in 0...100) {
         i++;
         var data:BallData = new BallData(random(w), random(h), Palette.random(), Std.int(random(5) + 5), i);
@@ -93,7 +93,7 @@ class BallBlockTestContext extends BaseContext {
       }
       tf.text = Std.string(i);
       if (i >= limitation) {
-        ground.removeEventListener(Event.ENTER_FRAME, fn);
+        removeEventListener(Event.ENTER_FRAME, fn);
       }
     });
   }
@@ -110,11 +110,11 @@ class BallBlockTestContext extends BaseContext {
   }
 
   private function onTouch(e:TouchEvent) {
-    var touch:Touch = e.getTouch(ground);
+    var touch:Touch = e.getTouch(this);
 
     switch(touch.phase){
       case TouchPhase.BEGAN:
-        var position:Point = touch.getLocation(ground);
+        var position:Point = touch.getLocation(this);
         shock(position);
     }
   }

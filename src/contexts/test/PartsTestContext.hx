@@ -34,9 +34,9 @@ class PartsTestContext extends BaseContext {
 
   public function new(props:RouterProp, insertProps:Dynamic = null) {
     super(props);
-    ground.y = Def.area.y;
+    this.y = Def.area.y;
     startAnimation();
-    ground.addChild(new NormalBg());
+    addChild(new NormalBg());
 
     var layout:VerticalLayout = new VerticalLayout();
     layout.gap = 20;
@@ -52,7 +52,7 @@ class PartsTestContext extends BaseContext {
     scroller.width = Def.area.w;
     scroller.height = Def.area.h;
     scroller.addChild(container);
-    ground.addChild(scroller);
+    addChild(scroller);
 
     scroller.addEventListener(FeathersEventType.SCROLL_START, function(e:Event) {
       //container.flatten();
