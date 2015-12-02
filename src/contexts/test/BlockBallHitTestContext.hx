@@ -27,7 +27,7 @@ class BlockBallHitTestContext extends BaseContext {
     ground.addChild(new NormalBg());
     ground.addEventListener(TouchEvent.TOUCH, onTouch);
 
-    write(book);
+    addBook(book);
     startAnimation();
 
     var i:Int = 0;
@@ -37,7 +37,7 @@ class BlockBallHitTestContext extends BaseContext {
       var data:BallData = new BallData(100, 100, 0xff0000, 1, i);
       var ball:Ball = Ball.create(data);
       balls.push(data);
-      beOnStage(ball);
+      addActor(ball);
       if(i % 360 == 0){
         ground.removeEventListener(Event.ENTER_FRAME, fn);
       }
@@ -84,6 +84,6 @@ class BlockBallHitTestContext extends BaseContext {
     var data:BallData = new BallData(p.x, p.y, 0xff0000, 10, Math.floor(Math.random() * 360));
     var ball:Ball = Ball.create(data);
     balls.push(data);
-    beOnStage(ball);
+    addActor(ball);
   }
 }

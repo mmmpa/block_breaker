@@ -27,7 +27,7 @@ class Def {
   static public var shockColor:Int = 0x1abc9c;
   static public var shockPower:Float = 0.3;
   // 一度にdeactiveするactorの数。画面のフリーズ対策
-  static public var deactiveLimit:Int = 10;
+  static public var deactivationAmoutOnce:Int = 10;
   // カラー関係
   static public var uiBg:Int = Palette.white;
   static public var uiLine:Int = Palette.whiteGray;

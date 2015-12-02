@@ -80,7 +80,7 @@ class SideMenu extends BaseActor {
         state = SideMenuState.Ready;
       case SideMenuState.PreOpening:
         context.ground.addChild(sield);
-        context.beOnStage(this, true);
+        context.addActor(this, true);
         state = SideMenuState.Opening;
       case SideMenuState.Opening:
         this.x = Std.int(this.x / 2);

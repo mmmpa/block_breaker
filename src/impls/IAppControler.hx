@@ -1,4 +1,0 @@
-package impls;
-interface IAppControler {
-
-}

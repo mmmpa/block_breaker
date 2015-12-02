@@ -2,7 +2,6 @@ package;
 import flash.text.Font;
 import assets.BlockFont;
 import assets.Se;
-import assets.Fa;
 import events.AppEvent;
 import dbs.Palette;
 import configs.Def;
@@ -32,7 +31,6 @@ class Main extends Sprite {
     FlashState.initialize();
     Scale.initialize();
     Se.initialize();
-    Fa.initialize();
     BlockFont.initialize();
 
 

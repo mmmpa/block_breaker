@@ -50,7 +50,7 @@ class PlainBlockBreakerContext extends BaseContext {
     tapToStart.y = Std.int(Def.area.h * 1.5 - tapToStart.height) >> 1;
 
     var table:BlockTable = new BlockTable(grid);
-    beOnStage(table, true);
+    addActor(table, true);
     changeTouch();
 
     startAnimation();
@@ -64,7 +64,7 @@ class PlainBlockBreakerContext extends BaseContext {
     }
     var ball:BallData = now.newBalls.pop();
     while (ball != null) {
-      beOnStage(Ball.create(ball));
+      addActor(Ball.create(ball));
       ball = now.newBalls.pop();
     }
     if (Configuration.soundEnabled) {
@@ -115,7 +115,7 @@ class PlainBlockBreakerContext extends BaseContext {
         addBall(newBall);
         addShock(shock);
         game.start();
-        write(play);
+        addBook(play);
         changeTouch();
     }
   }
@@ -134,11 +134,11 @@ class PlainBlockBreakerContext extends BaseContext {
 
   private function addShock(data:ShockData) {
     var shock:Shock = new Shock(data);
-    beOnStage(shock);
+    addActor(shock);
   }
 
   private function addBall(data:BallData) {
     var ball:Ball = Ball.create(data);
-    beOnStage(ball);
+    addActor(ball);
   }
 }

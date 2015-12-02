@@ -1,15 +1,10 @@
 package views.blockbreaker;
 import starling.display.Image;
 import starling.display.Sprite;
-import starling.events.Event;
-import flash.geom.Point;
-import assets.Fa;
 import models.common.ButtonProp;
 import views.common.PresetButton;
 import views.common.Button;
-import views.common.ButtonListener;
 import views.common.Label;
-import dbs.RecordStore.Record;
 import starling.display.DisplayObject;
 import starling.filters.BlurFilter;
 import configs.Def;
@@ -40,19 +35,19 @@ class FinderPiece extends PartsActor {
     bg.filter = ds;
     addChild(bg);
 
-
     listener = PresetButton.normal({
       text: '',
       callback: callback,
       holdCallback:longCallback
     });
 
+
     listener.fit(bg);
     addChild(listener);
 
     play = PresetButton.forSubmit({
       text: 'play',
-      prop: new ButtonProp({char: Gamepad1}),
+      prop: new ButtonProp({char: Smile}),
       callback: function() {
         callback();
       }

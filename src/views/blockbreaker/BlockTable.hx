@@ -18,7 +18,7 @@ class BlockTable {
   public function activate(context:BaseContext, parent:DisplayObjectContainer):BlockTable {
     grid.allBlock().iter(function(data:BlockData) {
       var block:Block = Block.create(data);
-      context.beOnStage(block, false, parent);
+      context.addActor(block, false, parent);
       add(block);
     });
 

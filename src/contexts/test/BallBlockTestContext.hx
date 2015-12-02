@@ -67,9 +67,9 @@ class BallBlockTestContext extends BaseContext {
 
     grid = new BlockGrid(col, width, height, datas);
     table = new BlockTable(grid);
-    beOnStage(table, true, calm);
+    addActor(table, true, calm);
 
-    write(play);
+    addBook(play);
     startAnimation();
 
     var w:Int = Def.area.w;
@@ -89,7 +89,7 @@ class BallBlockTestContext extends BaseContext {
         var data:BallData = new BallData(random(w), random(h), Palette.random(), Std.int(random(5) + 5), i);
         var ball:Ball = Ball.create(data);
         balls.push(data);
-        beOnStage(ball, false, calm);
+        addActor(ball, false, calm);
       }
       tf.text = Std.string(i);
       if (i >= limitation) {
@@ -123,7 +123,7 @@ class BallBlockTestContext extends BaseContext {
     var data:ShockData = new ShockData(Std.int(p.x), Std.int(p.y), 2);
     var shock:Shock = new Shock(data);
     shocks.push(data);
-    beOnStage(shock);
+    addActor(shock);
   }
 
   private function play(context:BaseContext) {
@@ -209,6 +209,6 @@ class BallBlockTestContext extends BaseContext {
     var data:BallData = new BallData(p.x, p.y, 0xff0000, 10, Math.floor(Math.random() * 360));
     var ball:Ball = Ball.create(data);
     balls.push(data);
-    beOnStage(ball);
+    addActor(ball);
   }
 }

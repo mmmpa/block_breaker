@@ -1,5 +1,4 @@
 package views.blockbreaker;
-import assets.Fa;
 import configs.Def;
 import views.common.Label;
 class TapToStart extends Label{
@@ -7,4 +6,3 @@ class TapToStart extends Label{
     super('tap to start', Def.fontSizeNormal, 0, Hand35);
   }
 }
-

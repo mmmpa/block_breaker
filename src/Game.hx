@@ -23,8 +23,8 @@ class Game extends Sprite {
     var route:RouteData = new RouteData('/configuration');
     //var route:RouteData = new RouteData('/test/parts');
     //var route:RouteData = new RouteData('/bb/plain', new BlockBreakerProp(PlainGame.plain1()));
-    var route:RouteData = new RouteData('/bb/finder');
-    var route:RouteData = new RouteData('/bb/image', new ImageBlockBreakerProp('kobito', 'asset/kobito.png'), true);
+    //var route:RouteData = new RouteData('/bb/finder');
+    //var route:RouteData = new RouteData('/bb/image', new ImageBlockBreakerProp('kobito', 'asset/kobito.png'), true);
     //var route:RouteData = new RouteData('/test/ball/block', new BallTestProp(1000));
     mainRouter.pushRoot(MainContext, route);
   }

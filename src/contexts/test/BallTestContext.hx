@@ -25,7 +25,7 @@ class BallTestContext extends BaseContext {
     field = new PlayFieldData(0, 0, Def.area.w, Def.area.h);
     ground.addChild(new NormalBg());
 
-    write(book);
+    addBook(book);
     startAnimation();
 
     var w:Int = Def.area.w;
@@ -40,7 +40,7 @@ class BallTestContext extends BaseContext {
         var data:BallData = new BallData(random(w), random(h), Palette.random(), 5, i);
         var ball:Ball = Ball.create(data);
         balls.push(data);
-        beOnStage(ball);
+        addActor(ball);
       }
       if (i >= limitation) {
         ground.removeEventListener(Event.ENTER_FRAME, fn);
@@ -91,6 +91,6 @@ class BallTestContext extends BaseContext {
     var data:BallData = new BallData(p.x, p.y, 0xff0000, 10, Math.floor(Math.random() * 360));
     var ball:Ball = Ball.create(data);
     balls.push(data);
-    beOnStage(ball);
+    addActor(ball);
   }
 }

@@ -1,7 +1,6 @@
 package views.common;
 import configs.Configuration;
 import assets.Se;
-import assets.Fa;
 import dbs.Palette;
 import models.common.ActorProp.ActorHorizontal;
 import models.common.CheckboxProp;

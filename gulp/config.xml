@@ -12,13 +12,8 @@
             <path-element>../lib/feathers</path-element>
             <path-element>../lib/starling</path-element>
         </library-path>
-        <fonts>
-            <local-font-paths>
-                <path-element>../lib/font-awesome/fonts/</path-element>
-            </local-font-paths>
-        </fonts>
-        <optimize>false</optimize>
-        <strict>false</strict>
+        <optimize>true</optimize>
+        <strict>true</strict>
         <show-actionscript-warnings>true</show-actionscript-warnings>
         <warn-assignment-within-conditional>true</warn-assignment-within-conditional>
         <warn-bad-array-cast>true</warn-bad-array-cast>

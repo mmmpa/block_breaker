@@ -3,7 +3,6 @@ import events.ContextEvent;
 import starling.events.Event;
 import routers.RouteData;
 import views.common.Button;
-import assets.Fa;
 import models.common.ButtonProp;
 import views.common.PresetButton;
 import models.common.CheckboxProp;

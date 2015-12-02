@@ -101,7 +101,7 @@ class ImageBlockBreakerContext extends BaseContext {
     retry = function() {
       game.deactivate();
       table.deactivate();
-      sweep();
+      removeAllActors();
       start();
     };
 
@@ -142,7 +142,7 @@ class ImageBlockBreakerContext extends BaseContext {
   }
 
   private function pass() {
-    erase(play);
+    removeBook(play);
     stopAnimation();
     changeTouch();
 
@@ -162,7 +162,7 @@ class ImageBlockBreakerContext extends BaseContext {
   }
 
   private function over() {
-    erase(play);
+    removeBook(play);
     stopAnimation();
     changeTouch();
     trace(game.score);
@@ -208,7 +208,7 @@ class ImageBlockBreakerContext extends BaseContext {
         addBall(newBall);
         addShock(shock);
         game.start();
-        write(play);
+        addBook(play);
         changeTouch();
     }
   }
@@ -227,10 +227,10 @@ class ImageBlockBreakerContext extends BaseContext {
   }
 
   private function addShock(data:ShockData) {
-    beOnStage(new Shock(data), false, calm);
+    addActor(new Shock(data), false, calm);
   }
 
   private function addBall(data:BallData) {
-    beOnStage(Ball.create(data), false, calm);
+    addActor(Ball.create(data), false, calm);
   }
 }

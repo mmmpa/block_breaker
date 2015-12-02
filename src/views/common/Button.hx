@@ -60,7 +60,7 @@ class Button extends PartsActor {
 
     listener.click = function() {
       callback();
-      if (Configuration.soundEnabled) {Se.broken.play(); }
+      if (Configuration.soundEnabled) {Se.hit.play(); }
     }
 
     listener.hover = function() {

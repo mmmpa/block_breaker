@@ -32,9 +32,9 @@ class ShockTestContext extends BaseContext {
     var data:BallData = new BallData(100, 100, 0xff0000, 10, Math.floor(Math.random() * 360));
     var ball:Ball = Ball.create(data);
     balls.push(data);
-    beOnStage(ball);
+    addActor(ball);
 
-    write(book);
+    addBook(book);
 
     startAnimation();
   }
@@ -96,6 +96,6 @@ class ShockTestContext extends BaseContext {
     var data:ShockData = new ShockData(Std.int(p.x), Std.int(p.y), 2);
     var shock:Shock = new Shock(data);
     shocks.push(data);
-    beOnStage(shock);
+    addActor(shock);
   }
 }

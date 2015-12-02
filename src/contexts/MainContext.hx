@@ -12,7 +12,6 @@ import models.ConfigurationProp;
 import contexts.test.BallBlockTestContext;
 import contexts.menu.TestMenuContext;
 import routers.RouteData;
-import contexts.test.FeatherTestContext;
 import contexts.test.PartsTestContext;
 import contexts.test.ShockTestContext;
 import contexts.test.ShockHitTestContext;
@@ -28,6 +27,7 @@ class MainContext extends BaseContext {
   private var god:Router;
   private var menu:Router;
   private var body:Router;
+
 
   public function new(props:RouterProp, route:RouteData = null) {
     super(props);
@@ -94,11 +94,6 @@ class MainContext extends BaseContext {
     routeMap.set('/test/parts', function(route:RouteData) {
       menu.replace(TestMenuContext, null);
       body.replace(PartsTestContext, route.prop);
-    });
-
-    routeMap.set('/test/feather', function(route:RouteData) {
-      menu.replace(TestMenuContext, null);
-      body.replace(FeatherTestContext, route.prop);
     });
 
     routeMap.set('/test/splash', function(route:RouteData) {

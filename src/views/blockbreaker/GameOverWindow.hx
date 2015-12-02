@@ -1,6 +1,5 @@
 package views.blockbreaker;
 import views.common.Button;
-import assets.Fa;
 import models.common.ButtonProp;
 import views.common.PresetButton;
 import configs.Def;

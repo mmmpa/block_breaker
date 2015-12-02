@@ -57,7 +57,7 @@ class BlockHitTestContext extends BaseContext {
 
     grid = new BlockGrid(col, width, height, datas);
     table = new BlockTable(grid);
-    beOnStage(table, true, calm);
+    addActor(table, true, calm);
 
     var drawStore:Array<Dynamic> = new Array();
     var start:Point = null;

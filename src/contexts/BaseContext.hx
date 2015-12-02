@@ -12,13 +12,19 @@ import models.RouterProp;
 using Lambda;
 
 class BaseContext extends EventDispatcher {
-  public var rooter:BaseContext;
+  public var iAmContext:Bool = true;
+
   public var ground:Sp;
-  public var props:RouterProp;
-  public var router:Router;
-  public var routeMap:Map<String, Dynamic> = new Map();
-  public var books:Array<Dynamic> = new Array();
-  public var actors:Array<Dynamic> = new Array();
+
+  private var rooter:BaseContext;
+  private var props:RouterProp;
+  private var router:Router;
+  private var routeMap:Map<String, Dynamic> = new Map();
+
+  private var actors:Array<Dynamic> = new Array();
+  private var books:Array<Dynamic> = new Array();
+
+  public var isRoot(get, never):Bool;
 
   public function new(props:RouterProp, insertProps:Dynamic = null) {
     super();
@@ -31,68 +37,122 @@ class BaseContext extends EventDispatcher {
     ground.addEventListener(Event.ADDED_TO_STAGE, _onCreate);
   }
 
-  public function isRoot():Bool {
-    return this.rooter == null;
-  }
+  // 毎フレーム処理関係のメソッド
 
   public function startAnimation() {
-    if (isRoot()) {
-      ground.addEventListener(Event.ENTER_FRAME, _animate);
+    if (isRoot) {
+      Def.stage.addEventListener(Event.ENTER_FRAME, work);
     } else {
-      rooter.addActors(this);
-      rooter.addBooks(this);
+      rooter.addSubActors(this);
+      rooter.addSubBooks(this);
     }
   }
 
   public function stopAnimation() {
-    if (isRoot()) {
-      ground.removeEventListener(Event.ENTER_FRAME, _animate);
+    if (isRoot) {
+      Def.stage.removeEventListener(Event.ENTER_FRAME, work);
     } else {
-      rooter.removeActors(this);
-      rooter.removeBooks(this);
+      rooter.removeSubActors(this);
+      rooter.removeSubBooks(this);
     }
-    trace(rooter);
   }
 
-  public function toString():String {
-    return ['actors', Std.string(actors.length), 'books', Std.string(books.length)].join(' ');
+  private function work(e:Event) {
+    plan();
+    action();
   }
 
-  public function write(book:Dynamic) {
+  // actorの処理
+
+  public function action() {
+    var acted:Array<Dynamic> = new Array();
+    for (actor in actors) {
+      if (isContext(actor)) {
+        actor.action();
+        acted.push(actor);
+      } else {
+        actor.act() ? acted.push(actor) : actor.deactivate();
+      }
+    }
+
+    actors = acted;
+  }
+
+  public function addActor(actor:Dynamic, fixed:Bool = false, container:DisplayObjectContainer = null) {
+    actor.activate(this, container != null ? container : ground);
+
+    if (!fixed) { warmUp(actor); }
+  }
+
+  private function warmUp(actor:Dynamic) {
+    actors.push(actor);
+    actor.act();
+  }
+
+  public function removeAllActors() {
+    for (actor in actors) { actor.deactivate(); }
+    actors = [];
+  }
+
+  // bookの処理
+
+  public function plan() {
+    for (book in books) {
+      try {
+        isContext(book) ? cast(book, BaseContext).plan() : book(this);
+      } catch (e:Dynamic) {
+        untyped{ trace(e.message); }
+      }
+    }
+  }
+
+  public function addBook(book:Dynamic) {
     books.push(book);
   }
 
-  public function erase(target:Dynamic) {
+  public function removeBook(target:Dynamic) {
     books = books.filter(function(book:Dynamic):Bool {
       return book != target;
     });
   }
 
-  public function addActors(subActors:BaseContext) {
+  // サブcontextからの処理
+
+  public function addSubActors(subActors:BaseContext) {
     actors.push(subActors);
   }
 
-  public function removeActors(subActors:BaseContext) {
+  public function removeSubActors(subActors:BaseContext) {
     actors = actors.filter(function(actor) {
       return actor != subActors;
     });
   }
 
-  public function addBooks(subBooks:BaseContext) {
+  public function addSubBooks(subBooks:BaseContext) {
     books.push(subBooks);
   }
+
+  public function removeSubBooks(subBooks:BaseContext) {
+    books = books.filter(function(book) {
+      return book != subBooks;
+    });
+  }
+
+  // routerから呼ばれる
 
   public function deactivate() {
     stopAnimation();
     ground.removeEventListeners();
 
-    Def.stage.addEventListener(Event.ENTER_FRAME, deactivateSlowly);
+    Def.stage.addEventListener(Event.ENTER_FRAME, deactivateStepwise);
   }
 
-  private function deactivateSlowly(e:Event) {
-    for (i in 0...Def.deactiveLimit) {
+  // actorが多い場合、そのdeactivateでフリーズするので回避策として徐々にdeactivateする
+
+  private function deactivateStepwise(e:Event) {
+    for (i in 0...Def.deactivationAmoutOnce) {
       if (actors.length == 0) {
-        Def.stage.removeEventListener(Event.ENTER_FRAME, deactivateSlowly);
+        Def.stage.removeEventListener(Event.ENTER_FRAME, deactivateStepwise);
         ground.removeChildren();
         break;
       }
@@ -101,85 +161,25 @@ class BaseContext extends EventDispatcher {
     }
   }
 
-  public function sweep() {
-    for (actor in actors) {
-      actor.deactivate();
-    }
-    actors = [];
-  }
-
-  public function removeBooks(subBooks:BaseContext) {
-    books = books.filter(function(book) {
-      return book != subBooks;
-    });
-  }
-
-
-  public function beOnStage(actor:Dynamic, calm:Bool = false, container:DisplayObjectContainer = null) {
-    if (container == null) {
-      actor.activate(this, ground);
-    } else {
-      actor.activate(this, container);
-    }
-
-    if (!calm) {
-      actors.push(actor);
-      actor.act();
-    }
-  }
-
-  private function _animate(e:Event) {
-    plan();
-    action();
-  }
-
-  public function plan() {
-    for (i in 0...books.length) {
-      try {
-        var book:Dynamic = books[i];
-        if (Reflect.hasField(book, 'plan')) {
-          book.plan();
-        } else {
-          book(this);
-        }
-      } catch (e:Dynamic) {
-        untyped{trace(e.message);}
-      }
-    }
-  }
-
-  public function action() {
-    var acted:Array<Dynamic> = new Array();
-    var actor:Dynamic;
-    while (actor = actors.pop()) {
-      if (Reflect.hasField(actor, 'action')) {
-        actor.action();
-        acted.push(actor);
-      } else {
-        if (actor.act()) {
-          acted.push(actor);
-        } else {
-          actor.deactivate();
-        }
-      }
-    }
-
-    actors = acted;
-  }
-
   public function go(route:RouteData) {
     routeMap.get(route.route)(route);
   }
 
   public function emit(e:Event) {
-    this.dispatchEvent(e);
-    this.router.emit(e);
+    dispatchEvent(e);
+    router.emit(e);
   }
 
   private function _onCreate(e:Event) {
-    this.ground.removeEventListener(Event.ADDED_TO_STAGE, _onCreate);
-    this.emit(new Event(ContextEvent.CREATED));
+    ground.removeEventListener(Event.ADDED_TO_STAGE, _onCreate);
+    emit(new Event(ContextEvent.CREATED));
+  }
+
+  public function get_isRoot():Bool {
+    return this.rooter == null;
+  }
+
+  @:extern inline private function isContext(a:Dynamic):Bool {
+    return Reflect.hasField(a, 'amContext');
   }
 }
-
-

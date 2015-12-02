@@ -24,7 +24,6 @@ import views.common.Checkbox;
 import configs.Def;
 import feathers.layout.VerticalLayout;
 import views.common.Label;
-import assets.Fa;
 import views.common.FaIcon;
 import views.common.Button;
 import models.RouterProp;
@@ -121,7 +120,7 @@ class PartsTestContext extends BaseContext {
 
     parts.push(PresetButton.normal({
       text: 'button with icon',
-      prop: new ButtonProp({char: Gamepad1}),
+      prop: new ButtonProp({char: Smile}),
       callback: function() { trace('push'); }
     }));
 
@@ -166,8 +165,8 @@ class PartsTestContext extends BaseContext {
     parts.push(new Notification('On death', "Can death be sleep, when life is but a dream, And scenes of bliss pass as a phantom by? The transient pleasures as a vision seem,\nAnd yet we think the greatest pain's to die.\n", function() {trace('push');}));
     parts.push(new Notification('On death', "Can death be sleep, when life is but a dream, And scenes of bliss pass as a phantom by? The transient pleasures as a vision seem,\nAnd yet we think the greatest pain's to die.\n\nHow strange it is that man on earth should roam,And lead a life of woe, but not forsake His rugged path; nor dare he view alone His future doom which is but to awake.\nCan death be sleep, when life is but a dream, And scenes of bliss pass as a phantom by? The transient pleasures as a vision seem,\nAnd yet we think the greatest pain's to die.\n\nHow strange it is that man on earth should roam,And lead a life of woe, but not forsake His rugged path; nor dare he view alone His future doom which is but to awake.", function() {trace('push');}));
 
-    parts.push(new FaIcon(Fa.char.apple, 56).scale(2).rotate(0));
-    parts.push(new Label('ラベル', 20, Fa.char.apple));
+    parts.push(new FaIcon(Apple22, 56).scale(2).rotate(0));
+    parts.push(new Label('ラベル', 20, Apple22));
 
     parts.iter(function(actor:Dynamic) {
       actor.activate(this, container);

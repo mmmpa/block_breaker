@@ -3,7 +3,6 @@ import starling.text.TextFieldAutoSize;
 import starling.utils.HAlign;
 import views.app.BlockText;
 import views.common.Button;
-import assets.Fa;
 import models.common.ButtonProp;
 import views.common.PresetButton;
 import configs.Def;

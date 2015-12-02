@@ -11,7 +11,6 @@ import configs.Def;
 import models.test.BallTestProp;
 import views.common.Button;
 import views.common.SideMenu;
-import assets.Fa;
 import routers.RouteData;
 import models.RouterProp;
 
@@ -41,9 +40,9 @@ class TestMenuContext extends BaseContext {
         menu.open();
       }
     });
-    beOnStage(bar);
-    beOnStage(menu);
-    beOnStage(faButton);
+    addActor(bar);
+    addActor(menu);
+    addActor(faButton);
   }
 
   override public function deactivate() {

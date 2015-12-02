@@ -3,7 +3,6 @@ import starling.display.Image;
 import flash.display.Bitmap;
 import flash.display.StageQuality;
 import configs.Def;
-import assets.Fa;
 import starling.text.TextField;
 import starling.text.TextFieldAutoSize;
 import starling.textures.Texture;
@@ -31,7 +30,6 @@ class FaIcon extends PartsActor {
     draw();
   }
 
-
   public function draw():FaIcon{
     var rate:Float = size / max;
     image.scaleX = image.scaleY = rate;
@@ -54,7 +52,7 @@ class FaIcon extends PartsActor {
   }
 
   public function rotate(n:Float):FaIcon {
-    icon.rotation = degreeToRadian(n);
+    image.rotation = degreeToRadian(n);
     return this;
   }
 
