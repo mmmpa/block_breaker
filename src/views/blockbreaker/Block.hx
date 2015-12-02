@@ -9,7 +9,7 @@ import flash.geom.Point;
 import contexts.BaseContext;
 import models.blockbreaker.BlockData;
 import configs.Def;
- import starling.display.DisplayObjectContainer;
+import starling.display.DisplayObjectContainer;
 import starling.display.Quad;
 
 class Block extends Quad {

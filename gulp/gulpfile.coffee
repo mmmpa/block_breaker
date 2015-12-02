@@ -24,9 +24,9 @@ gulp.task 'default', ->
           'echo building'
           'haxe "compile.hxml"'
           'echo built'
-          #'cp -f ../export/built.swf ../export/game.swf'
-          'cp -f ../export/built.swf ../for_air/game.swf'
-          '$AIR_HOME/bin/mxmlc -load-config=config.xml ../export/as3/__main2__.as -output ../export/game.swf'
+          #'cp -f ../export/built.swf ../for_air/game.swf'
+          '$AIR_HOME/bin/mxmlc -load-config=config.xml ../export/as3/__main2__.as -output ../export/built.swf'
+          'cp -f ../export/built.swf ../export/game.swf'
           'cp -f ../export/game.swf ../for_air/game.swf'
         ], {})
 

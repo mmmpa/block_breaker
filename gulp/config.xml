@@ -4,13 +4,13 @@
     <compiler>
         <allow-source-path-overlap>false</allow-source-path-overlap>
         <external-library-path>
-            <path-element>../lib/playerglobal.swc</path-element>
+            <path-element>../for_air/playerglobal.swc</path-element>
         </external-library-path>
         <library-path>
             <path-element>../lib/resource.swc</path-element>
             <path-element>../lib/fa.swc</path-element>
-            <path-element>../lib/feathers</path-element>
-            <path-element>../lib/starling</path-element>
+            <path-element>../for_air/feathers.swc</path-element>
+            <path-element>../for_air/starling.swc</path-element>
         </library-path>
         <optimize>true</optimize>
         <strict>true</strict>

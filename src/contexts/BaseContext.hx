@@ -68,12 +68,18 @@ class BaseContext extends Sprite {
   // actorの処理
 
   public function action() {
-    for(actor in actors){
+    // 処理中にlistが増減するためこの処理になる
+    var acted:List<Dynamic> = new List();
+    var actor:Dynamic = actors.pop();
+    while(actor){
       if(!actor.act()){
         actor.deactivate();
-        actors.remove(actor);
+      }else{
+        acted.push(actor);
       }
+      actor = actors.pop();
     }
+    actors = acted;
 
     for(sub in subActors){
       sub.action();
@@ -104,6 +110,7 @@ class BaseContext extends Sprite {
     for(book in books){
       book(this);
     }
+
     for(sub in subBooks){
       sub.plan();
     }

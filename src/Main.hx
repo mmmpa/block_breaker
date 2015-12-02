@@ -33,7 +33,6 @@ class Main extends Sprite {
     Se.initialize();
     BlockFont.initialize();
 
-
     for(font in Font.enumerateFonts()){
       trace(font.fontName);
     }
