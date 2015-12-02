@@ -1,4 +1,5 @@
 package contexts;
+import starling.display.Sprite;
 import views.common.Sp;
 import starling.display.DisplayObjectContainer;
 import routers.RouteData;
@@ -11,7 +12,7 @@ import models.RouterProp;
 
 using Lambda;
 
-class BaseContext extends EventDispatcher {
+class BaseContext extends Sprite {
   public var iAmContext:Bool = true;
 
   public var ground:Sp;
@@ -142,6 +143,7 @@ class BaseContext extends EventDispatcher {
 
   public function deactivate() {
     stopAnimation();
+    removeEventListeners();
     ground.removeEventListeners();
 
     Def.stage.addEventListener(Event.ENTER_FRAME, deactivateStepwise);
@@ -180,6 +182,6 @@ class BaseContext extends EventDispatcher {
   }
 
   @:extern inline private function isContext(a:Dynamic):Bool {
-    return Reflect.hasField(a, 'amContext');
+    return Reflect.hasField(a, 'iAmContext');
   }
 }

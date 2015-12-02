@@ -4,69 +4,73 @@ import starling.events.Event;
 import events.ContextEvent;
 import models.RouterProp;
 import contexts.BaseContext;
-import starling.display.Sprite;
 
 using additions.Creator;
 using additions.Support;
 
 class Router extends Sp {
   private var history:Array<BaseContext>;
-  private var active:BaseContext;
-  private var rooter:Router;
+
+  private var rootRouter:Router;
+  private var rootContext:BaseContext;
   private var props:RouterProp;
+
+  private var activeContext:BaseContext;
   private var activeClass:Class<BaseContext>;
   private var activeProp:Dynamic;
 
-  public function new(?rooter:Router, ?contextRoot:BaseContext) {
+  public var noActiveContext(get, never):Bool;
+  public var isRoot(get, never):Bool;
+
+
+  public function new(?rootRouter:Router, ?rootContext:BaseContext) {
     super();
-    this.rooter = rooter;
-    this.props = new RouterProp(this, contextRoot);
+    this.rootRouter = rootRouter;
+    this.rootContext = rootContext;
+    this.props = new RouterProp(this, rootContext);
+
     initialize();
   }
 
-  public function push(Context:Class<BaseContext>, insertProps:Dynamic = null):BaseContext {
-    var context:BaseContext = Context.create([props, insertProps]);
-
-    sweepChildren();
-    replaceActiveContext(context);
-    history.push(context);
-    addChild(context.ground);
-
-    return context;
+  private function initialize() {
+    history = new Array();
   }
 
+  public function push(Context:Class<BaseContext>, insertProps:Dynamic = null):BaseContext {
+    deactivateActiveContext();
+
+    return activateNewContext(Context, insertProps);
+  }
 
   public function replace(Context:Class<BaseContext>, insertProps:Dynamic = null, forceReload:Bool = false):BaseContext {
     if (!forceReload && Context == activeClass && insertProps == activeProp) {
-      return active;
+      return activeContext;
     }
-    sweepChildren();
     deactivateActiveContext();
 
+    return activateNewContext(Context, insertProps);
+  }
+
+  public function activateNewContext(Context:Class<BaseContext>, insertProps:Dynamic = null):BaseContext {
     var context:BaseContext = Context.create([props, insertProps]);
-    activateContext(Context, context, insertProps);
+    this.activeContext = context;
+    this.activeClass = Context;
+    this.activeProp = insertProps;
+
+    addEvent(context);
+    addChild(context.ground);
 
     return context;
   }
 
   private function deactivateActiveContext() {
-    if (active == null) {
-      return;
-    }
-    removeEvent(active);
-    active.deactivate();
+    if (noActiveContext) { return; }
 
-    this.active = null;
+    removeContextParts();
+    activeContext.deactivate();
+
+    this.activeContext = null;
   }
-
-  public function activateContext(Context:Class<BaseContext>, context:BaseContext, insertProps:Dynamic = null) {
-    this.active = context;
-    this.activeClass = Context;
-    this.activeProp = insertProps;
-    addEvent(context);
-    addChild(context.ground);
-  }
-
 
   public function pushRoot(Context:Class<BaseContext>, insertProps:Dynamic = null):BaseContext {
     props.contextRoot = push(Context, insertProps);
@@ -75,17 +79,9 @@ class Router extends Sp {
   }
 
   public function emit(e:Event) {
-    this.dispatchEvent(e);
-    active.be() ? active.dispatchEvent(e) : null;
-    if (this.rooter != null) {
-      this.rooter.emit(e);
-    }
-  }
-
-  private function replaceActiveContext(context:BaseContext) {
-    removeEvent(this.active);
-    this.active = context;
-    addEvent(context);
+    dispatchEvent(e);
+    noActiveContext ? null : activeContext.dispatchEvent(e);
+    isRoot ? null : this.rootRouter.emit(e);
   }
 
   private function addEvent(context:BaseContext) {
@@ -93,21 +89,19 @@ class Router extends Sp {
   }
 
   private function onListen(e:Event) {
-    this.dispatchEvent(e);
+    dispatchEvent(e);
+    isRoot ? null : this.rootRouter.emit(e);
   }
 
-  private function removeEvent(context:BaseContext) {
-    if (context == null) {
-      return;
-    }
-    context.removeEventListeners();
+  private function removeContextParts() {
+    removeChildren();
   }
 
-  private function initialize() {
-    history = new Array();
+  public function get_isRoot():Bool {
+    return rootRouter == null;
   }
 
-  private function sweepChildren() {
-    this.removeChildren();
+  public function get_noActiveContext():Bool {
+    return activeContext == null;
   }
 }

@@ -2,13 +2,12 @@ package views.common;
 import starling.display.Quad;
 
 class PartsActor extends BaseActor {
-  public var area:Quad;
+  public var area:Quad = new Quad(1, 1, 0, false);
 
   public function new() {
     super();
-    this.area = new Quad(1, 1, 0, false);
     area.alpha = 0;
-    this.addChild(area);
+    addChild(area);
   }
 
   override public function deactivate(){
