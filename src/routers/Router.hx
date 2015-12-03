@@ -1,7 +1,6 @@
 package routers;
 import views.common.Sp;
 import starling.events.Event;
-import events.ContextEvent;
 import models.RouterProp;
 import contexts.BaseContext;
 
@@ -11,13 +10,13 @@ using additions.Support;
 typedef RouterOption = {
   @:optional var rootRouter:Router;
   @:optional var rootContext:Class<BaseContext>;
-  @:optional var routeData:RouteData;
+  @:optional var routeData:SceneChangeData;
 }
 
 class Router extends Sp {
   private var history:Array<BaseContext>;
 
-  private var rootRouter:Router;
+  private var parentRouter:Router;
   public var rootContext:BaseContext;
 
   private var activeContext:BaseContext;
@@ -30,16 +29,16 @@ class Router extends Sp {
 
   static public function asChild(router:Router, context:BaseContext):Router {
     var child:Router = new Router();
-    child.rootRouter = router;
+    child.parentRouter = router;
     child.rootContext = context;
 
     return child;
   }
 
-  static public function asRoot(Context:Class<BaseContext>, ?routeData:RouteData):Router{
+  static public function asRoot(Context:Class<BaseContext>, ?routeData:SceneChangeData):Router{
     var router:Router = new Router();
-    router.rootContext = router.push(Context, routeData);
-
+    router.rootContext = router.push(Context, routeData, false);
+    router.rootContext.finishActivation();
     return router;
   }
 
@@ -53,10 +52,10 @@ class Router extends Sp {
     history = new Array();
   }
 
-  public function push(Context:Class<BaseContext>, prop:Dynamic = null):BaseContext {
+  public function push(Context:Class<BaseContext>, prop:Dynamic = null, autoFinish:Bool = true):BaseContext {
     deactivateActiveContext();
 
-    return activateNewContext(Context, prop);
+    return activateNewContext(Context, prop, autoFinish);
   }
 
   public function replace(Context:Class<BaseContext>, prop:Dynamic = null, forceReload:Bool = false):BaseContext {
@@ -68,14 +67,16 @@ class Router extends Sp {
     return activateNewContext(Context, prop);
   }
 
-  public function activateNewContext(Context:Class<BaseContext>, insertProps:Dynamic = null):BaseContext {
+  public function activateNewContext(Context:Class<BaseContext>, insertProps:Dynamic = null, autoFinish:Bool = true):BaseContext {
     var context:BaseContext = Context.create([new RouterProp(this, rootContext), insertProps]);
     this.activeContext = context;
     this.activeClass = Context;
     this.activeProp = insertProps;
 
     addChild(context);
-
+    if(autoFinish){
+      context.finishActivation();
+    }
     return context;
   }
 
@@ -89,9 +90,9 @@ class Router extends Sp {
   }
 
   public function emit(e:Event) {
-    dispatchEvent(e);
     noActiveContext ? null : activeContext.dispatchEvent(e);
-    isRoot ? null : this.rootRouter.emit(e);
+    dispatchEvent(e);
+    isRoot ? null : parentRouter.emit(e);
   }
 
   private function removeContextParts() {
@@ -99,7 +100,7 @@ class Router extends Sp {
   }
 
   public function get_isRoot():Bool {
-    return rootRouter == null;
+    return parentRouter == null;
   }
 
   public function get_noActiveContext():Bool {

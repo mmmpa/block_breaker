@@ -9,4 +9,8 @@ class ContextCreatedEvent extends Event {
     this.context = context;
     super(CREATED, false);
   }
+
+  public function forMe(me:BaseContext):Bool{
+    return this.context == me;
+  }
 }

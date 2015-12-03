@@ -2,7 +2,7 @@ package ;
 import models.blockbreaker.ImageBlockBreakerProp;
 import models.test.BallTestProp;
 import starling.display.Sprite;
-import routers.RouteData;
+import routers.SceneChangeData;
 import configs.Def;
 import contexts.MainContext;
 import routers.Router;
@@ -16,7 +16,7 @@ class Game extends Sprite {
     //touchable = false;
     //var route:RouteData = new RouteData('/test/ball', new BallTestProp(5000));
     //var route:RouteData = new RouteData('/test/parts');
-    var route:RouteData = new RouteData('/configuration');
+    var route:SceneChangeData = new SceneChangeData('/configuration');
     //var route:RouteData = new RouteData('/test/parts');
     //var route:RouteData = new RouteData('/bb/plain', new BlockBreakerProp(PlainGame.plain1()));
     //var route:RouteData = new RouteData('/bb/finder');

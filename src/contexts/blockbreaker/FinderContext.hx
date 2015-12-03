@@ -1,8 +1,6 @@
 package contexts.blockbreaker;
-import events.SceneChangeEvent;
 import models.blockbreaker.FinderPieceProp;
-import events.ContextEvent;
-import routers.RouteData;
+import routers.SceneChangeData;
 import starling.textures.Texture;
 import starling.display.Image;
 import flash.display.BitmapData;
@@ -86,7 +84,7 @@ class FinderContext extends BaseContext {
         container.addChild(line);
       }
       var child:FinderPiece = FinderPiece.loading(function() {
-        var route:RouteData = new RouteData('/bb/image', new ImageBlockBreakerProp(data.id, data.blockImagePath), true);
+        var route:SceneChangeData = new SceneChangeData('/bb/image', new ImageBlockBreakerProp(data.id, data.blockImagePath), true);
         go(route);
       });
       loading.push({finder: child, path: data.thumnailPath});

@@ -2,13 +2,10 @@ package contexts;
 import events.ContextCreatedEvent;
 import events.SceneChangeEvent;
 import starling.display.Sprite;
-import views.common.Sp;
 import starling.display.DisplayObjectContainer;
-import routers.RouteData;
+import routers.SceneChangeData;
 import configs.Def;
 import starling.events.Event;
-import events.ContextEvent;
-import starling.events.EventDispatcher;
 import routers.Router;
 import models.RouterProp;
 
@@ -21,7 +18,7 @@ class BaseContext extends Sprite {
 
   private var router:Router;
   private var rootContext:BaseContext;
-  private var routeMap:Map<String, Dynamic> = new Map();
+  private var sceneMap:Map<String, Dynamic> = new Map();
 
   private var actors:List<Dynamic> = new List();
   private var books:List<Dynamic> = new List();
@@ -37,17 +34,19 @@ class BaseContext extends Sprite {
     this.router = props.router;
     this.rootContext = props.contextRoot;
 
-    addEventListener(Event.ADDED_TO_STAGE, onActivated);
     addEventListener(SceneChangeEvent.GO, onScneChange);
   }
 
   private function onScneChange(e:SceneChangeEvent){
-    trace('change');
-    var routeData:RouteData = e.routeData;
-    var route:Dynamic = routeMap.get(routeData.route);
+    var routeData:SceneChangeData = e.routeData;
+    var route:Dynamic = sceneMap.get(routeData.route);
     if(route != null){
       route(routeData);
     }
+  }
+
+  public function finishActivation(){
+    emit(new ContextCreatedEvent(this));
   }
 
   // 毎フレーム処理関係のメソッド
@@ -179,13 +178,12 @@ class BaseContext extends Sprite {
     router.emit(e);
   }
 
-  public function go(route:RouteData) {
-    emit(new SceneChangeEvent(route));
+  public function registerScene(sceneName:String, callback:Dynamic){
+    sceneMap.set(sceneName, callback);
   }
 
-  private function onActivated(e:Event) {
-    removeEventListener(Event.ADDED_TO_STAGE, onActivated);
-    emit(new ContextCreatedEvent(this));
+  public function go(route:SceneChangeData) {
+    emit(new SceneChangeEvent(route));
   }
 
   public function get_isRoot():Bool {

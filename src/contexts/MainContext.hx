@@ -1,36 +1,31 @@
 package contexts;
+import models.RouterProp;
 import events.ContextCreatedEvent;
-import events.SceneChangeEvent;
 import configs.OnAir;
 import dbs.FinderList;
 import models.blockbreaker.FinderProp;
 import contexts.blockbreaker.FinderContext;
 import contexts.blockbreaker.ImageBlockBreakerContext;
-import dbs.PlainGame;
-import models.blockbreaker.BlockBreakerProp;
 import contexts.blockbreaker.PlainBlockBreakerContext;
 import configs.Configuration;
 import models.ConfigurationProp;
 import contexts.test.BallBlockTestContext;
 import contexts.menu.TestMenuContext;
-import routers.RouteData;
+import routers.SceneChangeData;
 import contexts.test.PartsTestContext;
 import contexts.test.ShockTestContext;
 import contexts.test.ShockHitTestContext;
 import contexts.test.BallTestContext;
 import contexts.test.BlockHitTestContext;
 import contexts.test.SplashTestContext;
-import starling.events.Event;
-import events.ContextEvent;
 import routers.Router;
-import models.RouterProp;
 
 class MainContext extends BaseContext {
   private var god:Router;
   private var menu:Router;
   private var body:Router;
 
-  public function new(props:RouterProp, route:RouteData = null) {
+  public function new(props:RouterProp, scene:SceneChangeData = null) {
     super(props);
 
     initialize();
@@ -42,84 +37,84 @@ class MainContext extends BaseContext {
     addChild(body);
     addChild(menu);
     addChild(god);
-    
+
     startAnimation();
 
     addEventListener(ContextCreatedEvent.CREATED, function(e:ContextCreatedEvent) {
-      if (e.context == that && route != null) {
-        go(route);
+      if (e.forMe(that) && scene != null) {
+        go(scene);
       }
     });
   }
 
   private function initialize() {
     initializeSetting();
-    initializeRouteMap();
+    initializeSceneMap();
   }
 
   private function initializeSetting() {
     Configuration.initialize();
   }
 
-  private function initializeRouteMap() {
-    routeMap.set('/configuration', function(route:RouteData) {
+  private function initializeSceneMap() {
+    registerScene('/configuration', function(scene:SceneChangeData) {
       menu.replace(TestMenuContext, null);
 
       var configuration:ConfigurationProp = new ConfigurationProp();
       body.replace(ConfigurationContext, configuration);
     });
 
-    routeMap.set('/test/parts', function(route:RouteData) {
+    registerScene('/test/parts', function(scene:SceneChangeData) {
       menu.replace(TestMenuContext, null);
-      body.replace(PartsTestContext, route.prop);
+      body.replace(PartsTestContext, scene.prop);
     });
 
-    routeMap.set('/test/splash', function(route:RouteData) {
+    registerScene('/test/splash', function(scene:SceneChangeData) {
       menu.replace(TestMenuContext, null);
-      body.replace(SplashTestContext, route.prop);
+      body.replace(SplashTestContext, scene.prop);
     });
 
-    routeMap.set('/test/block/hit', function(route:RouteData) {
+    registerScene('/test/block/hit', function(scene:SceneChangeData) {
       menu.replace(TestMenuContext, null);
-      body.replace(BlockHitTestContext, route.prop);
+      body.replace(BlockHitTestContext, scene.prop);
     });
 
-    routeMap.set('/test/ball', function(route:RouteData) {
+    registerScene('/test/ball', function(scene:SceneChangeData) {
       //menu.replace(TestMenuContext, null);
-      body.replace(BallTestContext, route.prop);
+      body.replace(BallTestContext, scene.prop);
     });
 
-    routeMap.set('/test/ball/block', function(route:RouteData) {
+    registerScene('/test/ball/block', function(scene:SceneChangeData) {
       menu.replace(TestMenuContext, null);
-      body.replace(BallBlockTestContext, route.prop);
+      body.replace(BallBlockTestContext, scene.prop);
     });
 
-    routeMap.set('/test/shock', function(route:RouteData) {
+    registerScene('/test/shock', function(scene:SceneChangeData) {
       menu.replace(TestMenuContext, null);
-      body.replace(ShockTestContext, route.prop);
+      body.replace(ShockTestContext, scene.prop);
     });
 
-    routeMap.set('/test/shock/hit', function(route:RouteData) {
+    registerScene('/test/shock/hit', function(scene:SceneChangeData) {
       menu.replace(TestMenuContext, null);
-      body.replace(ShockHitTestContext, route.prop);
+      body.replace(ShockHitTestContext, scene.prop);
     });
 
-    routeMap.set('/bb/plain', function(route:RouteData) {
+    registerScene('/bb/plain', function(scene:SceneChangeData) {
       menu.replace(TestMenuContext, null);
-      body.replace(PlainBlockBreakerContext, route.prop, route.forceReload);
+      body.replace(PlainBlockBreakerContext, scene.prop, scene.forceReload);
     });
 
-    routeMap.set('/bb/image', function(route:RouteData) {
+    registerScene('/bb/image', function(scene:SceneChangeData) {
       menu.replace(TestMenuContext, null);
-      body.replace(ImageBlockBreakerContext, route.prop, route.forceReload);
+      body.replace(ImageBlockBreakerContext, scene.prop, scene.forceReload);
     });
 
-    routeMap.set('/bb/finder', function(route:RouteData) {
+    registerScene('/bb/finder', function(scene:SceneChangeData) {
       menu.replace(TestMenuContext, null);
-      body.replace(FinderContext, FinderList.all, route.forceReload);
+      body.replace(FinderContext, FinderList.all, scene.forceReload);
     });
 
-    routeMap.set('/app/exit', function(route:RouteData) {
+    registerScene('/app/exit', function(scene:SceneChangeData) {
       OnAir.exit();
     });
   }

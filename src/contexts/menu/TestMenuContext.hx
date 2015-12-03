@@ -11,13 +11,13 @@ import configs.Def;
 import models.test.BallTestProp;
 import views.common.Button;
 import views.common.SideMenu;
-import routers.RouteData;
+import routers.SceneChangeData;
 import models.RouterProp;
 
 using Lambda;
 
 class TestMenuContext extends BaseContext {
-  private var routes:Array<RouteData>;
+  private var routes:Array<SceneChangeData>;
   private var routesSrc(get, never):Array<MenuRecipe>;
   private var menu:SideMenu;
   private var bar:TopBar;
@@ -54,67 +54,67 @@ class TestMenuContext extends BaseContext {
       {
         icon: Cog2,
         text: 'configration',
-        route: new RouteData('/configuration')
+        route: new SceneChangeData('/configuration')
       },
       {
         icon: Cogs3,
         text: 'test: parts',
-        route: new RouteData('/test/parts')
+        route: new SceneChangeData('/test/parts')
       },
       {
         icon: Spinner8,
         text: 'test: splash animation',
-        route: new RouteData('/test/splash')
+        route: new SceneChangeData('/test/splash')
       },
       {
         icon: Lightning14,
         text: 'test: block refrection',
-        route: new RouteData('/test/block/hit')
+        route: new SceneChangeData('/test/block/hit')
       },
       {
         icon: Circle33,
         text: 'shock wave test',
-        route: new RouteData('/test/shock')
+        route: new SceneChangeData('/test/shock')
       },
       {
         icon: Lightning14,
         text: 'shock wave refrection test',
-        route: new RouteData('/test/shock/hit')
+        route: new SceneChangeData('/test/shock/hit')
       },
       {
         icon: Tint,
         text: 'test: only ball 1000',
-        route: new RouteData('/test/ball', new BallTestProp(1000))
+        route: new SceneChangeData('/test/ball', new BallTestProp(1000))
       },
       {
         icon: Tint,
         text: 'test: only ball 2500',
-        route: new RouteData('/test/ball', new BallTestProp(2500))
+        route: new SceneChangeData('/test/ball', new BallTestProp(2500))
       },
       {
         icon: Tint,
         text: 'test: only ball 5000',
-        route: new RouteData('/test/ball', new BallTestProp(5000))
+        route: new SceneChangeData('/test/ball', new BallTestProp(5000))
       },
       {
         icon: Square62,
         text: 'test: block ball 1000',
-        route: new RouteData('/test/ball/block', new BallTestProp(1000))
+        route: new SceneChangeData('/test/ball/block', new BallTestProp(1000))
       },
       {
         icon: Square62,
         text: 'test: block ball 1500',
-        route: new RouteData('/test/ball/block', new BallTestProp(1500))
+        route: new SceneChangeData('/test/ball/block', new BallTestProp(1500))
       },
       {
         icon: Square62,
         text: 'test: block ball 2000',
-        route: new RouteData('/test/ball/block', new BallTestProp(2000))
+        route: new SceneChangeData('/test/ball/block', new BallTestProp(2000))
       },
       {
         icon: Four29,
         text: 'stage finder',
-        route: new RouteData('/bb/finder')
+        route: new SceneChangeData('/bb/finder')
       }
     ];
 
@@ -122,7 +122,7 @@ class TestMenuContext extends BaseContext {
       base.push({
         icon: Four29,
         text: 'exit',
-        route: new RouteData('/app/exit')
+        route: new SceneChangeData('/app/exit')
       });
     }
 

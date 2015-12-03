@@ -1,14 +1,8 @@
 package contexts.blockbreaker;
-import starling.textures.Texture;
-import starling.display.Image;
 import views.common.Spacer;
 import models.blockbreaker.PlayFieldData;
 import views.blockbreaker.Calm;
-import views.common.Sp;
-import starling.events.Event;
-import events.ContextEvent;
-import routers.RouteData;
-import starling.display.Sprite;
+import routers.SceneChangeData;
 import views.blockbreaker.GamePassedWindow;
 import dbs.RecordStore;
 import views.blockbreaker.ScoreDisplay;
@@ -106,7 +100,7 @@ class ImageBlockBreakerContext extends BaseContext {
     };
 
     back = function() {
-      go(new RouteData('/bb/finder'));
+      go(new SceneChangeData('/bb/finder'));
     };
 
     start();

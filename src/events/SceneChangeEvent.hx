@@ -1,11 +1,11 @@
 package events;
-import routers.RouteData;
+import routers.SceneChangeData;
 import starling.events.Event;
 class SceneChangeEvent extends Event {
   static public var GO:String = 'scene:change';
-  public var routeData:RouteData;
+  public var routeData:SceneChangeData;
 
-  public function new(routeData:RouteData) {
+  public function new(routeData:SceneChangeData) {
     this.routeData = routeData;
     super(GO, false);
   }

@@ -2,7 +2,7 @@ package routers;
 
 using additions.Support;
 
-class RouteData {
+class SceneChangeData {
   public var route:String;
   public var prop:Dynamic;
   public var forceReload:Bool;

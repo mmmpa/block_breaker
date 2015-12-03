@@ -9,14 +9,12 @@ import feathers.layout.VerticalLayout;
 import configs.Def;
 import feathers.controls.ScrollContainer;
 import starling.display.DisplayObjectContainer;
-import events.ContextEvent;
-import starling.events.Event;
-import routers.RouteData;
+import routers.SceneChangeData;
 
 using Lambda;
 using additions.Support;
 
-typedef MenuRecipe = {icon:Class<Dynamic>, text:String, route:RouteData}
+typedef MenuRecipe = {icon:Class<Dynamic>, text:String, route:SceneChangeData}
 
 enum SideMenuState {
   Ready;

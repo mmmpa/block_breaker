@@ -1,51 +1,133 @@
-# BlockBreaker
+# 基本構造
 
-# 作業メモ
+# Router
 
-## ToDo
+RouterはContextインスタンスを表示するDisplayObjectContainerである。
 
-1. score表示
-1. contextの移動
+Routerは基本的に重要なステートを持たず、Contextのインスタンス化とイベントの伝播のみを行う。
 
-## Pending
+## 最初のRouter
 
-### 毎フレーム処理の管理を配列から連結リストに変える。
+rootとなるDisplayObjectContainerにルートRouterを追加する。
 
-今のところ挿入と削除のコストが問題になる処理はないので保留。
+インスタンス化はRouterが行うのでクラスをそのまま渡す。
+
+第2引数はContextのnewメソッドの第2引数として渡される。nullable。
+
+```haxe
+addChild(Router.asRoot(MainContext, route));
+```
+
+## Contextのインスタンス化
+
+RouterはContextの追加時、切替時にContextクラスを渡され、それをインスタンス化する。
+
+```haxe
+router.push(MainContext, routeData);
+router.replace(MainContext, routeData);
+```
+
+RouterはContextのインスタンスを一つだけしか持てない。pushあるいはreplaceでContextを変更できる。古いContextのインスタンスは入念に破棄される。
+
+インスタンス化後にRouterのプロパティとして保持されるので、Routerへの反映を待って動作させるにはaddEventListenerを利用する。
+
+```
+addEventListener(ContextCreatedEvent.CREATED, function(e:ContextCreatedEvent) {
+  if (e.forMe(that) && route != null) {
+    go(route);
+  }
+});
+```
+
+## イベントの伝播
+
+Context#emitでイベントを送出すると以下の順番で伝播する。
+
+1. そのcontext
+1. そのcontextが属するrouter
+1. そのcontextが属するrouterの親routerに属するcontext
+1. そのcontextが属するrouterの親router
+1. 繰り返し
+
+Router#emitにおいてもまずそのrouterのcontextへと送出される。
+
 
 # Context
 
-複数のContextが存在し、RootContextが一つだけ存在する。
+viewとmodelを結びつける、controllerかつDisplayObjectのコンテナ。
 
-各ContextはRootへの参照を持つ。
+## EnterFrame処理の一元管理
 
-ContextによるEnterFrameはRootが一元管理する。
+特にアニメーション処理をactメソッドで、計算処理をplanメソッドで行う。
 
-beOnStage(actor)によるactor登録はRootへの参照があればRootに移譲され、なければそれがRootなので官吏を行う。
+actで動作するviewオブジェクトをとくにactorと呼ぶ。
 
-BaseContextを継承したContextはDisplayObject格納用に`view`を持つので、自分の表示はそこで行う。
+planで行う処理を特にbookと呼ぶ。
 
-Context#emitにより上部routerにイベントを伝播させることができる。
+処理順序は以下の通り。
 
-## EnterFrame処理
+1. 自分のplanメソッド
+1. 下位Contextのplanメソッド
+1. 自分のactメソッド
+1. 下位Contextのactメソッド
 
-1. 計算処理
-2. アニメーション処理
+全ての計算処理が行われてからviewへの反映が行われる。
 
-の順で行う。
+### act
 
-## EnterFrame計算処理
+addAcrorでactorsリストに追加されたactorのactメソッドを毎フレーム呼ぶ。
 
-Context#write(fn:Context -> Void)により処理を登録する。
+actメソッドがtrueを返せば継続、falseを返せばactorのdeactivateメソッドを呼ぶ。
 
-Context#erase(fn:Context -> Void)で処理を除去できる。
+下位Contextから移譲されたactorsはその後に実行される。
 
-## EnterFrameアニメーション処理
+### plan
 
-`act`メソッドを実装したクラスのインスタンスを配列に登録し、先頭から`act`を呼ぶ。
+addBookでbooksリストに追加された関数、およびメソッドを実行する。
 
-`false`がかえってきた時点で配列から排除し、`deactivate`メソッドを呼ぶ。
+引数にはContext自身が渡される。
 
-1. `beOnStage(actor)` で `actor.activate(context, view)` が呼ばれる。
-1. `act`
-1. `deactivate`
+下位Contextから移譲されたbooksはその後に実行される。下位Contextのbookには下位Context自身が渡される。
+
+## 下位Context
+
+子Routerを子に持つことにより、別のContextを表示する。
+
+子Routerに自分が属するRouterを渡すことにより、下部からのイベントが伝播される。
+
+子Routerに自分自身かrootContextを渡すことにより、Contextの毎フレーム処理を移譲される。
+
+```haxe
+god = Router.asChild(router, this);
+menu = Router.asChild(router, this);
+body = Router.asChild(router, this);
+```
+
+### 下位ContextのaddActorとaddBook
+
+下位Contextは自分自身ではEnterFrameを行わず、自分自身をrootContextのsubActorsとsubBooksに挿入することにより処理を行う。
+
+下位Context自身のactとplanを読んで実行するため、処理は自分がrootContextであった場合とかわりはない。
+
+## シーンチェンジ
+
+特に下位Contextからの処理依頼を扱うために、registerSceneとgoメソッドを持つ。
+
+### マップの登録
+
+シーンの名前と呼び出される関数、あるいはメソッドをセットで登録する。
+
+```haxe
+registerScene('/test/parts', function(scene:SceneChangeData) {
+  menu.replace(TestMenuContext, null);
+  body.replace(PartsTestContext, scene.prop);
+});
+```
+
+### 発動
+
+SceneChangeDataの第2引数には任意のオブジェクトインスタンスを持たすことができる。
+
+```haxe
+go(new SceneChangeData('/test/parts'));
+```

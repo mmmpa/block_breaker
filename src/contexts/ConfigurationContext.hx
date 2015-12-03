@@ -1,7 +1,6 @@
 package contexts;
-import events.ContextEvent;
 import starling.events.Event;
-import routers.RouteData;
+import routers.SceneChangeData;
 import views.common.Button;
 import models.common.ButtonProp;
 import views.common.PresetButton;
@@ -64,7 +63,7 @@ class ConfigurationContext extends BaseContext {
       text: 'go to stage finder',
       prop: new ButtonProp({char: Four29}),
       callback: function() {
-        go(new RouteData('/bb/finder'));
+        go(new SceneChangeData('/bb/finder'));
       }
     });
 
