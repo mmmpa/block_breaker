@@ -1,3 +1,37 @@
+# 基本設計
+
+MVCで行う。
+
+大きく分けてModel、View、Context、Routerという役割がある。
+
+ContextがControllerの役割をする。RouterはContext同士をつないでイベントを伝播させる。
+
+## Model
+
+モデル。ロジックやデータ、状態を管理する。
+
+ViewやContextのことは基本的に知らない。
+
+## View
+
+DisplayObjectの類。
+
+自分の表示内容を表すModelを内包する可能性がある。
+
+Modelの内容を直接変更することはない。
+
+Contextのことは知らない。
+
+処理は自分の中で完結し、情報の送出はContextから注入されるcallbackで行われる。
+
+## Context
+
+ModelとViewをつなぐ。
+
+またそのコンテキストにおける大本のDisplayObjectContainer。
+
+雑然となるクラスなので注意する。
+
 # 基本構造
 
 # Router

@@ -17,6 +17,7 @@ class Router extends Sp {
   private var history:Array<BaseContext>;
 
   private var parentRouter:Router;
+  private var childRouters:List<Router> = new List();
   public var rootContext:BaseContext;
 
   private var activeContext:BaseContext;
@@ -31,11 +32,11 @@ class Router extends Sp {
     var child:Router = new Router();
     child.parentRouter = router;
     child.rootContext = context;
-
+    router.addChildRouter(child);
     return child;
   }
 
-  static public function asRoot(Context:Class<BaseContext>, ?routeData:SceneChangeData):Router{
+  static public function asRoot(Context:Class<BaseContext>, ?routeData:SceneChangeData):Router {
     var router:Router = new Router();
     router.rootContext = router.push(Context, routeData, false);
     router.rootContext.finishActivation();
@@ -50,6 +51,10 @@ class Router extends Sp {
 
   private function initialize() {
     history = new Array();
+  }
+
+  public function addChildRouter(router:Router) {
+    childRouters.add(router);
   }
 
   public function push(Context:Class<BaseContext>, prop:Dynamic = null, autoFinish:Bool = true):BaseContext {
@@ -74,7 +79,7 @@ class Router extends Sp {
     this.activeProp = insertProps;
 
     addChild(context);
-    if(autoFinish){
+    if (autoFinish) {
       context.finishActivation();
     }
     return context;
@@ -93,6 +98,14 @@ class Router extends Sp {
     noActiveContext ? null : activeContext.dispatchEvent(e);
     dispatchEvent(e);
     isRoot ? null : parentRouter.emit(e);
+  }
+
+  public function broadcast(e:Event) {
+    noActiveContext ? null : activeContext.dispatchEvent(e);
+    dispatchEvent(e);
+    for(child in childRouters){
+      child.broadcast(e);
+    }
   }
 
   private function removeContextParts() {
