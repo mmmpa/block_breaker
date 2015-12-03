@@ -1,4 +1,6 @@
 package contexts;
+import events.ContextCreatedEvent;
+import events.SceneChangeEvent;
 import configs.OnAir;
 import dbs.FinderList;
 import models.blockbreaker.FinderProp;
@@ -28,49 +30,25 @@ class MainContext extends BaseContext {
   private var menu:Router;
   private var body:Router;
 
-
   public function new(props:RouterProp, route:RouteData = null) {
     super(props);
 
     initialize();
 
-    god = new Router(this.router, this);
-    menu = new Router(this.router, this);
-    body = new Router(this.router, this);
+    god = Router.asChild(router, this);
+    menu = Router.asChild(router, this);
+    body = Router.asChild(router, this);
 
     addChild(body);
     addChild(menu);
     addChild(god);
+    
+    startAnimation();
 
-    body.name = 'body';
-    menu.name = 'menu';
-    god.name = 'god';
-
-    if (route != null) {
-      go(route);
-    }
-
-    this.startAnimation();
-
-    this.addEventListener(ContextEvent.SCENE_CHANGE, function(e:Event) {
-      var route:RouteData = cast(e.data, RouteData);
-      go(route);
-    });
-  }
-
-  private function checkLeak(){
-    var timer:Int = 0;
-    this.addEventListener(Event.ENTER_FRAME, function(e:Event){
-      timer ++;
-      if(timer % 10 != 0){
-        return;
+    addEventListener(ContextCreatedEvent.CREATED, function(e:ContextCreatedEvent) {
+      if (e.context == that && route != null) {
+        go(route);
       }
-      dispatchEvent(
-        new Event(
-        ContextEvent.SCENE_CHANGE,
-        false,
-        new RouteData('/test/game', new BlockBreakerProp('sa,ple1', PlainGame.plain1()))
-        ));
     });
   }
 
@@ -144,14 +122,6 @@ class MainContext extends BaseContext {
     routeMap.set('/app/exit', function(route:RouteData) {
       OnAir.exit();
     });
-  }
-
-  public function fromBody(e:Event) {
-    trace('body', e);
-  }
-
-  public function fromSelf(e:Event) {
-    trace('self', e);
   }
 }
 

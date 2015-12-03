@@ -1,5 +1,6 @@
 package views.common;
 
+import events.SceneChangeEvent;
 import models.common.ButtonProp;
 import starling.filters.BlurFilter;
 import dbs.Palette;
@@ -125,7 +126,7 @@ class SideMenu extends BaseActor {
         prop: new ButtonProp({char: recipe.icon}),
         callback: function() {
           close();
-          emit(new Event(ContextEvent.SCENE_CHANGE, false, recipe.route));
+          emit(new SceneChangeEvent(recipe.route));
         }
       });
 

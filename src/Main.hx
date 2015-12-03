@@ -1,10 +1,7 @@
 package;
-import flash.text.Font;
 import assets.BlockFont;
 import assets.Se;
 import events.AppEvent;
-import dbs.Palette;
-import configs.Def;
 import initializers.FlashState;
 import initializers.Scale;
 import initializers.Trace;
@@ -25,17 +22,11 @@ class Main extends Sprite {
   }
 
   static public function initialize() {
-    Palette;
-    Def;
     Trace.initialize();
     FlashState.initialize();
     Scale.initialize();
     Se.initialize();
     BlockFont.initialize();
-
-    for(font in Font.enumerateFonts()){
-      trace(font.fontName);
-    }
   }
 }
 

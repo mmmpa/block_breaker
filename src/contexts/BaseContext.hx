@@ -1,4 +1,6 @@
 package contexts;
+import events.ContextCreatedEvent;
+import events.SceneChangeEvent;
 import starling.display.Sprite;
 import views.common.Sp;
 import starling.display.DisplayObjectContainer;
@@ -17,9 +19,8 @@ class BaseContext extends Sprite {
 
   private var that:BaseContext;
 
-  private var rooter:BaseContext;
-  private var props:RouterProp;
   private var router:Router;
+  private var rootContext:BaseContext;
   private var routeMap:Map<String, Dynamic> = new Map();
 
   private var actors:List<Dynamic> = new List();
@@ -30,14 +31,23 @@ class BaseContext extends Sprite {
 
   public var isRoot(get, never):Bool;
 
-  public function new(props:RouterProp, insertProps:Dynamic = null) {
+  public function new(props:RouterProp) {
     super();
     this.that = this;
-    this.props = props;
     this.router = props.router;
-    this.rooter = props.contextRoot;
+    this.rootContext = props.contextRoot;
 
-    addEventListener(Event.ADDED_TO_STAGE, _onCreate);
+    addEventListener(Event.ADDED_TO_STAGE, onActivated);
+    addEventListener(SceneChangeEvent.GO, onScneChange);
+  }
+
+  private function onScneChange(e:SceneChangeEvent){
+    trace('change');
+    var routeData:RouteData = e.routeData;
+    var route:Dynamic = routeMap.get(routeData.route);
+    if(route != null){
+      route(routeData);
+    }
   }
 
   // 毎フレーム処理関係のメソッド
@@ -46,8 +56,8 @@ class BaseContext extends Sprite {
     if (isRoot) {
       Def.stage.addEventListener(Event.ENTER_FRAME, work);
     } else {
-      rooter.addSubActors(this);
-      rooter.addSubBooks(this);
+      rootContext.addSubActors(this);
+      rootContext.addSubBooks(this);
     }
   }
 
@@ -55,19 +65,19 @@ class BaseContext extends Sprite {
     if (isRoot) {
       Def.stage.removeEventListener(Event.ENTER_FRAME, work);
     } else {
-      rooter.removeSubActors(this);
-      rooter.removeSubBooks(this);
+      rootContext.removeSubActors(this);
+      rootContext.removeSubBooks(this);
     }
   }
 
   private function work(e:Event) {
     plan();
-    action();
+    act();
   }
 
   // actorの処理
 
-  public function action() {
+  public function act() {
     // 処理中にlistが増減するためこの処理になる
     var acted:List<Dynamic> = new List();
     var actor:Dynamic = actors.pop();
@@ -82,7 +92,7 @@ class BaseContext extends Sprite {
     actors = acted;
 
     for(sub in subActors){
-      sub.action();
+      sub.act();
     }
   }
 
@@ -165,22 +175,21 @@ class BaseContext extends Sprite {
     }
   }
 
-  public function go(route:RouteData) {
-    routeMap.get(route.route)(route);
-  }
-
   public function emit(e:Event) {
-    dispatchEvent(e);
     router.emit(e);
   }
 
-  private function _onCreate(e:Event) {
-    removeEventListener(Event.ADDED_TO_STAGE, _onCreate);
-    emit(new Event(ContextEvent.CREATED));
+  public function go(route:RouteData) {
+    emit(new SceneChangeEvent(route));
+  }
+
+  private function onActivated(e:Event) {
+    removeEventListener(Event.ADDED_TO_STAGE, onActivated);
+    emit(new ContextCreatedEvent(this));
   }
 
   public function get_isRoot():Bool {
-    return this.rooter == null;
+    return this.rootContext == null;
   }
 
   @:extern inline private function isContext(a:Dynamic):Bool {

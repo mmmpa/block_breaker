@@ -1,4 +1,5 @@
 package contexts.blockbreaker;
+import events.SceneChangeEvent;
 import models.blockbreaker.FinderPieceProp;
 import events.ContextEvent;
 import routers.RouteData;
@@ -86,7 +87,7 @@ class FinderContext extends BaseContext {
       }
       var child:FinderPiece = FinderPiece.loading(function() {
         var route:RouteData = new RouteData('/bb/image', new ImageBlockBreakerProp(data.id, data.blockImagePath), true);
-        emit(new Event(ContextEvent.SCENE_CHANGE, false, route));
+        go(route);
       });
       loading.push({finder: child, path: data.thumnailPath});
       line.addChild(child);

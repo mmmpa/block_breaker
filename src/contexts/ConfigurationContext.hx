@@ -64,7 +64,7 @@ class ConfigurationContext extends BaseContext {
       text: 'go to stage finder',
       prop: new ButtonProp({char: Four29}),
       callback: function() {
-        emit(new Event(ContextEvent.SCENE_CHANGE, false, new RouteData('/bb/finder')));
+        go(new RouteData('/bb/finder'));
       }
     });
 
@@ -75,8 +75,6 @@ class ConfigurationContext extends BaseContext {
     }).iter(function(cb:Checkbox) {
       cb.resize(maxwidth + 50, 0);
     });
-
-
 
     title.activate(this, container);
     container.addChild(new Spacer(1, 40));

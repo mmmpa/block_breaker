@@ -106,7 +106,7 @@ class ImageBlockBreakerContext extends BaseContext {
     };
 
     back = function() {
-      emit(new Event(ContextEvent.SCENE_CHANGE, false, new RouteData('/bb/finder')));
+      go(new RouteData('/bb/finder'));
     };
 
     start();

@@ -14,10 +14,6 @@ class Game extends Sprite {
   public function new() {
     super();
     //touchable = false;
-    var mainRouter:Router = new Router();
-    addChild(mainRouter);
-    mainRouter.name = 'mainRouter';
-
     //var route:RouteData = new RouteData('/test/ball', new BallTestProp(5000));
     //var route:RouteData = new RouteData('/test/parts');
     var route:RouteData = new RouteData('/configuration');
@@ -26,7 +22,7 @@ class Game extends Sprite {
     //var route:RouteData = new RouteData('/bb/finder');
     //var route:RouteData = new RouteData('/bb/image', new ImageBlockBreakerProp('kobito', 'asset/kobito.png'), true);
     //var route:RouteData = new RouteData('/test/ball/block', new BallTestProp(1000));
-    mainRouter.pushRoot(MainContext, route);
+    addChild(Router.asRoot(MainContext, route));
   }
 
   public static function start(stage:Stage):Void {
