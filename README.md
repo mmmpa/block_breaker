@@ -65,7 +65,7 @@ RouterはContextのインスタンスを一つだけしか持てない。pushあ
 
 インスタンス化後にRouterのプロパティとして保持されるので、Routerへの反映を待って動作させるにはaddEventListenerを利用する。
 
-```
+```haxe
 addEventListener(ContextCreatedEvent.CREATED, function(e:ContextCreatedEvent) {
   if (e.forMe(that) && route != null) {
     go(route);
