@@ -1,4 +1,5 @@
 package contexts;
+import List;
 import events.ContextCreatedEvent;
 import events.SceneChangeEvent;
 import starling.display.Sprite;
@@ -37,15 +38,15 @@ class BaseContext extends Sprite {
     addEventListener(SceneChangeEvent.GO, onScneChange);
   }
 
-  private function onScneChange(e:SceneChangeEvent){
+  private function onScneChange(e:SceneChangeEvent) {
     var routeData:SceneChangeData = e.routeData;
     var route:Dynamic = sceneMap.get(routeData.route);
-    if(route != null){
+    if (route != null) {
       route(routeData);
     }
   }
 
-  public function finishActivation(){
+  public function finishActivation() {
     emit(new ContextCreatedEvent(this));
   }
 
@@ -80,17 +81,17 @@ class BaseContext extends Sprite {
     // 処理中にlistが増減するためこの処理になる
     var acted:List<Dynamic> = new List();
     var actor:Dynamic = actors.pop();
-    while(actor){
-      if(!actor.act()){
+    while (actor) {
+      if (!actor.act()) {
         actor.deactivate();
-      }else{
+      } else {
         acted.push(actor);
       }
       actor = actors.pop();
     }
     actors = acted;
 
-    for(sub in subActors){
+    for (sub in subActors) {
       sub.act();
     }
   }
@@ -107,7 +108,7 @@ class BaseContext extends Sprite {
   }
 
   public function removeAllActors() {
-    for(actor in actors){
+    for (actor in actors) {
       actor.deactivate();
     }
     actors.clear();
@@ -116,11 +117,11 @@ class BaseContext extends Sprite {
   // bookの処理
 
   public function plan() {
-    for(book in books){
+    for (book in books) {
       book(this);
     }
 
-    for(sub in subBooks){
+    for (sub in subBooks) {
       sub.plan();
     }
   }
@@ -174,11 +175,15 @@ class BaseContext extends Sprite {
     }
   }
 
+  public function broadcast(e:Event) {
+    router.broadcast(e);
+  }
+
   public function emit(e:Event) {
     router.emit(e);
   }
 
-  public function registerScene(sceneName:String, callback:Dynamic){
+  public function registerScene(sceneName:String, callback:Dynamic) {
     sceneMap.set(sceneName, callback);
   }
 

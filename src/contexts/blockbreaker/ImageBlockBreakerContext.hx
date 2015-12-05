@@ -33,7 +33,15 @@ import models.RouterProp;
 using Lambda;
 using additions.Support;
 
+enum AnimationState {
+  Playing;
+  Pause;
+  Stoped;
+}
+
 class ImageBlockBreakerContext extends BaseContext {
+
+  private var animationState:AnimationState;
 
   private var game:BlockBreaker;
   private var table:BlockTable;
@@ -66,6 +74,19 @@ class ImageBlockBreakerContext extends BaseContext {
     listener.y = Def.area.y;
     //listener.bottom(deadBg);
 
+    addEventListener('pause', function() {
+      if(animationState == AnimationState.Playing){
+        stopAnimation();
+        animationState = AnimationState.Pause;
+      }
+    });
+    addEventListener('resume', function() {
+      if(animationState == AnimationState.Pause){
+        startAnimation();
+        animationState = AnimationState.Playing;
+      }
+    });
+
 
     var start:Dynamic = function() {
       new ImageBlockGrid(insertProps.path, function(grid:BlockGrid) {
@@ -79,6 +100,7 @@ class ImageBlockBreakerContext extends BaseContext {
         table.activate(this, calm);
         scoreDisplay.score = game.score;
         startAnimation();
+        animationState = AnimationState.Playing;
         changeTouch();
       }).process();
 
@@ -138,6 +160,7 @@ class ImageBlockBreakerContext extends BaseContext {
   private function pass() {
     removeBook(play);
     stopAnimation();
+    animationState = AnimationState.Stoped;
     changeTouch();
 
     var bestScore:Int = record() == null ? 0 : record().score;
@@ -158,6 +181,7 @@ class ImageBlockBreakerContext extends BaseContext {
   private function over() {
     removeBook(play);
     stopAnimation();
+    animationState = AnimationState.Stoped;
     changeTouch();
     trace(game.score);
 

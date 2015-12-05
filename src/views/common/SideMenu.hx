@@ -27,10 +27,14 @@ enum SideMenuState {
 
 class SideMenu extends BaseActor {
   public var menuRecipes:Array<MenuRecipe>;
+  public var openedCallback:Dynamic;
+  public var closedCallback:Dynamic;
+
   public var maxWidth:Float = 0;
   public var buttons:Array<Button> = new Array();
   public var state:SideMenuState = SideMenuState.Closed;
   public var sield:ButtonListener;
+
 
   // state getter
   public var closed(get, never):Bool;
@@ -38,10 +42,10 @@ class SideMenu extends BaseActor {
   public var opened(get, never):Bool;
   public var closing(get, never):Bool;
 
-  public function new(menuRecipes) {
+  public function new(option:{menuRecipes:Array<MenuRecipe>, ?openedCallback:Dynamic, ?closedCallback:Dynamic }) {
     super();
 
-    this.menuRecipes = menuRecipes;
+    this.deploy(option);
 
     var container:ScrollContainer = new ScrollContainer();
     var layout:VerticalLayout = new VerticalLayout();
@@ -77,6 +81,7 @@ class SideMenu extends BaseActor {
         this.x = -this.width - 2;
         trace('closed');
         state = SideMenuState.Ready;
+        if(closedCallback != null) closedCallback();
       case SideMenuState.PreOpening:
         context.addChild(sield);
         context.addActor(this, true);
@@ -89,6 +94,7 @@ class SideMenu extends BaseActor {
       case SideMenuState.Opened:
         this.x = 0;
         state = SideMenuState.Ready;
+        if(openedCallback != null) openedCallback();
       case SideMenuState.Closing:
         sield.removeFromParent();
         this.x = Std.int((-this.width - 2 + this.x) / 2) - 1;

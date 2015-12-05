@@ -36,7 +36,6 @@ class Def {
   static public var testBg:Int = Palette.white;
   static public var deadBg:Int = Palette.black;
 
-
   // dpiから算出
   static public var fontSizeNormal:Int;
   static public var fontSizeBig:Int;

@@ -1,9 +1,7 @@
 package contexts.menu;
+import events.SideMenuEvent;
 import configs.OnAir;
 import views.common.PresetButton;
-import models.blockbreaker.ImageBlockBreakerProp;
-import dbs.PlainGame;
-import models.blockbreaker.BlockBreakerProp;
 import models.common.ActorProp;
 import models.common.ButtonProp;
 import views.common.TopBar;
@@ -27,7 +25,16 @@ class TestMenuContext extends BaseContext {
     startAnimation();
 
     bar = new TopBar();
-    menu = new SideMenu(routesSrc);
+    menu = new SideMenu({
+      menuRecipes: routesSrc,
+      openedCallback: function() {
+        emit(SideMenuEvent.newOpened());
+      },
+      closedCallback: function() {
+        emit(SideMenuEvent.newClosed());
+      }
+    });
+
     var faButton:Button = PresetButton.normal({
       text: '',
       prop: new ButtonProp({
@@ -118,7 +125,7 @@ class TestMenuContext extends BaseContext {
       }
     ];
 
-    if(OnAir.enable){
+    if (OnAir.enable) {
       base.push({
         icon: Four29,
         text: 'exit',

@@ -1,4 +1,6 @@
 package contexts;
+import starling.events.Event;
+import events.SideMenuEvent;
 import models.RouterProp;
 import events.ContextCreatedEvent;
 import configs.OnAir;
@@ -44,6 +46,12 @@ class MainContext extends BaseContext {
       if (e.forMe(that) && scene != null) {
         go(scene);
       }
+    });
+    addEventListener(SideMenuEvent.OPENED, function(e:SideMenuEvent) {
+      broadcast(new Event('pause'));
+    });
+    addEventListener(SideMenuEvent.CLOSED, function(e:SideMenuEvent) {
+      broadcast(new Event('resume'));
     });
   }
 
