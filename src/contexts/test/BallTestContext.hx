@@ -25,7 +25,7 @@ class BallTestContext extends BaseContext {
     field = new PlayFieldData(0, 0, Def.area.w, Def.area.h);
     addChild(new NormalBg());
 
-    addBook(book);
+    addTask(book);
     startAnimation();
 
     var w:Int = Def.area.w;

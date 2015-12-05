@@ -158,7 +158,7 @@ class ImageBlockBreakerContext extends BaseContext {
   }
 
   private function pass() {
-    removeBook(play);
+    removeTask(play);
     stopAnimation();
     animationState = AnimationState.Stoped;
     changeTouch();
@@ -179,7 +179,7 @@ class ImageBlockBreakerContext extends BaseContext {
   }
 
   private function over() {
-    removeBook(play);
+    removeTask(play);
     stopAnimation();
     animationState = AnimationState.Stoped;
     changeTouch();
@@ -226,7 +226,7 @@ class ImageBlockBreakerContext extends BaseContext {
         addBall(newBall);
         addShock(shock);
         game.start();
-        addBook(play);
+        addTask(play);
         changeTouch();
     }
   }

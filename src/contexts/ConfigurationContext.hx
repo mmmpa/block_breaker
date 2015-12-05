@@ -25,17 +25,19 @@ class ConfigurationContext extends BaseContext {
     super(props);
     this.y = Def.area.y;
     startAnimation();
-    addChild(new NormalBg());
+    addActor(new NormalBg());
 
     var layout:VerticalLayout = new VerticalLayout();
     layout.gap = 20;
     layout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_CENTER;
     layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_MIDDLE;
+
     var container:LayoutGroup = new LayoutGroup();
     container.layout = layout;
-    addChild(container);
     container.width = Def.area.w;
     container.height = Def.area.h;
+
+    addActor(container);
 
     var title:Label = new Label('Configuration');
 
@@ -75,11 +77,13 @@ class ConfigurationContext extends BaseContext {
       cb.resize(maxwidth + 50, 0);
     });
 
-    title.activate(this, container);
-    container.addChild(new Spacer(1, 40));
-    statusCheck.activate(this, container);
-    soundCheck.activate(this, container);
-    container.addChild(new Spacer(1, 40));
-    finder.activate(this, container);
+    addFixedActors([
+      title,
+      new Spacer(1, 40),
+      statusCheck,
+      soundCheck,
+      new Spacer(1, 40),
+      finder
+    ], container);
   }
 }

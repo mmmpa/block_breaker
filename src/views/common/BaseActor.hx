@@ -1,4 +1,5 @@
 package views.common;
+import starling.display.DisplayObject;
 import starling.events.Event;
 import starling.display.DisplayObjectContainer;
 import contexts.BaseContext;
@@ -9,6 +10,12 @@ class BaseActor extends Sprite{
 
   public function new() {
     super();
+  }
+
+  public function addChildren(children:Array<DisplayObject>){
+    for(child in children){
+      addChild(child);
+    }
   }
 
   public function activate(context:BaseContext, parent:DisplayObjectContainer) {

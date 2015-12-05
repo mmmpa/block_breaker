@@ -115,7 +115,7 @@ class PlainBlockBreakerContext extends BaseContext {
         addBall(newBall);
         addShock(shock);
         game.start();
-        addBook(play);
+        addTask(play);
         changeTouch();
     }
   }

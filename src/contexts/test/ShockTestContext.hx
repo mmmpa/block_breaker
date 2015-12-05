@@ -34,7 +34,7 @@ class ShockTestContext extends BaseContext {
     balls.push(data);
     addActor(ball);
 
-    addBook(book);
+    addTask(book);
 
     startAnimation();
   }

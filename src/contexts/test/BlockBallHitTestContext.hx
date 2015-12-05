@@ -27,7 +27,7 @@ class BlockBallHitTestContext extends BaseContext {
     addChild(new NormalBg());
     addEventListener(TouchEvent.TOUCH, onTouch);
 
-    addBook(book);
+    addTask(book);
     startAnimation();
 
     var i:Int = 0;

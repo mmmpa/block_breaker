@@ -8,13 +8,6 @@ import configs.Def;
 
 using additions.Support;
 
-typedef CheckboxOption = {
-  var text:String;
-  var callback:Dynamic;
-  @:optional var checked:Bool;
-  @:optional var prop:CheckboxProp;
-}
-
 class Checkbox extends PartsActor {
   private var listener:ButtonListener;
 
@@ -27,8 +20,8 @@ class Checkbox extends PartsActor {
   private var checkedIcon:FaIcon;
   private var uncheckedIcon:FaIcon;
 
-  public static function normal(option:CheckboxOption) {
-    if(option.prop == null){
+  public static function normal(option:{text:String, callback:Dynamic, ?checked:Bool, ?prop:CheckboxProp}) {
+    if (option.prop == null) {
       option.prop = new CheckboxProp();
     }
     option.prop.checkedColor = Palette.blueD;
@@ -37,9 +30,9 @@ class Checkbox extends PartsActor {
     return new Checkbox(option);
   }
 
-  public function new(option:CheckboxOption) {
+  public function new(option:{text:String, callback:Dynamic, ?checked:Bool, ?prop:CheckboxProp}) {
     super();
-    this.deploy(option,{
+    this.deploy(option, {
       checked: false,
       prop: new CheckboxProp()
     });
@@ -50,42 +43,39 @@ class Checkbox extends PartsActor {
     this.uncheckedIcon = new FaIcon(Check29, Def.fontSizeNormal, prop.uncheckedColor);
     listener.click = toggle;
 
-    addChild(checkedIcon);
-    addChild(uncheckedIcon);
-    addChild(label);
-    addChild(listener);
+    addChildren([
+      checkedIcon,
+      uncheckedIcon,
+      label,
+      listener
+    ]);
 
-    initialize();
-    draw();
+    reposit();
+    drawCheckmark();
   }
 
   public function toggle() {
     this.checked = !checked;
-    draw();
+    drawCheckmark();
     callback(this);
     if (Configuration.soundEnabled) {Se.broken.play(); }
   }
 
-  public function draw() {
+  public function drawCheckmark() {
     checkedIcon.visible = checked;
     uncheckedIcon.visible = !checked;
   }
 
   public function resize(w:Float, h:Float):Checkbox {
-    if (w != 0) {
-      prop.w = Std.int(w);
-    }
+    if (w != 0) prop.w = Std.int(w);
+    if (h != 0) prop.h = Std.int(h);
 
-    if (h != 0) {
-      prop.h = Std.int(h);
-    }
-
-    initialize();
+    reposit();
 
     return this;
   }
 
-  public function initialize() {
+  public function reposit() {
     if (prop.w != 0) {
       listener.width = prop.w;
     } else {
@@ -106,8 +96,7 @@ class Checkbox extends PartsActor {
       label.y = prop.padTop;
       checkedIcon.y = uncheckedIcon.y = prop.padTop + offset;
     }
-
-
+    
     switch(prop.position){
       case ActorHorizontal.Left:
         checkedIcon.x = uncheckedIcon.x = prop.padSide;

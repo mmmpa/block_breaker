@@ -22,10 +22,10 @@ class BaseContext extends Sprite {
   private var sceneMap:Map<String, Dynamic> = new Map();
 
   private var actors:List<Dynamic> = new List();
-  private var books:List<Dynamic> = new List();
+  private var tasks:List<Dynamic> = new List();
 
   private var subActors:List<BaseContext> = new List();
-  private var subBooks:List<BaseContext> = new List();
+  private var subTasks:List<BaseContext> = new List();
 
   public var isRoot(get, never):Bool;
 
@@ -57,7 +57,7 @@ class BaseContext extends Sprite {
       Def.stage.addEventListener(Event.ENTER_FRAME, work);
     } else {
       rootContext.addSubActors(this);
-      rootContext.addSubBooks(this);
+      rootContext.addSubTasks(this);
     }
   }
 
@@ -66,7 +66,7 @@ class BaseContext extends Sprite {
       Def.stage.removeEventListener(Event.ENTER_FRAME, work);
     } else {
       rootContext.removeSubActors(this);
-      rootContext.removeSubBooks(this);
+      rootContext.removeSubTasks(this);
     }
   }
 
@@ -96,10 +96,21 @@ class BaseContext extends Sprite {
     }
   }
 
-  public function addActor(actor:Dynamic, fixed:Bool = false, container:DisplayObjectContainer = null) {
-    actor.activate(this, container != null ? container : this);
+  public function addFixedActors(actors:Array<Dynamic>, ?container:DisplayObjectContainer) {
+    var targetContainer:DisplayObjectContainer = container != null ? container : this;
+    for(actor in actors){
+      addActor(actor, true, container);
+    }
+  }
 
-    if (!fixed) { warmUp(actor); }
+  public function addActor(actor:Dynamic, fixed:Bool = false, container:DisplayObjectContainer = null) {
+    var targetContainer:DisplayObjectContainer = container != null ? container : this;
+    if(Reflect.hasField(actor, 'activate')){
+      actor.activate(this, targetContainer);
+      if (!fixed) { warmUp(actor); }
+    }else{
+      targetContainer.addChild(actor);
+    }
   }
 
   private function warmUp(actor:Dynamic) {
@@ -114,24 +125,24 @@ class BaseContext extends Sprite {
     actors.clear();
   }
 
-  // bookの処理
+  // taskの処理
 
   public function plan() {
-    for (book in books) {
-      book(this);
+    for (tasks in tasks) {
+      tasks(this);
     }
 
-    for (sub in subBooks) {
+    for (sub in subTasks) {
       sub.plan();
     }
   }
 
-  public function addBook(book:Dynamic) {
-    books.push(book);
+  public function addTask(task:Dynamic) {
+    tasks.push(task);
   }
 
-  public function removeBook(book:Dynamic) {
-    books.remove(book);
+  public function removeTask(task:Dynamic) {
+    tasks.remove(task);
   }
 
   // サブcontextからの処理
@@ -144,12 +155,12 @@ class BaseContext extends Sprite {
     subActors.remove(sub);
   }
 
-  public function addSubBooks(sub:BaseContext) {
-    subBooks.push(sub);
+  public function addSubTasks(sub:BaseContext) {
+    subTasks.push(sub);
   }
 
-  public function removeSubBooks(sub:BaseContext) {
-    subBooks.remove(sub);
+  public function removeSubTasks(sub:BaseContext) {
+    subTasks.remove(sub);
   }
 
   // routerから呼ばれる

@@ -69,7 +69,7 @@ class BallBlockTestContext extends BaseContext {
     table = new BlockTable(grid);
     addActor(table, true, calm);
 
-    addBook(play);
+    addTask(play);
     startAnimation();
 
     var w:Int = Def.area.w;
